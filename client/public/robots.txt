@@ -1,0 +1,8 @@
+# Adapter la ligne Sitemap à l’URL publique de production (même domaine que dans sitemap.xml).
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /connexion
+
+Sitemap: https://www.exemple.cd/sitemap.xml

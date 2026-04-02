@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Remplacer https://www.exemple.cd par l’URL publique canonique du site avant soumission à la Search Console. -->
+  <url><loc>https://www.exemple.cd/</loc><changefreq>weekly</changefreq><priority>1</priority></url>
+  <url><loc>https://www.exemple.cd/a-propos</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.exemple.cd/droits</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.exemple.cd/devoirs</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.exemple.cd/infractions</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.exemple.cd/sanctions</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.exemple.cd/bonnes-pratiques</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.exemple.cd/espace-educatif</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.exemple.cd/litteratie-numerique</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.exemple.cd/signalement</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.exemple.cd/signalement/suivi</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.exemple.cd/confidentialite</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.exemple.cd/mentions-legales</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.exemple.cd/faq</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.exemple.cd/glossaire</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.exemple.cd/presse</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.exemple.cd/rapports-activite</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.exemple.cd/actualites</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.exemple.cd/contact</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+</urlset>

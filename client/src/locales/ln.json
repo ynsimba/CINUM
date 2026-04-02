@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "home": "Ebandelo",
+    "portal": "Sango",
+    "portal_aria": "Banzela nyonso ya portail",
+    "sec_institution": "Ekleziya",
+    "sec_rights": "Banzela mpe biloko",
+    "sec_risk": "Mibubu mpe biyano",
+    "sec_learn": "Koyekola",
+    "sec_news": "Sango",
+    "sec_help": "Bosalisi mpe sango",
+    "sec_media": "Bapesi mpe biloko",
+    "faq": "Mituna mingi",
+    "glossary": "Bakonzi ya maloba",
+    "press": "Esika ya bapesi",
+    "activity_reports": "Biloko ya mosala ya mobu",
+    "inform_menu": "Koyeba",
+    "inform_menu_aria": "Banzela : droit, mibubu",
+    "about": "Makambo ya biso",
+    "rights": "Banzela ya droit na numérique",
+    "duties": "Biloko oyo esengi",
+    "offenses": "Mibubu",
+    "sanctions": "Bapénalité",
+    "practices": "Malamu ya kosala",
+    "education": "Koyekola",
+    "digital_literacy": "Boyekoli ya numérique",
+    "report": "Kolanda likambo mabe",
+    "news": "Sango",
+    "contact": "Kokutana",
+    "admin": "Administration",
+    "login": "Kokɔta"
+  },
+  "banner": {
+    "title": "Civisme na numérique",
+    "subtitle": "RDC — Portail ya sango mpe koyekisa"
+  },
+  "quick": {
+    "rights": "Banzela",
+    "duties": "Biloko",
+    "test_knowledge": "Komeka boyebi na ngai"
+  },
+  "a11y": {
+    "skip": "Kende na makambo ya moto-moto",
+    "skip_login": "Kende na formulaire ya kokɔta",
+    "menu": "Banzela",
+    "menu_open": "Fungola menu",
+    "menu_close": "Funga menu",
+    "lang": "Lokótá",
+    "logout": "Bima",
+    "login_main": "Kokɔta na administration ya portail",
+    "close_modal": "Funga fenêtre ya kokɔta"
+  },
+  "digitalLiteracy": {
+    "toc_title": "Mokanda ya makambo",
+    "toc_aria": "Mokanda ya lokasa — pona likambo mpo na kolakisa kaka yango",
+    "toc_hint": "Finá na likambo mpo na kolakisa kaka eteni wana.",
+    "show_all": "Lakisa dokument mobimba"
+  },
+  "cookie": {
+    "title": "Bisika mpe botangi ya bato",
+    "body": "Tosalela bisika oyo esengi mpo na site. Soki olandi, nzela ya Matomo (na serveur na biso) ekoki kobakisama. Koziba ezali kaka mpo na bisika ya liboso.",
+    "reject": "Koziba (kaka oyo esengi)",
+    "accept": "Kondima mpe kokoba"
+  }
+}

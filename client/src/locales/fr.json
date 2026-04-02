@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "portal": "Informations",
+    "portal_aria": "Toutes les rubriques du portail",
+    "sec_institution": "Institution",
+    "sec_rights": "Droits et devoirs",
+    "sec_risk": "Infractions et réponses",
+    "sec_learn": "Apprendre",
+    "sec_news": "Publications",
+    "sec_help": "Aide et documentation",
+    "sec_media": "Presse et transparence",
+    "faq": "FAQ",
+    "glossary": "Glossaire",
+    "press": "Espace presse",
+    "activity_reports": "Rapports d’activité",
+    "inform_menu": "S'informer",
+    "inform_menu_aria": "Thématiques : droits, devoirs, infractions",
+    "about": "À propos",
+    "rights": "Droits numériques",
+    "duties": "Devoirs numériques",
+    "offenses": "Infractions",
+    "sanctions": "Sanctions légales",
+    "practices": "Bonnes pratiques",
+    "education": "Espace éducatif",
+    "digital_literacy": "Littératie numérique",
+    "report": "Signaler un abus",
+    "news": "Actualités",
+    "contact": "Contact",
+    "admin": "Administration",
+    "login": "Connexion"
+  },
+  "banner": {
+    "title": "Civisme numérique",
+    "subtitle": "République démocratique du Congo — Portail d'information et de sensibilisation"
+  },
+  "quick": {
+    "rights": "Droits",
+    "duties": "Devoirs",
+    "test_knowledge": "Tester mes connaissances"
+  },
+  "a11y": {
+    "skip": "Aller au contenu principal",
+    "skip_login": "Aller au formulaire de connexion",
+    "menu": "Navigation principale",
+    "menu_open": "Ouvrir le menu de navigation",
+    "menu_close": "Fermer le menu de navigation",
+    "lang": "Langue",
+    "logout": "Se déconnecter",
+    "login_main": "Connexion à l’administration du portail",
+    "close_modal": "Fermer la fenêtre de connexion"
+  },
+  "digitalLiteracy": {
+    "toc_title": "Sommaire",
+    "toc_aria": "Sommaire de la page — choisir une rubrique pour n’afficher que son contenu",
+    "toc_hint": "Cliquez sur un titre pour n’afficher que cette partie.",
+    "show_all": "Afficher tout le document"
+  },
+  "cookie": {
+    "title": "Cookies et mesure d’audience",
+    "body": "Nous utilisons des cookies nécessaires au fonctionnement du site. Avec votre accord, un outil de mesure d’audience (Matomo, auto-hébergé si configuré) peut être activé pour améliorer le service. Refuser limite l’usage aux cookies strictement nécessaires.",
+    "reject": "Refuser (essentiels seulement)",
+    "accept": "Accepter et continuer"
+  }
+}

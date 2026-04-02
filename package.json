@@ -1,0 +1,15 @@
+{
+  "name": "cinum-portail",
+  "private": true,
+  "description": "Portail institutionnel du civisme numérique — RDC",
+  "scripts": {
+    "install:all": "npm install --prefix client && npm install --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "build": "npm run build --prefix client",
+    "seed": "npm run seed --prefix server",
+    "db:up": "bash scripts/db-up.sh",
+    "db:down": "bash scripts/db-down.sh",
+    "db:init": "npm run db:up && npm run seed"
+  }
+}
