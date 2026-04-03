@@ -3,7 +3,7 @@ import { JsonLdSite } from '../components/JsonLdSite'
 import { Seo } from '../components/Seo'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { api } from '../api/client'
+import { api, fetchCsrf } from '../api/client'
 import { ScrollReveal } from '../components/ScrollReveal'
 import { NewsCard } from '../components/NewsCard'
 
@@ -21,6 +21,9 @@ const PARTNER_LOGOS = [
 export function Home() {
   const { t } = useTranslation()
   const [news, setNews] = useState([])
+  const [newsletterEmail, setNewsletterEmail] = useState('')
+  const [newsletterMsg, setNewsletterMsg] = useState('')
+  const [newsletterSending, setNewsletterSending] = useState(false)
 
   useEffect(() => {
     api
@@ -28,6 +31,32 @@ export function Home() {
       .then((r) => setNews(r.data.items?.slice(0, 3) || []))
       .catch(() => setNews([]))
   }, [])
+
+  async function submitNewsletter(e) {
+    e.preventDefault()
+    setNewsletterMsg('')
+    const email = newsletterEmail.trim()
+    if (!email || !email.includes('@')) {
+      setNewsletterMsg('Veuillez saisir une adresse e-mail valide.')
+      return
+    }
+    try {
+      setNewsletterSending(true)
+      await fetchCsrf()
+      const { data } = await api.post('/api/contact/newsletter', { email })
+      setNewsletterMsg(data?.message || 'Abonnement enregistre.')
+      setNewsletterEmail('')
+    } catch (err) {
+      const data = err?.response?.data
+      const msg =
+        (Array.isArray(data?.errors) && data.errors[0]?.msg) ||
+        data?.error ||
+        'Abonnement impossible pour le moment. Veuillez reessayer.'
+      setNewsletterMsg(msg)
+    } finally {
+      setNewsletterSending(false)
+    }
+  }
 
   return (
     <>
@@ -44,14 +73,13 @@ export function Home() {
               <p className="lead mb-3 mb-md-4 cinum-hero-lead">{t('banner.subtitle')}</p>
               <p className="mb-3 mb-md-4 text-break lh-base">{t('home.hero_official')}</p>
               <div className="d-flex gap-2 cinum-hero-actions" role="group" aria-label={t('home.hero_quick_aria')}>
-                <Link className="btn btn-light btn-lg cinum-hero-actions__btn" to="/droits">
-                  {t('quick.rights')}
-                </Link>
-                <Link className="btn btn-outline-light btn-lg cinum-hero-actions__btn" to="/devoirs">
-                  {t('quick.duties')}
-                </Link>
                 <Link className="btn btn-lg btn-cinum-hero-knowledge cinum-hero-actions__btn" to="/espace-educatif">
+                  <i className="fa-solid fa-brain me-2" aria-hidden="true"></i>
                   {t('quick.test_knowledge')}
+                </Link>
+                <Link className="btn btn-lg btn-cinum-hero-report cinum-hero-actions__btn" to="/signalement">
+                  <i className="fa-solid fa-triangle-exclamation me-2" aria-hidden="true"></i>
+                  {t('nav.report')}
                 </Link>
               </div>
             </div>
@@ -224,6 +252,46 @@ export function Home() {
                   <code>PARTNER_LOGOS</code>.
                 </p>
               )}
+            </ScrollReveal>
+          </div>
+        </section>
+
+        <section className="home-section home-newsletter-band" aria-labelledby="home-newsletter-heading">
+          <div className="container px-3 px-sm-4">
+            <ScrollReveal className="mb-3 mb-lg-4" variant="fade-up">
+              <header className="text-center text-lg-start">
+                <h2 id="home-newsletter-heading" className="home-section-title mb-2">
+                  Abonnement a la newsletter
+                </h2>
+                <p className="text-muted mb-0">
+                  Recevez les actualites, ressources et actions de sensibilisation du portail CINUM.
+                </p>
+              </header>
+            </ScrollReveal>
+
+            <ScrollReveal variant="fade-up">
+              <form className="home-newsletter-form" onSubmit={submitNewsletter}>
+                <label htmlFor="newsletter-email" className="visually-hidden">
+                  Adresse e-mail
+                </label>
+                <input
+                  id="newsletter-email"
+                  type="email"
+                  className="form-control home-newsletter-input"
+                  placeholder="Votre adresse e-mail"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  required
+                />
+                <button type="submit" className="btn btn-primary home-newsletter-btn" disabled={newsletterSending}>
+                  {newsletterSending ? 'Envoi...' : "S'abonner"}
+                </button>
+              </form>
+              {newsletterMsg ? (
+                <p className="small text-muted mt-2 mb-0" role="status">
+                  {newsletterMsg}
+                </p>
+              ) : null}
             </ScrollReveal>
           </div>
         </section>

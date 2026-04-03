@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api, fetchCsrf } from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
+import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
 
 function attachmentHref(path) {
   if (!path) return '#'
@@ -125,6 +126,7 @@ function FileLinks({ href, saveName, label }) {
 }
 
 export function AdminReports() {
+  const refreshTick = useAdminRefreshTick()
   const { isAdmin } = useAuth()
   const [items, setItems] = useState([])
   const [detail, setDetail] = useState(null)
@@ -137,6 +139,10 @@ export function AdminReports() {
   useEffect(() => {
     load().catch(() => {})
   }, [])
+
+  useEffect(() => {
+    load().catch(() => {})
+  }, [refreshTick])
 
   const filteredItems = useMemo(() => {
     let list = items.filter((r) => matchesSearch(r, searchQuery, ABUSE_LABELS))

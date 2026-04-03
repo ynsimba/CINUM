@@ -14,12 +14,18 @@ export function LoginModal() {
   const { user, loginStaff } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [err, setErr] = useState(null)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   const isOpen = location.pathname === '/connexion'
-  const from = location.state?.from?.pathname || '/admin'
+  const fromState = location.state?.from
+  const fromPathname = typeof fromState?.pathname === 'string' ? fromState.pathname : '/admin'
+  const fromSearch = typeof fromState?.search === 'string' ? fromState.search : ''
+  const fromHash = typeof fromState?.hash === 'string' ? fromState.hash : ''
+  // Destination post-login limitée aux routes admin pour éviter toute redirection non souhaitée.
+  const from = fromPathname.startsWith('/admin') ? `${fromPathname}${fromSearch}${fromHash}` : '/admin'
 
   const closeModal = useCallback(() => {
     navigate('/', { replace: true })
@@ -140,21 +146,32 @@ export function LoginModal() {
                   <label className="form-label" htmlFor="login-modal-password">
                     Mot de passe
                   </label>
-                  <input
-                    id="login-modal-password"
-                    type="password"
-                    autoComplete="current-password"
-                    className="form-control"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value)
-                      if (err) setErr(null)
-                    }}
-                    required
-                    minLength={8}
-                    aria-invalid={!!err}
-                    aria-describedby={err ? 'login-modal-error' : undefined}
-                  />
+                  <div className="input-group">
+                    <input
+                      id="login-modal-password"
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete="current-password"
+                      className="form-control"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value)
+                        if (err) setErr(null)
+                      }}
+                      required
+                      minLength={8}
+                      aria-invalid={!!err}
+                      aria-describedby={err ? 'login-modal-error' : undefined}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => setShowPassword((v) => !v)}
+                      aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                      aria-pressed={showPassword}
+                    >
+                      {showPassword ? 'Masquer' : 'Afficher'}
+                    </button>
+                  </div>
                 </div>
                 {err && (
                   <div

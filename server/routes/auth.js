@@ -7,6 +7,7 @@ const { issueCsrf, csrfProtection } = require('../middleware/csrf');
 const { publicUser } = require('../lib/serialize');
 
 const router = express.Router();
+const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{10,}$/;
 
 router.get('/csrf', attachUserOptional, (req, res) => {
   const token = issueCsrf(req, res);
@@ -52,5 +53,39 @@ router.post('/logout', (_req, res) => {
   res.clearCookie('_csrfSecret', { httpOnly: true, sameSite: 'strict' });
   res.json({ ok: true });
 });
+
+router.post(
+  '/change-password',
+  requireAuth,
+  csrfProtection,
+  [
+    body('currentPassword').isString().isLength({ min: 8 }).withMessage('Mot de passe actuel invalide.'),
+    body('newPassword')
+      .isString()
+      .matches(STRONG_PASSWORD_REGEX)
+      .withMessage(
+        'Le nouveau mot de passe doit contenir au moins 10 caractères, avec majuscule, minuscule, chiffre et caractère spécial.'
+      ),
+    body('newPassword')
+      .custom((value, { req }) => value !== req.body.currentPassword)
+      .withMessage("Le nouveau mot de passe doit être différent de l'ancien."),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    try {
+      await authService.changeStaffPassword(
+        req.userId,
+        String(req.body.currentPassword),
+        String(req.body.newPassword)
+      );
+      return res.json({ ok: true, message: 'Mot de passe mis à jour.' });
+    } catch (err) {
+      const handled = authService.handleStaffLoginError(res, err);
+      if (handled) return handled;
+      return res.status(500).json({ error: 'Erreur serveur.' });
+    }
+  }
+);
 
 module.exports = router;

@@ -57,3 +57,6 @@ export const AdminLaws = lazy(() => import('../pages/admin/AdminLaws').then((m) 
 export const AdminContactMessages = lazy(() =>
   import('../pages/admin/AdminContactMessages').then((m) => ({ default: m.AdminContactMessages }))
 )
+export const AdminAccountSecurity = lazy(() =>
+  import('../pages/admin/AdminAccountSecurity').then((m) => ({ default: m.AdminAccountSecurity }))
+)

@@ -62,6 +62,11 @@ html {
   text-size-adjust: 100%;
 }
 
+/* Ancrages : évite que le titre ciblé passe sous la navbar fixe */
+:target {
+  scroll-margin-top: 5.75rem;
+}
+
 body {
   margin: 0;
   font-family: var(--bs-font-sans-serif);
@@ -74,6 +79,10 @@ body {
 @media (max-width: 991.98px) {
   html {
     scroll-padding-top: 4.5rem;
+  }
+
+  :target {
+    scroll-margin-top: 4.75rem;
   }
 }
 
@@ -90,6 +99,48 @@ body {
 .cinum-main {
   padding-left: env(safe-area-inset-left, 0);
   padding-right: env(safe-area-inset-right, 0);
+}
+
+.cinum-back-to-top {
+  position: fixed;
+  right: 1rem;
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--cinum-blue);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(var(--cinum-blue-rgb), 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+  z-index: 1075;
+}
+
+.cinum-back-to-top--show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.cinum-back-to-top:hover {
+  background: var(--cinum-blue-dark);
+}
+
+.cinum-back-to-top:focus-visible {
+  outline: 3px solid rgba(var(--cinum-blue-rgb), 0.35);
+  outline-offset: 2px;
+}
+
+@media (max-width: 991.98px) {
+  .cinum-back-to-top {
+    bottom: max(5.25rem, env(safe-area-inset-bottom, 0px));
+  }
 }
 
 /* --- En-têtes de page (intérieur) --- */
@@ -324,20 +375,61 @@ a:hover {
 
 /* Bouton « Tester mes connaissances » : contour et texte jaune RDC sur le hero */
 .hero-institutional .btn-cinum-hero-knowledge {
-  color: var(--cinum-yellow);
+  color: var(--cinum-blue-dark);
   border: 2px solid var(--cinum-yellow);
-  background: transparent;
-  font-weight: 600;
+  background: var(--cinum-yellow);
+  font-weight: 700;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .hero-institutional .btn-cinum-hero-knowledge:hover {
-  color: var(--cinum-blue-dark);
-  background: var(--cinum-yellow);
-  border-color: var(--cinum-yellow);
+  color: #fff;
+  background: #ca8a04;
+  border-color: #ca8a04;
+  transform: translateY(-1px);
+  box-shadow: 0 0.45rem 1rem rgba(202, 138, 4, 0.35);
 }
 
 .hero-institutional .btn-cinum-hero-knowledge:focus-visible {
   box-shadow: 0 0 0 0.2rem rgba(247, 209, 22, 0.45);
+}
+
+/* Bouton d'urgence : "Signaler un abus" en rouge */
+.hero-institutional .btn-cinum-hero-report {
+  color: #fff;
+  border: 2px solid #dc2626;
+  background: #dc2626;
+  font-weight: 700;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.hero-institutional .btn-cinum-hero-report:hover {
+  color: #fff;
+  background: #b91c1c;
+  border-color: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 0.45rem 1rem rgba(185, 28, 28, 0.35);
+}
+
+.hero-institutional .btn-cinum-hero-report:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-institutional .btn-cinum-hero-knowledge:hover,
+  .hero-institutional .btn-cinum-hero-report:hover {
+    transform: none;
+  }
 }
 
 /* --- Hero : entrée douce au chargement --- */
@@ -671,6 +763,7 @@ a:hover {
   flex-direction: column;
   justify-content: center;
   border-radius: 0;
+  text-align: justify;
 }
 
 .home-citizen-text::before {
@@ -804,6 +897,28 @@ a:hover {
   height: auto;
   object-fit: contain;
   filter: grayscale(0.05);
+}
+
+.home-newsletter-band {
+  background: #fff;
+  border-top: 1px solid rgba(var(--cinum-blue-rgb), 0.1);
+}
+
+.home-newsletter-form {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.home-newsletter-input {
+  flex: 1 1 260px;
+  min-height: 2.75rem;
+}
+
+.home-newsletter-btn {
+  min-height: 2.75rem;
+  white-space: nowrap;
 }
 
 @keyframes home-partners-marquee {
@@ -1143,6 +1258,13 @@ body.modal-open {
   height: auto;
 }
 
+/* Justification globale des textes de contenu (articles, actualites, pages internes). */
+#contenu-principal p,
+#contenu-principal li {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
 #contenu-principal pre,
 #contenu-principal .card code {
   overflow-x: auto;
@@ -1358,11 +1480,14 @@ body.modal-open {
   height: auto;
 }
 .article-body-safe iframe {
-  max-width: 100%;
-  width: 100%;
+  display: block;
+  max-width: min(100%, 560px);
+  width: min(100%, 560px);
   min-height: 240px;
   border: 0;
   border-radius: 0.25rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Admin — signalements : ligne cliquable */

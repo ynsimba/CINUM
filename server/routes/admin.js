@@ -12,6 +12,7 @@ const { upload, UPLOAD_DIR } = require('../middleware/upload');
 const { uploadEditor } = require('../middleware/uploadEditor');
 const { sanitizeEditorHtml, plainTextLength } = require('../lib/sanitizeContent');
 const { toClientDoc } = require('../lib/serialize');
+const prisma = require('../lib/prisma');
 const { sendReportAppointmentEmail } = require('../services/mail');
 const { isAdminAuthDisabled } = require('../lib/adminAuthBypass');
 const path = require('path');
@@ -49,13 +50,105 @@ function slugify(text) {
 
 router.get('/dashboard', async (_req, res) => {
   try {
-    const [articles, newsCount, reportsPending, resources, contactMessages] = await Promise.all([
+    const now = new Date();
+    const last30 = new Date(now);
+    last30.setDate(last30.getDate() - 30);
+
+    const [articles, newsCount, reportsPending, resources, contactMessages, laws, newsletterSubscriptions] = await Promise.all([
       articleService.count(),
       newsService.count(),
       reportService.countPending(),
       resourceService.count(),
       contactService.count(),
+      prisma.lawReference.count(),
+      prisma.newsletterSubscription.count(),
     ]);
+
+    const [articlesPublished, newsPublished, resourcesPublished, lawsPublished] = await Promise.all([
+      prisma.article.count({ where: { published: true } }),
+      prisma.news.count({ where: { published: true } }),
+      prisma.resource.count({ where: { published: true } }),
+      prisma.lawReference.count({ where: { published: true } }),
+    ]);
+
+    const [
+      reportsTotal,
+      reportsReviewed,
+      reportsForwarded,
+      reportsClosed,
+      reportsCreated30d,
+      contacts30d,
+      newsletter30d,
+      articles30d,
+      news30d,
+    ] = await Promise.all([
+      prisma.report.count(),
+      prisma.report.count({ where: { status: 'reviewed' } }),
+      prisma.report.count({ where: { status: 'forwarded_arptc' } }),
+      prisma.report.count({ where: { status: 'closed' } }),
+      prisma.report.count({ where: { createdAt: { gte: last30 } } }),
+      prisma.contactMessage.count({ where: { createdAt: { gte: last30 } } }),
+      prisma.newsletterSubscription.count({ where: { createdAt: { gte: last30 } } }),
+      prisma.article.count({ where: { createdAt: { gte: last30 } } }),
+      prisma.news.count({ where: { createdAt: { gte: last30 } } }),
+    ]);
+
+    const [recentReports, recentContacts, recentArticles, recentNews] = await Promise.all([
+      prisma.report.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 4,
+        select: { id: true, reference: true, status: true, createdAt: true },
+      }),
+      prisma.contactMessage.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 4,
+        select: { id: true, subject: true, createdAt: true },
+      }),
+      prisma.article.findMany({
+        orderBy: { updatedAt: 'desc' },
+        take: 4,
+        select: { id: true, title: true, updatedAt: true, published: true },
+      }),
+      prisma.news.findMany({
+        orderBy: { updatedAt: 'desc' },
+        take: 4,
+        select: { id: true, title: true, updatedAt: true, published: true },
+      }),
+    ]);
+
+    const recentActivity = [
+      ...recentReports.map((r) => ({
+        id: `report-${r.id}`,
+        type: 'report',
+        label: `Signalement ${r.reference}`,
+        meta: r.status,
+        at: r.createdAt,
+      })),
+      ...recentContacts.map((c) => ({
+        id: `contact-${c.id}`,
+        type: 'contact',
+        label: c.subject || 'Message contact',
+        meta: '',
+        at: c.createdAt,
+      })),
+      ...recentArticles.map((a) => ({
+        id: `article-${a.id}`,
+        type: 'article',
+        label: a.title,
+        meta: a.published ? 'publié' : 'brouillon',
+        at: a.updatedAt,
+      })),
+      ...recentNews.map((n) => ({
+        id: `news-${n.id}`,
+        type: 'news',
+        label: n.title,
+        meta: n.published ? 'publiée' : 'brouillon',
+        at: n.updatedAt,
+      })),
+    ]
+      .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
+      .slice(0, 10);
+
     return res.json({
       counts: {
         articles,
@@ -63,7 +156,30 @@ router.get('/dashboard', async (_req, res) => {
         reportsPending,
         resources,
         contactMessages,
+        laws,
+        newsletterSubscriptions,
+        reportsTotal,
       },
+      publishing: {
+        articles: { published: articlesPublished, draft: Math.max(0, articles - articlesPublished) },
+        news: { published: newsPublished, draft: Math.max(0, newsCount - newsPublished) },
+        resources: { published: resourcesPublished, draft: Math.max(0, resources - resourcesPublished) },
+        laws: { published: lawsPublished, draft: Math.max(0, laws - lawsPublished) },
+      },
+      trends30d: {
+        reports: reportsCreated30d,
+        contacts: contacts30d,
+        newsletter: newsletter30d,
+        articles: articles30d,
+        news: news30d,
+      },
+      reportsByStatus: {
+        pending: reportsPending,
+        reviewed: reportsReviewed,
+        forwarded_arptc: reportsForwarded,
+        closed: reportsClosed,
+      },
+      recentActivity,
     });
   } catch {
     return res.status(500).json({ error: 'Erreur serveur.' });

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { api, fetchCsrf } from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
+import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
 
 export function AdminLaws() {
+  const refreshTick = useAdminRefreshTick()
   const { isAdmin } = useAuth()
   const [items, setItems] = useState([])
   const [form, setForm] = useState({
@@ -17,6 +19,10 @@ export function AdminLaws() {
   useEffect(() => {
     load().catch(() => {})
   }, [])
+
+  useEffect(() => {
+    load().catch(() => {})
+  }, [refreshTick])
 
   async function create(e) {
     e.preventDefault()

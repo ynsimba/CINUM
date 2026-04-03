@@ -36,6 +36,30 @@ async function loginStaff(email, password) {
   return { user };
 }
 
+/**
+ * Change le mot de passe du compte staff connecté après vérification de l'ancien.
+ */
+async function changeStaffPassword(userId, currentPassword, newPassword) {
+  const user = await userService.findById(userId);
+  if (!user) {
+    throw new StaffLoginError('USER_NOT_FOUND', 'Utilisateur introuvable.', 404);
+  }
+  if (!isStaffRole(user.role)) {
+    throw new StaffLoginError(
+      'FORBIDDEN_ROLE',
+      "Ce compte n'a pas accès à l'espace d'administration.",
+      403
+    );
+  }
+  const ok = await bcrypt.compare(currentPassword, user.passwordHash);
+  if (!ok) {
+    throw new StaffLoginError('INVALID_CURRENT_PASSWORD', 'Mot de passe actuel incorrect.', 400);
+  }
+  const nextHash = await bcrypt.hash(newPassword, 12);
+  await userService.updatePasswordHashById(user.id, nextHash);
+  return true;
+}
+
 function assertJwtSecret() {
   const secret = process.env.JWT_SECRET;
   if (!secret || secret.length < 32) {
@@ -73,6 +97,7 @@ function handleStaffLoginError(res, err) {
 module.exports = {
   StaffLoginError,
   loginStaff,
+  changeStaffPassword,
   attachStaffSessionCookie,
   assertJwtSecret,
   handleStaffLoginError,

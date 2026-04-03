@@ -1,9 +1,60 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Seo } from '../../components/Seo'
+import { AdminRefreshProvider } from '../../context/AdminRefreshContext'
+import { useAuth } from '../../context/AuthContext'
 
 const sub = ({ isActive }) => `nav-link ${isActive ? 'active fw-semibold' : 'text-body'}`
+const ADMIN_IDLE_TIMEOUT_MS = 5 * 60 * 1000
 
 export function AdminLayout() {
+  const { user, logoutStaff } = useAuth()
+  const navigate = useNavigate()
+  const loc = useLocation()
+  const timeoutRef = useRef(null)
+  const logoutInProgressRef = useRef(false)
+
+  useEffect(() => {
+    if (!user) return undefined
+
+    const activityEvents = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
+
+    const clearTimer = () => {
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current)
+        timeoutRef.current = null
+      }
+    }
+
+    const onIdle = async () => {
+      if (logoutInProgressRef.current) return
+      logoutInProgressRef.current = true
+      try {
+        await logoutStaff()
+      } catch {
+        // Ignore network errors here: client state is still reset by logoutStaff.
+      } finally {
+        navigate('/connexion', {
+          replace: true,
+          state: { from: { pathname: loc.pathname, search: loc.search, hash: loc.hash } },
+        })
+      }
+    }
+
+    const restartTimer = () => {
+      clearTimer()
+      timeoutRef.current = window.setTimeout(onIdle, ADMIN_IDLE_TIMEOUT_MS)
+    }
+
+    activityEvents.forEach((evt) => window.addEventListener(evt, restartTimer, { passive: true }))
+    restartTimer()
+
+    return () => {
+      clearTimer()
+      activityEvents.forEach((evt) => window.removeEventListener(evt, restartTimer))
+    }
+  }, [user, logoutStaff, navigate, loc.pathname, loc.search, loc.hash])
+
   return (
     <>
       <Seo
@@ -58,13 +109,20 @@ export function AdminLayout() {
                   Messages contact
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className={sub} to="/admin/securite-compte">
+                  Sécurité du compte
+                </NavLink>
+              </li>
             </ul>
           </nav>
         </div>
       </div>
-      <div className="container px-3 px-sm-4 py-3 py-md-4">
-        <Outlet />
-      </div>
+      <AdminRefreshProvider>
+        <div className="container px-3 px-sm-4 py-3 py-md-4">
+          <Outlet />
+        </div>
+      </AdminRefreshProvider>
     </>
   )
 }

@@ -1,6 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const contactService = require('../services/contactService');
+const newsletterService = require('../services/newsletterService');
 
 const router = express.Router();
 
@@ -28,6 +29,24 @@ router.post(
     } catch (e) {
       console.error('[contact]', e);
       return res.status(500).json({ error: 'Enregistrement impossible.' });
+    }
+  }
+);
+
+router.post(
+  '/newsletter',
+  [body('email').isEmail().normalizeEmail()],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    try {
+      await newsletterService.createOrIgnoreByEmail(req.body.email);
+      return res.status(201).json({
+        message: 'Abonnement enregistre. Merci pour votre interet.',
+      });
+    } catch (e) {
+      console.error('[newsletter]', e);
+      return res.status(500).json({ error: 'Abonnement impossible.' });
     }
   }
 );

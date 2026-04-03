@@ -6,6 +6,7 @@ import { Footer } from './Footer'
 import { CookieConsent } from './CookieConsent'
 import { LoginModal } from './LoginModal'
 import { PageLoader } from './PageLoader'
+import { BackToTopButton } from './BackToTopButton'
 
 function focusMainContent() {
   const el = document.getElementById('contenu-principal')
@@ -42,6 +43,7 @@ export function Layout() {
         </Suspense>
       </main>
       {!hidePublicFooter && <Footer />}
+      <BackToTopButton />
       <LoginModal />
       <CookieConsent />
     </>

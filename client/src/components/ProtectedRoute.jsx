@@ -29,7 +29,15 @@ export function ProtectedRoute({ roles = STAFF_ROLES }) {
     )
   }
 
-  if (!user) return <Navigate to="/connexion" state={{ from: loc }} replace />
+  if (!user) {
+    return (
+      <Navigate
+        to="/connexion"
+        state={{ from: { pathname: loc.pathname, search: loc.search, hash: loc.hash } }}
+        replace
+      />
+    )
+  }
 
   if (roles && !roles.includes(user.role)) {
     return <Navigate to="/" replace />

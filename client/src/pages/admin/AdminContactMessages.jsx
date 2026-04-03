@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api, fetchCsrf } from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
+import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
 
 const SORT_OPTIONS = [
   { value: 'created_desc', label: 'Date (récent d’abord)' },
@@ -54,6 +55,7 @@ function formatDate(iso) {
 }
 
 export function AdminContactMessages() {
+  const refreshTick = useAdminRefreshTick()
   const { isAdmin } = useAuth()
   const [items, setItems] = useState([])
   const [err, setErr] = useState(null)
@@ -70,6 +72,10 @@ export function AdminContactMessages() {
   useEffect(() => {
     load()
   }, [])
+
+  useEffect(() => {
+    load()
+  }, [refreshTick])
 
   const filteredItems = useMemo(() => {
     const list = items.filter((row) => matchesSearch(row, searchQuery))

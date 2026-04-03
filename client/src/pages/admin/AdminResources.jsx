@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { api, fetchCsrf } from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
+import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
 
 export function AdminResources() {
+  const refreshTick = useAdminRefreshTick()
   const { isAdmin } = useAuth()
   const [items, setItems] = useState([])
   const [file, setFile] = useState(null)
@@ -14,6 +16,10 @@ export function AdminResources() {
   useEffect(() => {
     load().catch(() => {})
   }, [])
+
+  useEffect(() => {
+    load().catch(() => {})
+  }, [refreshTick])
 
   async function upload(e) {
     e.preventDefault()

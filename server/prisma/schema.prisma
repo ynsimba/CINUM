@@ -130,3 +130,12 @@ model ContactMessage {
 
   @@index([createdAt])
 }
+
+/** Abonnements newsletter (double opt-in externe possible). */
+model NewsletterSubscription {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

@@ -8,4 +8,16 @@ async function findByEmail(email) {
   return prisma.user.findUnique({ where: { email: email.toLowerCase().trim() } });
 }
 
-module.exports = { findById, findByEmail };
+async function updatePasswordHashById(id, passwordHash) {
+  try {
+    return await prisma.user.update({
+      where: { id },
+      data: { passwordHash },
+    });
+  } catch (e) {
+    if (e.code === 'P2025') return null;
+    throw e;
+  }
+}
+
+module.exports = { findById, findByEmail, updatePasswordHashById };

@@ -3,6 +3,7 @@ import { api, fetchCsrf } from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 import { RichTextEditor } from '../../components/RichTextEditor'
 import { stripHtml } from '../../utils/seo'
+import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
 
 const emptyForm = {
   title: '',
@@ -13,6 +14,7 @@ const emptyForm = {
 }
 
 export function AdminArticles() {
+  const refreshTick = useAdminRefreshTick()
   const { isAdmin } = useAuth()
   const [items, setItems] = useState([])
   const [editingId, setEditingId] = useState(null)
@@ -27,6 +29,11 @@ export function AdminArticles() {
   useEffect(() => {
     load().catch(() => {})
   }, [])
+
+  useEffect(() => {
+    if (editingId) return
+    load().catch(() => {})
+  }, [refreshTick, editingId])
 
   function startEdit(a) {
     setEditingId(a._id)

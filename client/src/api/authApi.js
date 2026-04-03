@@ -23,3 +23,9 @@ export async function fetchCurrentUser() {
   const { data } = await api.get('/api/auth/me')
   return data.user
 }
+
+export async function changeStaffPassword(currentPassword, newPassword) {
+  await fetchCsrf()
+  const { data } = await api.post('/api/auth/change-password', { currentPassword, newPassword })
+  return data
+}

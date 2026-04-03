@@ -175,6 +175,17 @@ export function Navbar() {
                     <hr className="dropdown-divider my-2" aria-hidden="true" />
                   </li>
                   <li>
+                    <h6 className="dropdown-header text-uppercase small mb-0">{t('nav.sec_learn')}</h6>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item py-2" to="/espace-educatif" onClick={close}>
+                      {t('nav.education')}
+                    </NavLink>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider my-2" aria-hidden="true" />
+                  </li>
+                  <li>
                     <h6 className="dropdown-header text-uppercase small mb-0">{t('nav.sec_help')}</h6>
                   </li>
                   <li>
@@ -243,17 +254,6 @@ export function Navbar() {
                   <li>
                     <NavLink className="dropdown-item py-2" to="/bonnes-pratiques" onClick={close}>
                       {t('nav.practices')}
-                    </NavLink>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider my-2" aria-hidden="true" />
-                  </li>
-                  <li>
-                    <h6 className="dropdown-header text-uppercase small mb-0">{t('nav.sec_learn')}</h6>
-                  </li>
-                  <li>
-                    <NavLink className="dropdown-item py-2" to="/espace-educatif" onClick={close}>
-                      {t('nav.education')}
                     </NavLink>
                   </li>
                   <li>
