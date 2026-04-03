@@ -640,6 +640,50 @@ a:hover {
   margin-bottom: 1.25rem;
 }
 
+.home-citizen-parent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: stretch;
+}
+
+.home-citizen-media {
+  height: 100%;
+}
+
+.home-citizen-image {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+
+@media (min-width: 992px) {
+  .home-citizen-parent {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.home-citizen-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 0;
+}
+
+.home-citizen-text::before {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .home-citizen-image {
+    height: auto;
+    min-height: 0;
+  }
+}
+
 .home-pillar-link {
   font-size: 0.875rem;
   font-weight: 600;
@@ -717,6 +761,58 @@ a:hover {
 .home-news-band {
   background: #fff;
   border-top: 1px solid rgba(var(--cinum-blue-rgb), 0.1);
+}
+
+.home-partners-band {
+  background: #f9fafb;
+  border-top: 1px solid rgba(var(--cinum-blue-rgb), 0.1);
+}
+
+.home-partners-viewport {
+  overflow: hidden;
+  width: 100%;
+  border: none;
+  background: transparent;
+}
+
+.home-partners-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: home-partners-marquee 26s linear infinite;
+}
+
+.home-partners-viewport:hover .home-partners-track {
+  animation-play-state: paused;
+}
+
+.home-partners-item {
+  flex: 0 0 auto;
+  width: clamp(140px, 18vw, 220px);
+  height: clamp(72px, 9vw, 96px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border-right: none;
+}
+
+.home-partners-logo {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(0.05);
+}
+
+@keyframes home-partners-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* --- Cartes actualités (accueil + liste) — maquette institutionnelle --- */

@@ -7,13 +7,16 @@ import { api } from '../api/client'
 import { ScrollReveal } from '../components/ScrollReveal'
 import { NewsCard } from '../components/NewsCard'
 
-function PillarIcon({ children }) {
-  return (
-    <div className="home-pillar-icon" aria-hidden="true">
-      {children}
-    </div>
-  )
-}
+/** Logos servis depuis `client/public/partners` (ex: `/partners/mon-logo.png`). */
+const PARTNER_LOGOS = [
+  '/partners/logo1.png',
+  '/partners/logo3.png',
+  '/partners/logo4.png',
+  '/partners/logo5.png',
+  '/partners/logo6.png',
+  '/partners/logo7.png',
+  '/partners/logo8.png',
+]
 
 export function Home() {
   const { t } = useTranslation()
@@ -81,56 +84,43 @@ export function Home() {
               </header>
             </ScrollReveal>
 
-            <div className="row g-4">
-              <div className="col-md-6 col-lg-4">
-                <ScrollReveal delay={0} variant="fade-up">
-                <div className="home-pillar home-pillar--rights h-100 d-flex flex-column">
-                  <PillarIcon>
-                    <span className="fw-bold" style={{ fontSize: '0.95rem', letterSpacing: '0.05em' }}>
-                      01
-                    </span>
-                  </PillarIcon>
-                  <h3>{t('home.pillar_rights_title')}</h3>
-                  <p className="flex-grow-1">{t('home.pillar_rights_text')}</p>
-                  <Link to="/droits" className="home-pillar-link mt-auto">
-                    {t('home.pillar_read_more')}
-                  </Link>
+            <ScrollReveal delay={0} variant="fade-up">
+              <div className="home-citizen-parent">
+                <div className="home-citizen-media">
+                  <img
+                    src="/citoyen.PNG"
+                    alt="Parcours citoyen"
+                    className="img-fluid home-citizen-image"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
-                </ScrollReveal>
-              </div>
-              <div className="col-md-4">
-                <ScrollReveal delay={90} variant="fade-up">
-                <div className="home-pillar home-pillar--duties h-100 d-flex flex-column">
-                  <PillarIcon>
-                    <span className="fw-bold" style={{ fontSize: '0.95rem', letterSpacing: '0.05em' }}>
-                      02
-                    </span>
-                  </PillarIcon>
-                  <h3>{t('home.pillar_duties_title')}</h3>
-                  <p className="flex-grow-1">{t('home.pillar_duties_text')}</p>
-                  <Link to="/devoirs" className="home-pillar-link mt-auto">
-                    {t('home.pillar_read_more')}
-                  </Link>
+                <div className="home-pillar home-citizen-text">
+                  <p className="mb-3">
+                    Le Parcours Citoyen Numerique vous accompagne dans le developpement d'une conscience numerique
+                    responsable et eclairee. Dans un monde ou les technologies occupent une place centrale dans nos
+                    vies, il devient essentiel de comprendre comment utiliser Internet de maniere reflechie,
+                    securisee et respectueuse des autres.
+                  </p>
+                  <p className="mb-3">
+                    A travers ce parcours, vous apprendrez a identifier les informations fiables, a developper votre
+                    esprit critique face aux contenus en ligne et a reconnaitre les risques lies a la desinformation.
+                    Vous decouvrirez egalement comment proteger vos donnees personnelles, securiser vos comptes et
+                    adopter de bonnes pratiques pour preserver votre identite numerique.
+                  </p>
+                  <p className="mb-3">
+                    Le programme vous invite aussi a reflechir a la maniere dont nous interagissons sur les
+                    plateformes numeriques. Il encourage des comportements fondes sur le respect, l'ecoute et la
+                    responsabilite, afin de favoriser des echanges constructifs sur les reseaux sociaux et dans les
+                    espaces de discussion en ligne.
+                  </p>
+                  <p className="mb-0">
+                    Grace a ce programme, chaque utilisateur, qu'il soit adolescent ou adulte, decouvre ses droits et
+                    ses devoirs, et apprend a agir de maniere reflechie, ethique et positive dans le monde numerique.
+                  </p>
                 </div>
-                </ScrollReveal>
               </div>
-              <div className="col-md-6 col-lg-4">
-                <ScrollReveal delay={180} variant="fade-up">
-                <div className="home-pillar home-pillar--report h-100 d-flex flex-column">
-                  <PillarIcon>
-                    <span className="fw-bold" style={{ fontSize: '0.95rem', letterSpacing: '0.05em' }}>
-                      03
-                    </span>
-                  </PillarIcon>
-                  <h3>{t('home.pillar_report_title')}</h3>
-                  <p className="flex-grow-1">{t('home.pillar_report_text')}</p>
-                  <Link to="/signalement" className="home-pillar-link mt-auto">
-                    {t('home.pillar_report_cta')}
-                  </Link>
-                </div>
-                </ScrollReveal>
-              </div>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
 
@@ -204,6 +194,37 @@ export function Home() {
                 ))}
               </div>
             )}
+          </div>
+        </section>
+
+        <section className="home-section home-partners-band" aria-labelledby="home-partners-heading">
+          <div className="container px-3 px-sm-4">
+            <ScrollReveal className="mb-3 mb-lg-4" variant="fade-up">
+              <header className="text-center text-lg-start">
+                <h2 id="home-partners-heading" className="home-section-title mb-0">
+                  Partenaires techniques
+                </h2>
+              </header>
+            </ScrollReveal>
+
+            <ScrollReveal variant="fade-up">
+              {PARTNER_LOGOS.length > 0 ? (
+                <div className="home-partners-viewport" aria-label="Defilement des logos partenaires">
+                  <div className="home-partners-track">
+                    {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((src, i) => (
+                      <div key={`${src}-${i}`} className="home-partners-item">
+                        <img src={src} alt="" className="home-partners-logo" loading="lazy" decoding="async" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-muted small mb-0">
+                  Ajoutez des logos dans <code>client/public/partners</code>, puis renseignez leurs chemins dans{' '}
+                  <code>PARTNER_LOGOS</code>.
+                </p>
+              )}
+            </ScrollReveal>
           </div>
         </section>
       </div>
