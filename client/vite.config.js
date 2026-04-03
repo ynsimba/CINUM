@@ -28,6 +28,8 @@ export default defineConfig(({ mode }) => {
     },
   },
   server: {
+    // Évite les 403 « Blocked request. This host is not allowed » (accès par nom de machine, .local, LAN, etc.)
+    allowedHosts: true,
     headers: {
       'Cache-Control': 'no-store',
     },

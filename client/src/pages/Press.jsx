@@ -11,7 +11,7 @@ export function Press() {
       />
       <PageHeader
         title="Espace presse"
-        lead="Communiqués et publications : consultez les actualités du portail. Les coordonnées presse sont à adapter."
+        lead="Communiqués et publications : consultez les actualités du portail."
       />
       <div className="container px-3 px-sm-4 pb-4 pb-md-5">
         <div className="row g-4">
@@ -31,7 +31,7 @@ export function Press() {
           <div className="col-lg-6">
             <div className="card border-0 shadow-sm h-100">
               <div className="card-body">
-                <h2 className="h5">Contact presse (à adapter)</h2>
+                <h2 className="h5">Contact presse</h2>
                 <address className="small not-italic mb-0">
                   <p className="mb-2">
                     <strong>Service de communication</strong>

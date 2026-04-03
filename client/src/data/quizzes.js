@@ -3,7 +3,66 @@
  * correctOptionId doit correspondre à un id d’option pour chaque question.
  */
 
-export const QUIZZES = [
+const VARIANT_LABELS = [
+  'Cas pratique',
+  'Situation',
+  'Mise en contexte',
+  'Application',
+  'Scenario',
+]
+
+function rotateOptions(question, shift) {
+  const options = question.options || []
+  if (options.length === 0) return { options: [], correctOptionId: question.correctOptionId }
+  const n = options.length
+  const normalized = ((shift % n) + n) % n
+  if (normalized === 0) {
+    return { options: options.map((o) => ({ ...o })), correctOptionId: question.correctOptionId }
+  }
+  const rotated = options.map((_, i) => options[(i + normalized) % n]).map((o) => ({ ...o }))
+  const correctIndexBefore = options.findIndex((o) => o.id === question.correctOptionId)
+  const correctIndexAfter = (correctIndexBefore - normalized + n) % n
+  return { options: rotated, correctOptionId: rotated[correctIndexAfter]?.id || question.correctOptionId }
+}
+
+function normalizePrompt(prompt, variantLabel, index) {
+  const clean = String(prompt || '').trim().replace(/\s+/g, ' ')
+  return `${clean} (${variantLabel} ${index})`
+}
+
+/**
+ * Etend une banque de questions jusqu'a targetCount en reutilisant la base
+ * avec permutations d'options + reformulation courte du prompt.
+ */
+function expandQuestionBank(baseQuestions, targetCount, idPrefix) {
+  const source = Array.isArray(baseQuestions) ? baseQuestions : []
+  if (source.length === 0) return []
+  if (source.length >= targetCount) return source.slice(0, targetCount)
+
+  const expanded = source.map((q) => ({
+    ...q,
+    options: (q.options || []).map((o) => ({ ...o })),
+  }))
+
+  let i = 0
+  while (expanded.length < targetCount) {
+    const origin = source[i % source.length]
+    const variantIndex = Math.floor(i / source.length) + 1
+    const variantLabel = VARIANT_LABELS[(variantIndex - 1) % VARIANT_LABELS.length]
+    const rotated = rotateOptions(origin, variantIndex % Math.max(1, (origin.options || []).length))
+    expanded.push({
+      ...origin,
+      id: `${idPrefix}${expanded.length + 1}`,
+      prompt: normalizePrompt(origin.prompt, variantLabel, variantIndex),
+      options: rotated.options,
+      correctOptionId: rotated.correctOptionId,
+    })
+    i += 1
+  }
+  return expanded
+}
+
+const BASE_QUIZZES = [
   {
     id: 'civisme-fondamentaux',
     title: 'Fondamentaux du civisme numérique',
@@ -1541,6 +1600,19 @@ export const QUIZZES = [
     ],
   },
 ]
+
+export const QUIZZES = BASE_QUIZZES.map((quiz) => {
+  let idPrefix = 'q'
+  if (quiz.id === 'signalement-risques') idPrefix = 's'
+  if (quiz.id === 'litteratie-numerique') idPrefix = 'ln'
+
+  return {
+    ...quiz,
+    description:
+      'Banque de 200 questions : chaque session en tire 25 au hasard, avec minuteur (10 min).',
+    questions: expandQuestionBank(quiz.questions, 200, idPrefix),
+  }
+})
 
 export function getQuizById(id) {
   return QUIZZES.find((q) => q.id === id) || null

@@ -87,4 +87,52 @@ async function sendReportEmails({
   }
 }
 
-module.exports = { sendReportEmails, getTransport };
+/**
+ * Informe le plaignant qu’un rendez-vous a été fixé ou modifié (depuis l’admin).
+ */
+async function sendReportAppointmentEmail({ userEmail, reference, appointmentAt, appointmentNote, siteUrl }) {
+  if (!userEmail || !appointmentAt) return;
+  const transport = getTransport();
+  if (!transport) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.warn('[mail] SMTP non configuré — notification de rendez-vous non envoyée.');
+    }
+    return;
+  }
+
+  const base = (siteUrl || process.env.PUBLIC_SITE_URL || '').replace(/\/$/, '');
+  const suiviUrl = base ? `${base}/signalement/suivi` : '/signalement/suivi';
+  const when = new Date(appointmentAt);
+  const dateStr = Number.isNaN(when.getTime())
+    ? String(appointmentAt)
+    : when.toLocaleString('fr-CD', { dateStyle: 'full', timeStyle: 'short' });
+  const noteBlock =
+    appointmentNote && String(appointmentNote).trim()
+      ? ['', 'Précisions :', String(appointmentNote).trim(), '']
+      : [''];
+
+  const text = [
+    'Bonjour,',
+    '',
+    `Concernant votre dossier ${reference}, un rendez-vous a été enregistré :`,
+    '',
+    dateStr,
+    ...noteBlock,
+    `Pour suivre votre dossier : ${suiviUrl}`,
+    '',
+    '— Portail civisme numérique (CINUM)',
+  ].join('\n');
+
+  try {
+    await transport.sendMail({
+      from: fromAddr(),
+      to: userEmail,
+      subject: `[CINUM] Rendez-vous — ${reference}`,
+      text,
+    });
+  } catch (e) {
+    console.error('[mail] Échec notification rendez-vous :', e.message);
+  }
+}
+
+module.exports = { sendReportEmails, sendReportAppointmentEmail, getTransport };

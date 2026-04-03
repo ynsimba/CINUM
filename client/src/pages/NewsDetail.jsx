@@ -2,7 +2,8 @@ import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Seo } from '../components/Seo'
 import { api } from '../api/client'
-import { truncateMeta } from '../utils/seo'
+import { stripHtml, truncateMeta } from '../utils/seo'
+import { SafeHtml } from '../components/SafeHtml'
 
 export function NewsDetail() {
   const { id } = useParams()
@@ -39,7 +40,7 @@ export function NewsDetail() {
     <>
       <Seo
         title={`${n.title} — Civisme numérique RDC`}
-        description={truncateMeta(n.excerpt || n.content)}
+        description={truncateMeta(stripHtml(n.excerpt || n.content))}
         ogType="article"
       />
       <div className="bg-light border-bottom py-3">
@@ -65,7 +66,7 @@ export function NewsDetail() {
             {n.createdAt && new Date(n.createdAt).toLocaleDateString('fr-CD', { dateStyle: 'long' })}
           </p>
         </header>
-        <div style={{ whiteSpace: 'pre-wrap' }}>{n.content}</div>
+        <SafeHtml className="article-body-safe" html={n.content} />
       </article>
     </>
   )

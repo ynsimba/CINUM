@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
+import { isAdminAuthBypass } from '../config/adminFlags'
 import { setLanguage } from '../i18n'
+import { resolveUiLang } from '../utils/uiLang'
 
 const linkClass = ({ isActive }) => `nav-link px-lg-2 ${isActive ? 'active fw-semibold' : ''}`
 
@@ -12,6 +14,7 @@ const portalPaths = [
   '/contact',
   '/confidentialite',
   '/mentions-legales',
+  '/code-du-numerique',
   '/signalement/suivi',
   '/faq',
   '/glossaire',
@@ -29,7 +32,7 @@ const portalPaths = [
 
 export function Navbar() {
   const { t, i18n } = useTranslation()
-  const { user, logout } = useAuth()
+  const { user, logoutStaff } = useAuth()
   const [open, setOpen] = useState(false)
   const location = useLocation()
   const portalActive =
@@ -47,11 +50,12 @@ export function Navbar() {
         id={langId}
         className="form-select form-select-sm"
         style={{ width: 'auto', minWidth: '4.5rem' }}
-        value={i18n.language?.startsWith('ln') ? 'ln' : 'fr'}
+        value={resolveUiLang(i18n)}
         onChange={(e) => setLanguage(e.target.value)}
       >
         <option value="fr">FR</option>
         <option value="ln">LN</option>
+        <option value="en">EN</option>
       </select>
       {user ? (
         <div className="btn-group btn-group-sm">
@@ -62,15 +66,17 @@ export function Navbar() {
             type="button"
             className="btn btn-outline-secondary"
             aria-label={t('a11y.logout')}
-            onClick={() => logout()}
+            onClick={() => logoutStaff()}
           >
-            Déco
+            {t('nav.logout_short')}
           </button>
         </div>
       ) : (
-        <Link className="btn btn-sm btn-primary" to="/connexion" onClick={close}>
-          {t('nav.login')}
-        </Link>
+        isAdminAuthBypass && (
+          <Link className="btn btn-sm btn-outline-primary" to="/admin" onClick={close}>
+            {t('nav.admin')}
+          </Link>
+        )
       )}
     </>
   )
@@ -120,6 +126,7 @@ export function Navbar() {
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
+                  aria-haspopup="menu"
                   aria-label={t('nav.portal_aria')}
                   aria-current={portalActive ? 'true' : undefined}
                   onClick={(e) => e.preventDefault()}
@@ -146,21 +153,26 @@ export function Navbar() {
                   </li>
                   <li>
                     <NavLink className="dropdown-item py-2" to="/confidentialite" onClick={close}>
-                      Confidentialité
+                      {t('home.link_privacy')}
                     </NavLink>
                   </li>
                   <li>
                     <NavLink className="dropdown-item py-2" to="/mentions-legales" onClick={close}>
-                      Mentions légales
+                      {t('home.link_legal')}
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item py-2" to="/code-du-numerique" onClick={close}>
+                      {t('nav.digital_code')}
                     </NavLink>
                   </li>
                   <li>
                     <NavLink className="dropdown-item py-2" to="/signalement/suivi" onClick={close}>
-                      Suivi d’un signalement
+                      {t('home.track_report')}
                     </NavLink>
                   </li>
                   <li>
-                    <hr className="dropdown-divider my-2" />
+                    <hr className="dropdown-divider my-2" aria-hidden="true" />
                   </li>
                   <li>
                     <h6 className="dropdown-header text-uppercase small mb-0">{t('nav.sec_help')}</h6>
@@ -181,7 +193,7 @@ export function Navbar() {
                     </NavLink>
                   </li>
                   <li>
-                    <hr className="dropdown-divider my-2" />
+                    <hr className="dropdown-divider my-2" aria-hidden="true" />
                   </li>
                   <li>
                     <h6 className="dropdown-header text-uppercase small mb-0">{t('nav.sec_media')}</h6>
@@ -197,7 +209,7 @@ export function Navbar() {
                     </NavLink>
                   </li>
                   <li>
-                    <hr className="dropdown-divider my-2" />
+                    <hr className="dropdown-divider my-2" aria-hidden="true" />
                   </li>
                   <li>
                     <h6 className="dropdown-header text-uppercase small mb-0">{t('nav.sec_rights')}</h6>
@@ -213,7 +225,7 @@ export function Navbar() {
                     </NavLink>
                   </li>
                   <li>
-                    <hr className="dropdown-divider my-2" />
+                    <hr className="dropdown-divider my-2" aria-hidden="true" />
                   </li>
                   <li>
                     <h6 className="dropdown-header text-uppercase small mb-0">{t('nav.sec_risk')}</h6>
@@ -234,7 +246,7 @@ export function Navbar() {
                     </NavLink>
                   </li>
                   <li>
-                    <hr className="dropdown-divider my-2" />
+                    <hr className="dropdown-divider my-2" aria-hidden="true" />
                   </li>
                   <li>
                     <h6 className="dropdown-header text-uppercase small mb-0">{t('nav.sec_learn')}</h6>
@@ -245,7 +257,7 @@ export function Navbar() {
                     </NavLink>
                   </li>
                   <li>
-                    <hr className="dropdown-divider my-2" />
+                    <hr className="dropdown-divider my-2" aria-hidden="true" />
                   </li>
                   <li>
                     <h6 className="dropdown-header text-uppercase small mb-0">{t('nav.sec_news')}</h6>

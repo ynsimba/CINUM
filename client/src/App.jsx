@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { DocumentLang } from './components/DocumentLang'
@@ -6,18 +5,16 @@ import { ScrollToTop } from './components/ScrollToTop'
 import { Layout } from './components/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { ErrorBoundary } from './components/ErrorBoundary'
-import { PageLoader } from './components/PageLoader'
 import * as Pages from './routes/lazyPages'
 
 export default function App() {
   return (
-    <ErrorBoundary>
-      <AuthProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <ErrorBoundary>
+        <AuthProvider>
           <DocumentLang />
           <ScrollToTop />
           <div className="d-flex flex-column min-vh-100">
-            <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route element={<Layout />}>
                   <Route path="/connexion" element={<Pages.LoginModalPage />} />
@@ -36,6 +33,7 @@ export default function App() {
                   <Route path="/signalement" element={<Pages.Report />} />
                   <Route path="/confidentialite" element={<Pages.PrivacyPolicy />} />
                   <Route path="/mentions-legales" element={<Pages.LegalNotice />} />
+                  <Route path="/code-du-numerique" element={<Pages.DigitalCode />} />
                   <Route path="/faq" element={<Pages.Faq />} />
                   <Route path="/glossaire" element={<Pages.Glossary />} />
                   <Route path="/presse" element={<Pages.Press />} />
@@ -43,7 +41,7 @@ export default function App() {
                   <Route path="/actualites" element={<Pages.NewsList />} />
                   <Route path="/actualites/:id" element={<Pages.NewsDetail />} />
                   <Route path="/contact" element={<Pages.Contact />} />
-                  <Route element={<ProtectedRoute roles={['admin', 'moderator']} />}>
+                  <Route element={<ProtectedRoute />}>
                     <Route path="admin" element={<Pages.AdminLayout />}>
                       <Route index element={<Pages.AdminDashboard />} />
                       <Route path="articles" element={<Pages.AdminArticles />} />
@@ -51,15 +49,15 @@ export default function App() {
                       <Route path="signalements" element={<Pages.AdminReports />} />
                       <Route path="ressources" element={<Pages.AdminResources />} />
                       <Route path="lois" element={<Pages.AdminLaws />} />
+                      <Route path="messages-contact" element={<Pages.AdminContactMessages />} />
                     </Route>
                   </Route>
                 </Route>
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
-            </Suspense>
           </div>
-        </BrowserRouter>
-      </AuthProvider>
-    </ErrorBoundary>
+        </AuthProvider>
+      </ErrorBoundary>
+    </BrowserRouter>
   )
 }

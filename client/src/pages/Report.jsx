@@ -6,7 +6,7 @@ import { PageHeader } from '../components/PageHeader'
 import { api, fetchCsrf } from '../api/client'
 import { PHONE_COUNTRIES } from '../data/phoneCountries'
 
-const TYPES = [
+const ABUSE_TYPES = [
   { value: 'cyberharcelement', label: 'Cyberharcèlement' },
   { value: 'desinformation', label: 'Désinformation' },
   { value: 'fraude', label: 'Fraude numérique' },
@@ -14,16 +14,47 @@ const TYPES = [
   { value: 'autre', label: 'Autre' },
 ]
 
+const IDENTITY_DOC_TYPES = [
+  { value: 'carte_electeur', label: "Carte d'électeur" },
+  { value: 'passeport', label: 'Passeport' },
+  { value: 'permis_conduire', label: 'Permis de conduire' },
+]
+
+const MARITAL_OPTIONS = [
+  'Célibataire',
+  'Marié(e)',
+  'Divorcé(e)',
+  'Veuf / Veuve',
+  'Union libre',
+  'Autre',
+]
+
+const emptyIdentity = () => ({
+  lastName: '',
+  postName: '',
+  firstName: '',
+  birthPlace: '',
+  birthDate: '',
+  maritalStatus: '',
+  address: '',
+  contactEmail: '',
+  phoneCountryIso: 'CD',
+  phoneNational: '',
+  identityDocType: 'carte_electeur',
+})
+
+const emptyComplaint = () => ({
+  abuseType: 'cyberharcelement',
+  description: '',
+})
+
 export function Report() {
   const errRef = useRef(null)
-  const [form, setForm] = useState({
-    abuseType: 'cyberharcelement',
-    description: '',
-    contactEmail: '',
-    phoneCountryIso: 'CD',
-    phoneNational: '',
-  })
-  const [files, setFiles] = useState([])
+  const identityFileRef = useRef(null)
+  const [step, setStep] = useState(1)
+  const [identity, setIdentity] = useState(emptyIdentity)
+  const [identityFile, setIdentityFile] = useState(null)
+  const [complaint, setComplaint] = useState(emptyComplaint)
   const [msg, setMsg] = useState(null)
   const [credentials, setCredentials] = useState(null)
   const [err, setErr] = useState(null)
@@ -37,18 +68,54 @@ export function Report() {
     if (err && errRef.current) errRef.current.focus()
   }, [err])
 
+  function validateStep1() {
+    if (!identity.lastName.trim()) return 'Indiquez votre nom.'
+    if (!identity.postName.trim()) return 'Indiquez votre postnom (ou « N/A »).'
+    if (!identity.firstName.trim()) return 'Indiquez votre prénom.'
+    if (!identity.birthPlace.trim()) return 'Indiquez votre lieu de naissance.'
+    if (!identity.birthDate) return 'Indiquez votre date de naissance.'
+    if (!identity.maritalStatus) return 'Choisissez votre état civil.'
+    if (!identity.address.trim() || identity.address.trim().length < 5) return 'Indiquez votre adresse complète.'
+    if (!identity.contactEmail.trim()) return 'Indiquez votre adresse e-mail.'
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identity.contactEmail.trim())
+    if (!emailOk) return 'Adresse e-mail invalide.'
+    const parsed = parsePhoneNumberFromString(identity.phoneNational.trim(), identity.phoneCountryIso)
+    if (!parsed || !parsed.isValid()) return 'Numéro de téléphone invalide pour le pays sélectionné.'
+    if (!identityFile) return 'Téléversez une copie de votre pièce d’identité.'
+    return null
+  }
+
+  function goStep2(e) {
+    e.preventDefault()
+    setErr(null)
+    const v = validateStep1()
+    if (v) {
+      setErr(v)
+      return
+    }
+    setStep(2)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   async function onSubmit(e) {
     e.preventDefault()
     setMsg(null)
     setErr(null)
-    if (files.length === 0) {
-      setErr('Veuillez joindre au moins un fichier.')
+    const v1 = validateStep1()
+    if (v1) {
+      setErr(v1)
+      setStep(1)
       return
     }
-    const parsed = parsePhoneNumberFromString(
-      form.phoneNational.trim(),
-      form.phoneCountryIso
-    )
+    if (complaint.description.trim().length < 20) {
+      setErr('La description doit contenir au moins 20 caractères.')
+      return
+    }
+    if (complaint.description.length > 600) {
+      setErr('La description ne doit pas dépasser 600 caractères.')
+      return
+    }
+    const parsed = parsePhoneNumberFromString(identity.phoneNational.trim(), identity.phoneCountryIso)
     if (!parsed || !parsed.isValid()) {
       setErr('Numéro de téléphone invalide pour le pays sélectionné.')
       return
@@ -57,11 +124,19 @@ export function Report() {
     try {
       await fetchCsrf()
       const fd = new FormData()
-      fd.append('abuseType', form.abuseType)
-      fd.append('description', form.description)
-      fd.append('contactEmail', form.contactEmail)
+      fd.append('lastName', identity.lastName.trim())
+      fd.append('postName', identity.postName.trim())
+      fd.append('firstName', identity.firstName.trim())
+      fd.append('birthPlace', identity.birthPlace.trim())
+      fd.append('birthDate', identity.birthDate)
+      fd.append('maritalStatus', identity.maritalStatus)
+      fd.append('address', identity.address.trim())
+      fd.append('identityDocType', identity.identityDocType)
+      fd.append('contactEmail', identity.contactEmail.trim())
       fd.append('contactPhone', parsed.format('E.164'))
-      files.forEach((f) => fd.append('attachments', f))
+      fd.append('abuseType', complaint.abuseType)
+      fd.append('description', complaint.description.trim())
+      fd.append('identityDocument', identityFile)
       const { data } = await api.post('/api/reports', fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
@@ -69,16 +144,17 @@ export function Report() {
       if (data.reference && data.accessSecret) {
         setCredentials({ reference: data.reference, accessSecret: data.accessSecret })
       }
-      setForm({
-        abuseType: 'cyberharcelement',
-        description: '',
-        contactEmail: '',
-        phoneCountryIso: 'CD',
-        phoneNational: '',
-      })
-      setFiles([])
+      setIdentity(emptyIdentity())
+      setComplaint(emptyComplaint())
+      setIdentityFile(null)
+      if (identityFileRef.current) identityFileRef.current.value = ''
     } catch (ex) {
-      setErr(ex.response?.data?.error || ex.response?.data?.errors?.[0]?.msg || 'Envoi impossible.')
+      const raw = ex.response?.data?.errors
+      if (Array.isArray(raw) && raw.length > 0) {
+        setErr(raw.map((x) => x.msg || x.message).filter(Boolean).join(' ') || 'Envoi impossible.')
+      } else {
+        setErr(ex.response?.data?.error || 'Envoi impossible.')
+      }
     } finally {
       setLoading(false)
     }
@@ -88,181 +164,356 @@ export function Report() {
     <>
       <Seo
         title="Signalement — Civisme numérique RDC"
-        description="Formulaire sécurisé pour signaler un abus en ligne (description, coordonnées, pièces jointes). Traitement réservé au personnel habilité ; orientation possible vers l’ARPTC."
+        description="Signalement d’abus : identité du plaignant, pièce d’identité, puis description des faits. Traitement réservé au personnel habilité."
       />
       <PageHeader
         title="Signalement d’abus"
-        lead="Formulaire sécurisé. Les signalements peuvent également être portés auprès de l’ARPTC selon ses modalités officielles."
+        lead="Identité complète et copie de pièce d’identité, puis description des faits. Les signalements peuvent aussi être portés auprès de l’ARPTC selon ses modalités officielles."
       />
       <div className="container px-3 px-sm-4 pb-4 pb-md-5">
         <div className="row g-4">
           <div className="col-lg-7">
             <div className="card border-0 shadow-sm">
               <div className="card-body">
-                <form onSubmit={onSubmit} noValidate>
-                  <p id="report-form-desc" className="small text-muted mb-3">
-                    Tous les champs sont obligatoires.
-                  </p>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="abuseType">
-                      Type d&apos;abus
-                    </label>
-                    <select
-                      id="abuseType"
-                      name="abuseType"
-                      className="form-select"
-                      value={form.abuseType}
-                      onChange={(e) => setForm({ ...form, abuseType: e.target.value })}
-                      required
-                    >
-                      {TYPES.map((t) => (
-                        <option key={t.value} value={t.value}>
-                          {t.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="description">
-                      Description détaillée (20 caractères minimum, 600 maximum)
-                    </label>
-                    <textarea
-                      id="description"
-                      name="description"
-                      className="form-control"
-                      rows={6}
-                      value={form.description}
-                      onChange={(e) => setForm({ ...form, description: e.target.value })}
-                      required
-                      minLength={20}
-                      maxLength={600}
-                      aria-describedby="description-help"
-                    />
-                    <p id="description-help" className="form-text small text-muted">
-                      {form.description.length} / 600 caractères
+                <ol className="d-flex gap-3 small text-muted mb-4 list-unstyled flex-wrap">
+                  <li className={step === 1 ? 'fw-semibold text-body' : ''}>
+                    <span className="badge bg-primary rounded-pill me-1">1</span>
+                    Identité & pièce d’identité
+                  </li>
+                  <li className={step === 2 ? 'fw-semibold text-body' : ''}>
+                    <span className="badge bg-primary rounded-pill me-1">2</span>
+                    Signalement
+                  </li>
+                </ol>
+
+                {step === 1 && (
+                  <form onSubmit={goStep2} noValidate>
+                    <p className="small text-muted mb-3">
+                      Renseignez votre identité telle qu’elle figure sur votre pièce officielle. Tous les champs sont
+                      obligatoires.
                     </p>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="contactEmail">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="contactEmail"
-                      name="contactEmail"
-                      className="form-control"
-                      autoComplete="email"
-                      required
-                      value={form.contactEmail}
-                      onChange={(e) => setForm({ ...form, contactEmail: e.target.value })}
-                    />
-                  </div>
-                  <fieldset className="mb-3">
-                    <legend className="form-label mb-2">Téléphone</legend>
-                    <div className="row g-2">
-                      <div className="col-md-5">
-                        <label className="form-label small text-muted" htmlFor="phoneCountry">
-                          Indicatif pays
-                        </label>
-                        <select
-                          id="phoneCountry"
-                          name="phoneCountry"
-                          className="form-select"
-                          required
-                          value={form.phoneCountryIso}
-                          onChange={(e) =>
-                            setForm({ ...form, phoneCountryIso: e.target.value })
-                          }
-                          aria-describedby="phone-help"
-                        >
-                          {PHONE_COUNTRIES.map((c) => (
-                            <option key={c.iso} value={c.iso}>
-                              {c.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="col-md-7">
-                        <label className="form-label small text-muted" htmlFor="phoneNational">
-                          Numéro (national)
+                    <div className="row g-2 mb-3">
+                      <div className="col-md-4">
+                        <label className="form-label" htmlFor="lastName">
+                          Nom
                         </label>
                         <input
-                          type="tel"
-                          id="phoneNational"
-                          name="phoneNational"
+                          id="lastName"
                           className="form-control"
-                          autoComplete="tel-national"
-                          inputMode="tel"
-                          placeholder="Ex. 81 234 5678"
                           required
-                          value={form.phoneNational}
-                          onChange={(e) =>
-                            setForm({ ...form, phoneNational: e.target.value })
-                          }
+                          value={identity.lastName}
+                          onChange={(e) => setIdentity({ ...identity, lastName: e.target.value })}
+                          autoComplete="family-name"
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label" htmlFor="postName">
+                          Postnom
+                        </label>
+                        <input
+                          id="postName"
+                          className="form-control"
+                          required
+                          placeholder="N/A si sans objet"
+                          value={identity.postName}
+                          onChange={(e) => setIdentity({ ...identity, postName: e.target.value })}
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label" htmlFor="firstName">
+                          Prénom
+                        </label>
+                        <input
+                          id="firstName"
+                          className="form-control"
+                          required
+                          value={identity.firstName}
+                          onChange={(e) => setIdentity({ ...identity, firstName: e.target.value })}
+                          autoComplete="given-name"
                         />
                       </div>
                     </div>
-                    <p id="phone-help" className="form-text small text-muted mb-0">
-                      Choisissez le pays puis saisissez votre numéro local (sans répéter l&apos;indicatif).
-                    </p>
-                  </fieldset>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="attachments">
-                      Pièces jointes (PDF, images, max 5 fichiers, 5 Mo chacun)
-                    </label>
-                    <input
-                      id="attachments"
-                      type="file"
-                      className="form-control"
-                      multiple
-                      required
-                      accept=".pdf,image/*,.doc,.docx"
-                      onChange={(e) => setFiles(Array.from(e.target.files || []))}
-                    />
-                  </div>
-                  {msg && (
-                    <div className="alert alert-success" role="status">
-                      <p className="mb-2">{msg}</p>
-                      {credentials && (
-                        <div className="border-top border-dark border-opacity-10 pt-3 mt-2">
-                          <p className="small fw-semibold mb-2">
-                            Conservez ces éléments : ils ne seront plus affichés ensuite.
-                          </p>
-                          <dl className="row small mb-2">
-                            <dt className="col-sm-3">Référence</dt>
-                            <dd className="col-sm-9 font-monospace mb-1">{credentials.reference}</dd>
-                            <dt className="col-sm-3">Code secret</dt>
-                            <dd className="col-sm-9 font-monospace mb-0 text-break">
-                              {credentials.accessSecret}
-                            </dd>
-                          </dl>
-                          <p className="small mb-0">
-                            <Link to="/signalement/suivi">Consulter l’état du dossier</Link>
-                          </p>
+                    <div className="row g-2 mb-3">
+                      <div className="col-md-6">
+                        <label className="form-label" htmlFor="birthPlace">
+                          Lieu de naissance
+                        </label>
+                        <input
+                          id="birthPlace"
+                          className="form-control"
+                          required
+                          value={identity.birthPlace}
+                          onChange={(e) => setIdentity({ ...identity, birthPlace: e.target.value })}
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label" htmlFor="birthDate">
+                          Date de naissance
+                        </label>
+                        <input
+                          id="birthDate"
+                          type="date"
+                          className="form-control"
+                          required
+                          value={identity.birthDate}
+                          onChange={(e) => setIdentity({ ...identity, birthDate: e.target.value })}
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="maritalStatus">
+                        État civil
+                      </label>
+                      <select
+                        id="maritalStatus"
+                        className="form-select"
+                        required
+                        value={identity.maritalStatus}
+                        onChange={(e) => setIdentity({ ...identity, maritalStatus: e.target.value })}
+                      >
+                        <option value="" disabled>
+                          Choisir…
+                        </option>
+                        {MARITAL_OPTIONS.map((m) => (
+                          <option key={m} value={m}>
+                            {m}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="address">
+                        Adresse complète
+                      </label>
+                      <textarea
+                        id="address"
+                        className="form-control"
+                        rows={3}
+                        required
+                        minLength={5}
+                        value={identity.address}
+                        onChange={(e) => setIdentity({ ...identity, address: e.target.value })}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="contactEmail">
+                        E-mail
+                      </label>
+                      <input
+                        type="email"
+                        id="contactEmail"
+                        className="form-control"
+                        autoComplete="email"
+                        required
+                        value={identity.contactEmail}
+                        onChange={(e) => setIdentity({ ...identity, contactEmail: e.target.value })}
+                      />
+                    </div>
+                    <fieldset className="mb-3">
+                      <legend className="form-label mb-2">Téléphone</legend>
+                      <div className="row g-2">
+                        <div className="col-md-5">
+                          <label className="form-label small text-muted" htmlFor="phoneCountry">
+                            Indicatif pays
+                          </label>
+                          <select
+                            id="phoneCountry"
+                            className="form-select"
+                            required
+                            value={identity.phoneCountryIso}
+                            onChange={(e) => setIdentity({ ...identity, phoneCountryIso: e.target.value })}
+                          >
+                            {PHONE_COUNTRIES.map((c) => (
+                              <option key={c.iso} value={c.iso}>
+                                {c.label}
+                              </option>
+                            ))}
+                          </select>
                         </div>
-                      )}
+                        <div className="col-md-7">
+                          <label className="form-label small text-muted" htmlFor="phoneNational">
+                            Numéro (national)
+                          </label>
+                          <input
+                            type="tel"
+                            id="phoneNational"
+                            className="form-control"
+                            autoComplete="tel-national"
+                            inputMode="tel"
+                            placeholder="Ex. 81 234 5678"
+                            required
+                            value={identity.phoneNational}
+                            onChange={(e) => setIdentity({ ...identity, phoneNational: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                    </fieldset>
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="identityDocType">
+                        Type de pièce d’identité
+                      </label>
+                      <select
+                        id="identityDocType"
+                        className="form-select"
+                        required
+                        value={identity.identityDocType}
+                        onChange={(e) => setIdentity({ ...identity, identityDocType: e.target.value })}
+                      >
+                        {IDENTITY_DOC_TYPES.map((t) => (
+                          <option key={t.value} value={t.value}>
+                            {t.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                  )}
-                  {err && (
-                    <div
-                      ref={errRef}
-                      id="report-form-error"
-                      tabIndex={-1}
-                      className="alert alert-danger"
-                      role="alert"
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="identityDocument">
+                        Copie de la pièce d’identité (PDF, image, max 5 Mo)
+                      </label>
+                      <input
+                        ref={identityFileRef}
+                        id="identityDocument"
+                        type="file"
+                        className="form-control"
+                        required
+                        accept=".pdf,image/*,.doc,.docx"
+                        onChange={(e) => setIdentityFile(e.target.files?.[0] || null)}
+                      />
+                    </div>
+                    {err && step === 1 && (
+                      <div
+                        ref={errRef}
+                        tabIndex={-1}
+                        className="alert alert-danger"
+                        role="alert"
+                      >
+                        {err}
+                      </div>
+                    )}
+                    <button type="submit" className="btn btn-primary">
+                      Continuer vers le signalement
+                    </button>
+                  </form>
+                )}
+
+                {step === 2 && !msg && (
+                  <form onSubmit={onSubmit} noValidate>
+                    <p className="small text-muted mb-3">
+                      Décrivez les faits signalés (20 à 600 caractères). Vous pouvez revenir à l’étape précédente pour
+                      corriger votre identité.
+                    </p>
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="abuseType">
+                        Type d’abus
+                      </label>
+                      <select
+                        id="abuseType"
+                        name="abuseType"
+                        className="form-select"
+                        value={complaint.abuseType}
+                        onChange={(e) => setComplaint({ ...complaint, abuseType: e.target.value })}
+                        required
+                      >
+                        {ABUSE_TYPES.map((t) => (
+                          <option key={t.value} value={t.value}>
+                            {t.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="description">
+                        Description du signalement (20 à 600 caractères)
+                      </label>
+                      <textarea
+                        id="description"
+                        name="description"
+                        className="form-control"
+                        rows={6}
+                        value={complaint.description}
+                        onChange={(e) => setComplaint({ ...complaint, description: e.target.value })}
+                        required
+                        minLength={20}
+                        maxLength={600}
+                        aria-describedby="description-help"
+                      />
+                      <p id="description-help" className="form-text small text-muted">
+                        {complaint.description.length} / 600 caractères
+                      </p>
+                    </div>
+                    {err && step === 2 && (
+                      <div
+                        ref={errRef}
+                        id="report-form-error"
+                        tabIndex={-1}
+                        className="alert alert-danger"
+                        role="alert"
+                      >
+                        {err}
+                      </div>
+                    )}
+                    <div className="d-flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        disabled={loading}
+                        onClick={() => {
+                          setErr(null)
+                          setStep(1)
+                          window.scrollTo({ top: 0, behavior: 'smooth' })
+                        }}
+                      >
+                        ← Retour identité
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={loading}
+                        aria-busy={loading}
+                      >
+                        {loading ? 'Envoi…' : 'Envoyer le signalement'}
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {step === 2 && msg && (
+                  <div className="alert alert-success" role="status">
+                    <p className="mb-2">{msg}</p>
+                    {credentials && (
+                      <div className="border-top border-dark border-opacity-10 pt-3 mt-2">
+                        <p className="small fw-semibold mb-2">
+                          Conservez ces éléments : ils ne seront plus affichés ensuite.
+                        </p>
+                        <dl className="row small mb-2">
+                          <dt className="col-sm-3">Référence</dt>
+                          <dd className="col-sm-9 font-monospace mb-1">{credentials.reference}</dd>
+                          <dt className="col-sm-3">Code secret</dt>
+                          <dd className="col-sm-9 font-monospace mb-0 text-break">{credentials.accessSecret}</dd>
+                        </dl>
+                        <p className="small mb-0">
+                          <Link to="/signalement/suivi">Consulter l’état du dossier</Link>
+                        </p>
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary btn-sm mt-3"
+                      onClick={() => {
+                        setMsg(null)
+                        setCredentials(null)
+                        setErr(null)
+                        setIdentity(emptyIdentity())
+                        setIdentityFile(null)
+                        if (identityFileRef.current) identityFileRef.current.value = ''
+                        setComplaint(emptyComplaint())
+                        setStep(1)
+                      }}
                     >
-                      {err}
-                    </div>
-                  )}
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    disabled={loading}
-                    aria-busy={loading}
-                  >
-                    {loading ? 'Envoi…' : 'Envoyer le signalement'}
-                  </button>
-                </form>
+                      Nouveau signalement
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -1,18 +1,20 @@
 import { Seo } from '../components/Seo'
 import { Link } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { PageHeader } from '../components/PageHeader'
 import { api } from '../api/client'
 import { QUIZZES } from '../data/quizzes'
 import { loadQuizState, scoreOutOf20 } from '../utils/quizStorage'
 
 function QuizProgressBadge({ quizId, totalQuestions }) {
+  const { t } = useTranslation()
   const snap = useMemo(() => loadQuizState(quizId), [quizId])
   if (snap?.finishedAt && snap.lastScore != null && snap.lastMax) {
     const cote = scoreOutOf20(snap.lastScore, snap.lastMax)
     return (
       <span className="badge bg-success-subtle text-success border border-success-subtle">
-        Dernière cote : {cote} / 20
+        {t('education.progress_last', { score: cote })}
       </span>
     )
   }
@@ -21,16 +23,18 @@ function QuizProgressBadge({ quizId, totalQuestions }) {
     const pct = Math.round((answered / totalQuestions) * 100)
     return (
       <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
-        En cours — {pct} % complété
+        {t('education.progress_ongoing', { pct })}
       </span>
     )
   }
   return (
-    <span className="badge bg-light text-muted border">Pas encore commencé</span>
+    <span className="badge bg-light text-muted border">{t('education.progress_not_started')}</span>
   )
 }
 
 export function Education() {
+  const { t } = useTranslation()
+  const [activeTab, setActiveTab] = useState('articles')
   const [articles, setArticles] = useState([])
   const [resources, setResources] = useState([])
   const [laws, setLaws] = useState([])
@@ -49,68 +53,105 @@ export function Education() {
 
   return (
     <>
-      <Seo
-        title="Espace éducatif — Civisme numérique RDC"
-        description="Quiz QCM, articles, guides et références juridiques pour comprendre le civisme numérique en RDC et suivre votre progression."
-      />
-      <PageHeader
-        title="Espace éducatif"
-        lead="Quiz à choix multiples, articles, guides et références juridiques à vocation pédagogique."
-      />
+      <Seo title={t('education.seo_title')} description={t('education.seo_description')} />
+      <PageHeader title={t('education.title')} lead={t('education.lead')} />
       <div className="container px-3 px-sm-4 pb-4 pb-md-5">
-        <section className="mb-5" aria-labelledby="edu-quiz-heading">
-          <h2 id="edu-quiz-heading" className="h5 mb-2">
-            Quiz (QCM)
-          </h2>
-          <p className="text-muted small mb-3">
-            Répondez aux questions ; votre progression est enregistrée sur cet appareil. À la fin, une{' '}
-            <strong>cote sur 20</strong> est calculée automatiquement.
-          </p>
-          <div className="row g-3">
-            {QUIZZES.map((qz) => {
-              const st = loadQuizState(qz.id)
-              return (
-                <div key={qz.id} className="col-md-6">
-                  <div className="card border shadow-sm h-100">
-                    <div className="card-body d-flex flex-column">
-                      <h3 className="h6">{qz.title}</h3>
-                      <p className="small text-muted flex-grow-1">{qz.description}</p>
-                      <div className="d-flex flex-wrap align-items-center gap-2 mb-3">
-                        <QuizProgressBadge
-                          quizId={qz.id}
-                          totalQuestions={qz.questionsPerSession ?? qz.questions.length}
-                        />
-                      </div>
-                      <Link className="btn btn-primary btn-sm align-self-start" to={`/espace-educatif/quiz/${qz.id}`}>
-                        {st?.finishedAt ? 'Revoir le résultat / refaire' : 'Commencer le quiz'}
-                      </Link>
+        <div className="mb-5">
+          <ul className="nav nav-tabs flex-nowrap border-bottom" role="tablist">
+            <li className="nav-item" role="presentation">
+              <button
+                type="button"
+                className={`nav-link ${activeTab === 'articles' ? 'active' : ''}`}
+                id="edu-tab-articles"
+                role="tab"
+                aria-selected={activeTab === 'articles'}
+                aria-controls="edu-panel-articles"
+                onClick={() => setActiveTab('articles')}
+              >
+                {t('education.articles_heading')}
+              </button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button
+                type="button"
+                className={`nav-link ${activeTab === 'quiz' ? 'active' : ''}`}
+                id="edu-tab-quiz"
+                role="tab"
+                aria-selected={activeTab === 'quiz'}
+                aria-controls="edu-panel-quiz"
+                onClick={() => setActiveTab('quiz')}
+              >
+                {t('education.quiz_heading')}
+              </button>
+            </li>
+          </ul>
+
+          <div
+            id="edu-panel-articles"
+            role="tabpanel"
+            aria-labelledby="edu-tab-articles"
+            className="pt-4"
+            hidden={activeTab !== 'articles'}
+          >
+            <div className="row g-3">
+              {articles.length === 0 && <p className="text-muted small">{t('education.no_articles')}</p>}
+              {articles.map((a) => (
+                <div key={a._id} className="col-md-6">
+                  <div className="card border-0 shadow-sm h-100">
+                    <div className="card-body">
+                      <h3 className="h6">{a.title}</h3>
+                      <p className="small text-muted mb-2">{a.excerpt}</p>
+                      <Link to={`/article/${a.slug}`}>{t('education.read_article')}</Link>
                     </div>
                   </div>
                 </div>
-              )
-            })}
-          </div>
-        </section>
-
-        <h2 className="h5">Articles</h2>
-        <div className="row g-3 mb-4">
-          {articles.length === 0 && <p className="text-muted small">Aucun article publié pour le moment.</p>}
-          {articles.map((a) => (
-            <div key={a._id} className="col-md-6">
-              <div className="card border-0 shadow-sm h-100">
-                <div className="card-body">
-                  <h3 className="h6">{a.title}</h3>
-                  <p className="small text-muted mb-2">{a.excerpt}</p>
-                  <Link to={`/article/${a.slug}`}>Lire l&apos;article</Link>
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <div
+            id="edu-panel-quiz"
+            role="tabpanel"
+            aria-labelledby="edu-tab-quiz"
+            className="pt-4"
+            hidden={activeTab !== 'quiz'}
+          >
+            <p className="text-muted small mb-3">
+              {t('education.quiz_intro_part1')}{' '}
+              <strong>{t('education.quiz_intro_strong')}</strong> {t('education.quiz_intro_part2')}
+            </p>
+            <div className="row g-3">
+              {QUIZZES.map((qz) => {
+                const st = loadQuizState(qz.id)
+                const title = t(`quiz_meta.${qz.id}.title`, { defaultValue: qz.title })
+                const description = t(`quiz_meta.${qz.id}.description`, { defaultValue: qz.description })
+                return (
+                  <div key={qz.id} className="col-md-6">
+                    <div className="card border shadow-sm h-100">
+                      <div className="card-body d-flex flex-column">
+                        <h3 className="h6">{title}</h3>
+                        <p className="small text-muted flex-grow-1">{description}</p>
+                        <div className="d-flex flex-wrap align-items-center gap-2 mb-3">
+                          <QuizProgressBadge
+                            quizId={qz.id}
+                            totalQuestions={qz.questionsPerSession ?? qz.questions.length}
+                          />
+                        </div>
+                        <Link className="btn btn-primary btn-sm align-self-start" to={`/espace-educatif/quiz/${qz.id}`}>
+                          {st?.finishedAt ? t('education.quiz_again') : t('education.quiz_start')}
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
         </div>
 
-        <h2 className="h5">Références légales (extraits)</h2>
+        <h2 className="h5">{t('education.laws_heading')}</h2>
         <ul className="mb-4">
-          {laws.length === 0 && <li className="text-muted small">Aucune référence chargée.</li>}
+          {laws.length === 0 && <li className="text-muted small">{t('education.no_laws')}</li>}
           {laws.map((lw) => (
             <li key={lw._id}>
               <strong>{lw.reference}</strong> — {lw.title}. {lw.summary}
@@ -118,7 +159,7 @@ export function Education() {
                 <>
                   {' '}
                   <a href={lw.fullTextUrl} target="_blank" rel="noopener noreferrer">
-                    Lien externe
+                    {t('education.external_link')}
                   </a>
                 </>
               )}
@@ -126,9 +167,9 @@ export function Education() {
           ))}
         </ul>
 
-        <h2 className="h5">Ressources téléchargeables</h2>
+        <h2 className="h5">{t('education.resources_heading')}</h2>
         <ul>
-          {resources.length === 0 && <li className="text-muted small">Aucune ressource pour le moment.</li>}
+          {resources.length === 0 && <li className="text-muted small">{t('education.no_resources')}</li>}
           {resources.map((r) => (
             <li key={r._id}>
               <a href={r.fileUrl} download>

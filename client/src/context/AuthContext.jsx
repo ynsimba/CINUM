@@ -1,52 +1,85 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { api, fetchCsrf } from '../api/client'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import * as authApi from '../api/authApi'
+import { isAdminAuthBypass } from '../config/adminFlags'
+import { STAFF_ROLES } from '../constants/staffRoles'
 
 const AuthContext = createContext(null)
+
+/**
+ * Incrémenté après login / logout pour que les requêtes `refresh()` encore en cours
+ * n’écrasent pas l’état (sinon un GET /me lancé avant le POST login terminait en 401
+ * et remettait user à null après une connexion réussie — formulaire bloqué sur /connexion).
+ */
+function useAuthGeneration() {
+  const gen = useRef(0)
+  const bump = useCallback(() => {
+    gen.current += 1
+  }, [])
+  return { gen, bump }
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const { gen, bump } = useAuthGeneration()
 
   const refresh = useCallback(async () => {
+    if (isAdminAuthBypass) {
+      setUser(null)
+      setLoading(false)
+      return
+    }
+    const atStart = gen.current
     try {
-      await fetchCsrf()
-      const { data } = await api.get('/api/auth/me')
-      setUser(data.user)
+      const u = await authApi.fetchCurrentUser()
+      if (atStart !== gen.current) return
+      setUser(u)
     } catch {
+      if (atStart !== gen.current) return
       setUser(null)
     } finally {
-      setLoading(false)
+      if (atStart === gen.current) setLoading(false)
     }
-  }, [])
+  }, [gen])
 
   useEffect(() => {
     refresh()
   }, [refresh])
 
-  const login = async (email, password) => {
-    await fetchCsrf()
-    const { data } = await api.post('/api/auth/login', { email, password })
-    setUser(data.user)
-    return data.user
-  }
+  const loginStaff = useCallback(
+    async (email, password) => {
+      bump()
+      const u = await authApi.loginStaff(email, password)
+      setUser(u)
+      setLoading(false)
+      return u
+    },
+    [bump]
+  )
 
-  const logout = async () => {
-    await fetchCsrf()
-    await api.post('/api/auth/logout')
+  const logoutStaff = useCallback(async () => {
+    bump()
+    await authApi.logoutStaff()
     setUser(null)
-  }
+    setLoading(false)
+  }, [bump])
 
   const value = useMemo(
     () => ({
       user,
       loading,
-      login,
-      logout,
+      /** Connexion admin / modérateur uniquement (API `/api/auth/login`). */
+      loginStaff,
+      /** Déconnexion (révoque le cookie côté serveur). */
+      logoutStaff,
+      /** Recharge l’utilisateur depuis `/api/auth/me` (utile après actions sensibles). */
       refresh,
-      isAdmin: user?.role === 'admin',
-      isModerator: user?.role === 'moderator' || user?.role === 'admin',
+      isAdmin: isAdminAuthBypass || user?.role === 'admin',
+      isModerator: isAdminAuthBypass || user?.role === 'moderator' || user?.role === 'admin',
+      /** Rôles autorisés pour les routes `/admin` (aligné sur le backend). */
+      staffRoles: STAFF_ROLES,
     }),
-    [user, loading, refresh]
+    [user, loading, loginStaff, logoutStaff, refresh]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

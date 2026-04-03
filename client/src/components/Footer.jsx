@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ScrollReveal } from './ScrollReveal'
+import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL } from '../config/contact'
 
 const year = new Date().getFullYear()
 
 export function Footer() {
+  const { t } = useTranslation()
   return (
     <footer className="cinum-footer mt-auto" role="contentinfo">
       <div className="cinum-footer-accent" aria-hidden="true" />
@@ -14,55 +17,52 @@ export function Footer() {
             <div className="col-12 col-lg-4 col-md-6">
               <div className="pe-lg-3">
                 <p className="cinum-footer-brand-title mb-2">CINUM</p>
-                <p className="text-secondary small mb-3 mb-lg-4 lh-base">
-                  Portail national de sensibilisation au civisme numérique en République démocratique du Congo.
-                  Information publique, références au cadre légal (loi n° 20/017, droit pénal) et orientation vers les
-                  autorités compétentes.
-                </p>
-                <p className="small text-muted mb-0 fst-italic">
-                  Contenu à vocation pédagogique — ne remplace pas un avis juridique personnalisé.
-                </p>
+                <p className="text-secondary small mb-3 mb-lg-4 lh-base">{t('footer.brand_intro')}</p>
+                <p className="small text-muted mb-0 fst-italic">{t('footer.brand_disclaimer')}</p>
               </div>
             </div>
 
             <div className="col-12 col-sm-6 col-md-3 col-lg-2">
               <nav aria-labelledby="footer-landmark-portail">
                 <p id="footer-landmark-portail" className="cinum-footer-heading">
-                  Le portail
+                  {t('footer.col_portal')}
                 </p>
                 <ul className="list-unstyled small mb-0 cinum-footer-links">
                   <li>
-                    <Link to="/a-propos">À propos</Link>
+                    <Link to="/a-propos">{t('nav.about')}</Link>
                   </li>
                   <li>
-                    <Link to="/contact">Contact</Link>
+                    <Link to="/contact">{t('nav.contact')}</Link>
                   </li>
                   <li>
-                    <Link to="/signalement">Signalement</Link>
+                    <Link to="/signalement">{t('footer.report_short')}</Link>
                   </li>
                   <li>
-                    <Link to="/signalement/suivi">Suivi d’un signalement</Link>
+                    <Link to="/signalement/suivi">{t('home.track_report')}</Link>
                   </li>
                   <li>
-                    <Link to="/actualites">Actualités</Link>
+                    <Link to="/actualites">{t('nav.news')}</Link>
                   </li>
                   <li>
-                    <Link to="/confidentialite">Confidentialité</Link>
+                    <Link to="/confidentialite">{t('home.link_privacy')}</Link>
                   </li>
                   <li>
-                    <Link to="/mentions-legales">Mentions légales</Link>
+                    <Link to="/mentions-legales">{t('home.link_legal')}</Link>
                   </li>
                   <li>
-                    <Link to="/faq">FAQ</Link>
+                    <Link to="/code-du-numerique">{t('nav.digital_code')}</Link>
                   </li>
                   <li>
-                    <Link to="/glossaire">Glossaire</Link>
+                    <Link to="/faq">{t('nav.faq')}</Link>
                   </li>
                   <li>
-                    <Link to="/presse">Espace presse</Link>
+                    <Link to="/glossaire">{t('nav.glossary')}</Link>
                   </li>
                   <li>
-                    <Link to="/rapports-activite">Rapports d’activité</Link>
+                    <Link to="/presse">{t('nav.press')}</Link>
+                  </li>
+                  <li>
+                    <Link to="/rapports-activite">{t('nav.activity_reports')}</Link>
                   </li>
                 </ul>
               </nav>
@@ -71,49 +71,48 @@ export function Footer() {
             <div className="col-12 col-sm-6 col-md-3 col-lg-2">
               <nav aria-labelledby="footer-landmark-rubriques">
                 <p id="footer-landmark-rubriques" className="cinum-footer-heading">
-                  Rubriques
+                  {t('footer.col_topics')}
                 </p>
                 <ul className="list-unstyled small mb-0 cinum-footer-links">
                   <li>
-                    <Link to="/droits">Droits numériques</Link>
+                    <Link to="/droits">{t('nav.rights')}</Link>
                   </li>
                   <li>
-                    <Link to="/devoirs">Devoirs numériques</Link>
+                    <Link to="/devoirs">{t('nav.duties')}</Link>
                   </li>
                   <li>
-                    <Link to="/infractions">Infractions</Link>
+                    <Link to="/infractions">{t('nav.offenses')}</Link>
                   </li>
                   <li>
-                    <Link to="/bonnes-pratiques">Bonnes pratiques</Link>
+                    <Link to="/bonnes-pratiques">{t('nav.practices')}</Link>
                   </li>
                   <li>
-                    <Link to="/espace-educatif">Espace éducatif</Link>
+                    <Link to="/espace-educatif">{t('nav.education')}</Link>
                   </li>
                 </ul>
               </nav>
             </div>
 
             <div className="col-12 col-lg-4">
-              <p className="cinum-footer-heading">Autorités & recours</p>
+              <p className="cinum-footer-heading">{t('footer.authorities_heading')}</p>
               <p className="small text-secondary mb-3 lh-base">
-                Pour les missions de régulation des télécommunications et des TIC, les usagers peuvent s&apos;informer
-                auprès de l&apos;
-                <strong>Autorité de Régulation de la Poste et des Télécommunications du Congo (ARPTC)</strong> selon les
-                canaux officiels publiés par cette institution.
+                {t('footer.authorities_before')}
+                <strong>{t('footer.authority_arptc')}</strong>
+                {t('footer.authorities_after')}
               </p>
               <p className="small text-muted mb-0">
                 <span className="d-block mb-1">
-                  <strong className="text-body">Contact général (à adapter)</strong>
+                  <strong className="text-body">{t('footer.contact_general')}</strong>
                 </span>
-                <a
-                  href="mailto:contact@cinum-rdc.local"
-                  className="cinum-footer-inline-link text-break d-inline-block"
-                >
-                  contact@cinum-rdc.local
+                <a href={`mailto:${CONTACT_EMAIL}`} className="cinum-footer-inline-link text-break d-inline-block">
+                  {CONTACT_EMAIL}
                 </a>
                 <span className="d-block mt-2">
-                  République démocratique du Congo — {year}
+                  <a href={`tel:${CONTACT_PHONE_TEL}`} className="cinum-footer-inline-link">
+                    {CONTACT_PHONE_DISPLAY}
+                  </a>
                 </span>
+                <span className="d-block mt-2">{t('footer.country_year', { year })}</span>
               </p>
             </div>
           </div>
@@ -123,10 +122,7 @@ export function Footer() {
       <div className="cinum-footer-bottom">
         <ScrollReveal className="container" variant="fade">
           <div className="cinum-footer-bottom-bar px-1 px-sm-0 py-3 py-md-4 text-center">
-            <p className="cinum-footer-bottom-text mb-0">
-              © {year} CINUM — Portail du civisme numérique (RDC). Tous droits réservés sur les contenus éditoriaux du
-              portail.
-            </p>
+            <p className="cinum-footer-bottom-text mb-0">{t('footer.bottom_copyright', { year })}</p>
           </div>
         </ScrollReveal>
       </div>

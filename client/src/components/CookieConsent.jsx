@@ -51,6 +51,7 @@ export function CookieConsent() {
       className="cinum-cookie-banner position-fixed bottom-0 start-0 end-0 shadow-lg border-top bg-white"
       style={{ zIndex: 1080 }}
       role="region"
+      aria-live="polite"
       aria-labelledby="cookie-consent-title"
       aria-describedby="cookie-consent-desc"
     >

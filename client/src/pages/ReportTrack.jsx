@@ -12,6 +12,21 @@ const ABUSE_LABELS = {
   autre: 'Autre',
 }
 
+function statusBadgeClass(status) {
+  switch (status) {
+    case 'pending':
+      return 'warning text-dark'
+    case 'reviewed':
+      return 'info'
+    case 'forwarded_arptc':
+      return 'primary'
+    case 'closed':
+      return 'secondary'
+    default:
+      return 'light text-dark'
+  }
+}
+
 export function ReportTrack() {
   const [reference, setReference] = useState('')
   const [secret, setSecret] = useState('')
@@ -139,10 +154,14 @@ export function ReportTrack() {
             <div className="col-lg-9">
               <div className="card border-success border-2">
                 <div className="card-body">
-                  <h2 className="h5 text-success mb-3">Dossier {result.reference}</h2>
+                  <div className="d-flex flex-wrap align-items-center gap-2 mb-3">
+                    <h2 className="h5 text-success mb-0">Dossier {result.reference}</h2>
+                    <span className={`badge ${statusBadgeClass(result.status)}`}>{result.statusLabel}</span>
+                  </div>
+                  <p className="small text-muted mb-3">
+                    Le badge ci-dessus indique l’état de traitement de votre dossier (mis à jour par le service habilité).
+                  </p>
                   <dl className="row mb-0 small">
-                    <dt className="col-sm-4">Statut</dt>
-                    <dd className="col-sm-8">{result.statusLabel}</dd>
                     <dt className="col-sm-4">Type signalé</dt>
                     <dd className="col-sm-8">{ABUSE_LABELS[result.abuseType] || result.abuseType}</dd>
                     <dt className="col-sm-4">Dépôt</dt>
@@ -153,8 +172,57 @@ export function ReportTrack() {
                     <dd className="col-sm-8">
                       {result.updatedAt && new Date(result.updatedAt).toLocaleString('fr-CD')}
                     </dd>
+                    {result.appointmentAt && (
+                      <>
+                        <dt className="col-sm-4">Rendez-vous</dt>
+                        <dd className="col-sm-8">
+                          <span className="fw-semibold">
+                            {new Date(result.appointmentAt).toLocaleString('fr-CD', {
+                              weekday: 'long',
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </span>
+                          {result.appointmentNote && String(result.appointmentNote).trim() ? (
+                            <span className="d-block mt-1 text-break" style={{ whiteSpace: 'pre-wrap' }}>
+                              {String(result.appointmentNote).trim()}
+                            </span>
+                          ) : null}
+                        </dd>
+                      </>
+                    )}
                     <dt className="col-sm-4">Votre description (extrait)</dt>
                     <dd className="col-sm-8 text-break">{result.descriptionPreview}</dd>
+                    {Array.isArray(result.attachments) && result.attachments.length > 0 && (
+                      <>
+                        <dt className="col-sm-4">Pièces jointes</dt>
+                        <dd className="col-sm-8">
+                          <ul className="list-unstyled mb-0">
+                            {result.attachments.map((a, i) => {
+                              const href = a.url || '#'
+                              const saveName = a.originalName || `piece-jointe-${i + 1}`
+                              return (
+                                <li key={i} className="mb-2">
+                                  <span className="small text-muted d-block mb-1">Pièce jointe {i + 1}</span>
+                                  <span className="d-inline-flex flex-wrap gap-1 small">
+                                    <a href={href} target="_blank" rel="noopener noreferrer">
+                                      Ouvrir
+                                    </a>
+                                    <span className="text-muted">·</span>
+                                    <a href={href} download={saveName}>
+                                      Télécharger
+                                    </a>
+                                  </span>
+                                </li>
+                              )
+                            })}
+                          </ul>
+                        </dd>
+                      </>
+                    )}
                   </dl>
                 </div>
               </div>

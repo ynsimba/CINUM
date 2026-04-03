@@ -53,6 +53,11 @@ export function AdminLayout() {
                   Références légales
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className={sub} to="/admin/messages-contact">
+                  Messages contact
+                </NavLink>
+              </li>
             </ul>
           </nav>
         </div>

@@ -1,6 +1,7 @@
 import { Seo } from '../components/Seo'
 import { Link } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
+import { CONTACT_EMAIL } from '../config/contact'
 
 export function LegalNotice() {
   return (
@@ -32,8 +33,8 @@ export function LegalNotice() {
               <strong>Représentant légal :</strong> [Titre et nom du responsable habilité]
               <br />
               <strong>Contact :</strong>{' '}
-              <a href="mailto:contact@cinum-rdc.local">contact@cinum-rdc.local</a> (à remplacer par l’adresse
-              institutionnelle définitive) — voir aussi la page <Link to="/contact">Contact</Link>.
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> — voir aussi la page{' '}
+              <Link to="/contact">Contact</Link>.
             </p>
 
             <h2 className="h5 text-primary mt-4">Directeur de la publication</h2>

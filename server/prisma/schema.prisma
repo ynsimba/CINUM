@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  moderator
+}
+
+enum AbuseType {
+  cyberharcelement
+  desinformation
+  fraude
+  usurpation
+  autre
+}
+
+enum ReportStatus {
+  pending
+  reviewed
+  forwarded_arptc
+  closed
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         Role      @default(moderator)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  articles     Article[]
+}
+
+model Article {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  excerpt   String   @default("")
+  content   String
+  category  String   @default("general")
+  published Boolean  @default(false)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorId])
+}
+
+model News {
+  id             String   @id @default(cuid())
+  title          String
+  excerpt        String   @default("")
+  content        String
+  coverImageUrl  String   @default("")
+  alert          Boolean  @default(false)
+  campaign       Boolean  @default(false)
+  published      Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  fileUrl     String
+  fileName    String   @default("")
+  category    String   @default("guide")
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model LawReference {
+  id          String   @id @default(cuid())
+  title       String
+  reference   String
+  summary     String
+  fullTextUrl String   @default("")
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Report {
+  id                      String       @id @default(cuid())
+  lastName                String       @default("")
+  postName                String       @default("")
+  firstName               String       @default("")
+  birthPlace              String       @default("")
+  birthDate               DateTime?
+  maritalStatus           String       @default("")
+  address                 String       @default("") @db.Text
+  identityDocType         String       @default("")
+  identityDocPath         String       @default("")
+  identityDocOriginalName String       @default("")
+  abuseType               AbuseType
+  description             String
+  contactEmail            String       @default("")
+  contactPhone            String       @default("")
+  reference               String       @unique
+  lookupSecretHash        String?
+  attachments             Json         @default("[]")
+  status                  ReportStatus @default(pending)
+  internalNote            String       @default("")
+  /// Date/heure de rendez-vous proposée au plaignant (visible sur la page de suivi + e-mail si renseignée)
+  appointmentAt           DateTime?
+  /// Précisions affichées au plaignant (lieu, consignes) — max raisonnable côté API
+  appointmentNote         String       @default("") @db.Text
+  createdAt               DateTime     @default(now())
+  updatedAt               DateTime     @updatedAt
+}
+
+/** Formulaire « Contact » du site public — persistance PostgreSQL */
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

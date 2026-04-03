@@ -2,7 +2,8 @@ import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Seo } from '../components/Seo'
 import { api } from '../api/client'
-import { truncateMeta } from '../utils/seo'
+import { stripHtml, truncateMeta } from '../utils/seo'
+import { SafeHtml } from '../components/SafeHtml'
 
 export function ArticleDetail() {
   const { slug } = useParams()
@@ -39,7 +40,7 @@ export function ArticleDetail() {
     <>
       <Seo
         title={`${article.title} — Civisme numérique RDC`}
-        description={truncateMeta(article.excerpt || article.content)}
+        description={truncateMeta(stripHtml(article.excerpt || article.content))}
         ogType="article"
       />
       <div className="bg-light border-bottom py-3">
@@ -59,9 +60,7 @@ export function ArticleDetail() {
       <article className="container px-3 px-sm-4 py-3 py-md-4">
         <h1 className="h2">{article.title}</h1>
         <p className="text-muted small">{article.excerpt}</p>
-        <div className="article-body" style={{ whiteSpace: 'pre-wrap' }}>
-          {article.content}
-        </div>
+        <SafeHtml className="article-body article-body-safe" html={article.content} />
       </article>
     </>
   )

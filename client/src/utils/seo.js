@@ -1,3 +1,12 @@
+/** Retire les balises HTML pour les métas ou extraits. */
+export function stripHtml(html) {
+  if (!html) return ''
+  return String(html)
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 /** Tronque un texte pour une meta description (≈150–160 caractères). */
 export function truncateMeta(text, max = 158) {
   if (!text) return ''

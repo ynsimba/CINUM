@@ -1,10 +1,10 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
-const { User } = require('../models/User');
+const userService = require('../services/userService');
+const authService = require('../services/authService');
 const { requireAuth, attachUserOptional } = require('../middleware/auth');
 const { issueCsrf, csrfProtection } = require('../middleware/csrf');
+const { publicUser } = require('../lib/serialize');
 
 const router = express.Router();
 
@@ -15,9 +15,9 @@ router.get('/csrf', attachUserOptional, (req, res) => {
 
 router.get('/me', requireAuth, async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
+    const user = await userService.findById(req.userId);
     if (!user) return res.status(401).json({ error: 'Utilisateur introuvable.' });
-    return res.json({ user: user.toJSON() });
+    return res.json({ user: publicUser(user) });
   } catch {
     return res.status(500).json({ error: 'Erreur serveur.' });
   }
@@ -33,28 +33,15 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-    const secret = process.env.JWT_SECRET;
-    if (!secret) return res.status(500).json({ error: 'Configuration serveur incomplète.' });
     const email = String(req.body.email).trim().toLowerCase();
     const { password } = req.body;
     try {
-      const user = await User.findOne({ email });
-      if (!user) return res.status(401).json({ error: 'Identifiants incorrects.' });
-      const ok = await bcrypt.compare(password, user.passwordHash);
-      if (!ok) return res.status(401).json({ error: 'Identifiants incorrects.' });
-      const token = jwt.sign(
-        { sub: user._id.toString(), role: user.role },
-        secret,
-        { expiresIn: '7d' }
-      );
-      res.cookie('token', token, {
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
-      return res.json({ user: user.toJSON() });
-    } catch {
+      const { user } = await authService.loginStaff(email, password);
+      const accessToken = authService.attachStaffSessionCookie(res, user);
+      return res.json({ user: publicUser(user), accessToken });
+    } catch (err) {
+      const handled = authService.handleStaffLoginError(res, err);
+      if (handled) return handled;
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }

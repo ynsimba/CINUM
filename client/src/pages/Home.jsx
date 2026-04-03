@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { JsonLdSite } from '../components/JsonLdSite'
 import { Seo } from '../components/Seo'
-import { DEFAULT_DESCRIPTION } from '../config/site'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { api } from '../api/client'
 import { ScrollReveal } from '../components/ScrollReveal'
+import { NewsCard } from '../components/NewsCard'
 
 function PillarIcon({ children }) {
   return (
@@ -28,23 +28,19 @@ export function Home() {
 
   return (
     <>
-      <Seo title="Accueil — Civisme numérique RDC" description={DEFAULT_DESCRIPTION} />
+      <Seo title={t('home.seo_title')} description={t('home.seo_description')} />
       <JsonLdSite />
       <section className="hero-institutional text-white py-4 py-md-5 mb-0" aria-labelledby="hero-title">
         <div className="container px-3 px-sm-4 py-lg-4 hero-enter">
           <div className="row align-items-center g-4 g-lg-5">
             <div className="col-lg-7">
-              <p className="text-uppercase small mb-2 opacity-90">Portail institutionnel</p>
+              <p className="text-uppercase small mb-2 opacity-90">{t('home.hero_eyebrow')}</p>
               <h1 id="hero-title" className="cinum-hero-title display-5 fw-bold">
                 {t('banner.title')}
               </h1>
               <p className="lead mb-3 mb-md-4 cinum-hero-lead">{t('banner.subtitle')}</p>
-              <p className="mb-3 mb-md-4 text-break lh-base">
-                Message officiel : ce site informe sur les droits et devoirs liés à l&apos;usage des technologies de
-                l&apos;information et de la communication, conformément au cadre légal congolais, notamment la loi n° 20/017
-                relative aux télécommunications et aux TIC, et oriente vers les autorités compétentes pour les recours.
-              </p>
-              <div className="d-flex gap-2 cinum-hero-actions" role="group" aria-label="Accès rapide">
+              <p className="mb-3 mb-md-4 text-break lh-base">{t('home.hero_official')}</p>
+              <div className="d-flex gap-2 cinum-hero-actions" role="group" aria-label={t('home.hero_quick_aria')}>
                 <Link className="btn btn-light btn-lg cinum-hero-actions__btn" to="/droits">
                   {t('quick.rights')}
                 </Link>
@@ -60,7 +56,7 @@ export function Home() {
               <div className="hero-institutional__visual">
                 <img
                   src="/hero-img.PNG"
-                  alt="Illustration : équilibre entre citoyenneté numérique et protection en ligne"
+                  alt={t('home.hero_img_alt')}
                   className="hero-institutional__img img-fluid"
                   width={560}
                   height={420}
@@ -77,18 +73,16 @@ export function Home() {
           <div className="container px-3 px-sm-4">
             <ScrollReveal className="mb-4 mb-lg-5" variant="fade-up">
               <header className="text-center text-lg-start">
-                <p className="home-eyebrow mb-1">Parcours citoyen</p>
+                <p className="home-eyebrow mb-1">{t('home.parcours_eyebrow')}</p>
                 <h2 id="home-pillars-heading" className="home-section-title mb-0">
-                  Comprendre et agir en ligne
+                  {t('home.pillars_heading')}
                 </h2>
-                <p className="text-muted small mt-2 mb-0 col-lg-8 mx-auto mx-lg-0">
-                  Trois entrées pour accéder aux contenus pédagogiques et au dispositif de signalement.
-                </p>
+                <p className="text-muted small mt-2 mb-0 col-lg-8 mx-auto mx-lg-0">{t('home.pillars_lead')}</p>
               </header>
             </ScrollReveal>
 
             <div className="row g-4">
-              <div className="col-md-4">
+              <div className="col-md-6 col-lg-4">
                 <ScrollReveal delay={0} variant="fade-up">
                 <div className="home-pillar home-pillar--rights h-100 d-flex flex-column">
                   <PillarIcon>
@@ -96,13 +90,10 @@ export function Home() {
                       01
                     </span>
                   </PillarIcon>
-                  <h3>Droits numériques</h3>
-                  <p className="flex-grow-1">
-                    Accès, protection de la vie privée, liberté d&apos;expression dans les limites légales : synthèse
-                    pédagogique.
-                  </p>
+                  <h3>{t('home.pillar_rights_title')}</h3>
+                  <p className="flex-grow-1">{t('home.pillar_rights_text')}</p>
                   <Link to="/droits" className="home-pillar-link mt-auto">
-                    En savoir plus
+                    {t('home.pillar_read_more')}
                   </Link>
                 </div>
                 </ScrollReveal>
@@ -115,18 +106,15 @@ export function Home() {
                       02
                     </span>
                   </PillarIcon>
-                  <h3>Devoirs numériques</h3>
-                  <p className="flex-grow-1">
-                    Respect d&apos;autrui, vérification des informations, responsabilité lors de la publication de
-                    contenus.
-                  </p>
+                  <h3>{t('home.pillar_duties_title')}</h3>
+                  <p className="flex-grow-1">{t('home.pillar_duties_text')}</p>
                   <Link to="/devoirs" className="home-pillar-link mt-auto">
-                    En savoir plus
+                    {t('home.pillar_read_more')}
                   </Link>
                 </div>
                 </ScrollReveal>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-6 col-lg-4">
                 <ScrollReveal delay={180} variant="fade-up">
                 <div className="home-pillar home-pillar--report h-100 d-flex flex-column">
                   <PillarIcon>
@@ -134,16 +122,51 @@ export function Home() {
                       03
                     </span>
                   </PillarIcon>
-                  <h3>Signaler un abus</h3>
-                  <p className="flex-grow-1">
-                    Formulaire sécurisé pour orienter les signalements vers le traitement institutionnel et l&apos;ARPTC.
-                  </p>
+                  <h3>{t('home.pillar_report_title')}</h3>
+                  <p className="flex-grow-1">{t('home.pillar_report_text')}</p>
                   <Link to="/signalement" className="home-pillar-link mt-auto">
-                    Accéder au formulaire
+                    {t('home.pillar_report_cta')}
                   </Link>
                 </div>
                 </ScrollReveal>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="home-section home-more-band" aria-labelledby="home-more-heading">
+          <div className="container px-3 px-sm-4">
+            <ScrollReveal className="mb-4 mb-lg-4" variant="fade-up">
+              <header className="text-center text-lg-start">
+                <p className="home-eyebrow mb-1">{t('home.more_eyebrow')}</p>
+                <h2 id="home-more-heading" className="home-section-title mb-0">
+                  {t('home.more_title')}
+                </h2>
+                <p className="text-muted small mt-2 mb-0 col-lg-9 mx-auto mx-lg-0">{t('home.more_lead')}</p>
+              </header>
+            </ScrollReveal>
+            <div className="row g-3 g-lg-4">
+              {[
+                { to: '/litteratie-numerique', title: t('nav.digital_literacy') },
+                { to: '/espace-educatif', title: t('nav.education') },
+                { to: '/faq', title: t('nav.faq') },
+                { to: '/contact', title: t('nav.contact') },
+                { to: '/a-propos', title: t('nav.about') },
+                { to: '/bonnes-pratiques', title: t('nav.practices') },
+                { to: '/signalement/suivi', title: t('home.track_report') },
+                { to: '/glossaire', title: t('nav.glossary') },
+              ].map((item, i) => (
+                <div key={item.to} className="col-12 col-sm-6 col-lg-3">
+                  <ScrollReveal delay={i * 50} variant="fade-up">
+                    <Link to={item.to} className="home-more-card">
+                      <h3 className="home-more-card-title">{item.title}</h3>
+                      <span className="home-more-card-arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </Link>
+                  </ScrollReveal>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -153,13 +176,13 @@ export function Home() {
             <ScrollReveal className="mb-4" variant="fade-left">
               <header className="d-flex flex-column flex-md-row align-items-md-end justify-content-md-between gap-2">
                 <div>
-                  <p className="home-eyebrow mb-1">Publications</p>
+                  <p className="home-eyebrow mb-1">{t('home.news_eyebrow')}</p>
                   <h2 id="home-news-heading" className="home-section-title mb-0">
-                    Actualités et communiqués
+                    {t('home.news_title')}
                   </h2>
                 </div>
                 <Link to="/actualites" className="small fw-semibold text-decoration-none">
-                  Toutes les actualités →
+                  {t('home.news_all_link')}
                 </Link>
               </header>
             </ScrollReveal>
@@ -167,24 +190,15 @@ export function Home() {
             {news.length === 0 ? (
               <ScrollReveal variant="fade">
                 <div className="home-news-empty" role="status">
-                  Les publications officielles apparaîtront ici lorsque le serveur et la base de données seront configurés.
+                  {t('home.news_empty')}
                 </div>
               </ScrollReveal>
             ) : (
-              <div className="row g-3">
+              <div className="row g-4">
                 {news.map((n, i) => (
-                  <div key={n._id} className="col-md-4">
+                  <div key={n._id} className="col-md-6 col-lg-4">
                     <ScrollReveal className="h-100" delay={i * 80} variant="scale">
-                    <Link to={`/actualites/${n._id}`} className="home-news-item h-100">
-                      <div className="d-flex flex-wrap gap-1 mb-2">
-                        {n.alert && <span className="badge rounded-pill bg-danger">Alerte</span>}
-                        {n.campaign && (
-                          <span className="badge rounded-pill bg-warning text-dark">Campagne</span>
-                        )}
-                      </div>
-                      <h3>{n.title}</h3>
-                      <p>{(n.excerpt || n.content)?.slice(0, 140)}{(n.excerpt || n.content)?.length > 140 ? '…' : ''}</p>
-                    </Link>
+                      <NewsCard item={n} className="h-100" />
                     </ScrollReveal>
                   </div>
                 ))}

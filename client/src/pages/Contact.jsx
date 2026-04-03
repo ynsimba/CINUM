@@ -2,6 +2,7 @@ import { Seo } from '../components/Seo'
 import { useState } from 'react'
 import { PageHeader } from '../components/PageHeader'
 import { api, fetchCsrf } from '../api/client'
+import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL } from '../config/contact'
 
 export function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
@@ -36,16 +37,20 @@ export function Contact() {
       <div className="container px-3 px-sm-4 pb-4 pb-md-5">
         <div className="row g-4">
           <div className="col-lg-5">
-            <h2 className="h5 text-primary">Coordonnées (à adapter en production)</h2>
+            <h2 className="h5 text-primary">Coordonnées</h2>
             <address className="small not-italic">
               <p className="mb-1">
                 <strong>Service de communication</strong>
               </p>
               <p className="mb-1">Kinshasa, République démocratique du Congo</p>
               <p className="mb-1">
-                Courriel : <a href="mailto:contact@cinum-rdc.local">contact@cinum-rdc.local</a>
+                Courriel :{' '}
+                <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
               </p>
-              <p className="mb-0 text-muted">Téléphone : à compléter selon l&apos;entité porteuse.</p>
+              <p className="mb-0">
+                Téléphone :{' '}
+                <a href={`tel:${CONTACT_PHONE_TEL}`}>{CONTACT_PHONE_DISPLAY}</a>
+              </p>
             </address>
             <hr />
             <h3 className="h6">FAQ</h3>
@@ -126,7 +131,12 @@ export function Contact() {
                       {err}
                     </div>
                   )}
-                  <button type="submit" className="btn btn-primary" disabled={loading}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={loading}
+                    aria-busy={loading}
+                  >
                     {loading ? 'Envoi…' : 'Envoyer'}
                   </button>
                 </form>

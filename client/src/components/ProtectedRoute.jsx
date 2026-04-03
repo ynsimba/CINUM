@@ -1,9 +1,19 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { STAFF_ROLES } from '../constants/staffRoles'
+import { isAdminAuthBypass } from '../config/adminFlags'
 
-export function ProtectedRoute({ roles }) {
+/**
+ * Protège les routes enfants : session requise, rôle parmi `roles` (par défaut admin + modérateur).
+ * Si `VITE_DISABLE_ADMIN_AUTH=true` (dev temporaire), accès sans connexion — à retirer en production.
+ */
+export function ProtectedRoute({ roles = STAFF_ROLES }) {
   const { user, loading } = useAuth()
   const loc = useLocation()
+
+  if (isAdminAuthBypass) {
+    return <Outlet />
+  }
 
   if (loading) {
     return (

@@ -6,6 +6,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import './i18n'
 import './index.css'
 import App from './App.jsx'
+import { hydrateAccessTokenFromStorage } from './api/authToken'
+
+hydrateAccessTokenFromStorage()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

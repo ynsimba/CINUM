@@ -3,50 +3,15 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
-
-function loginErrorMessage(ex) {
-  const res = ex.response
-  if (!res) {
-    if (ex.code === 'ECONNABORTED' || String(ex.message || '').toLowerCase().includes('timeout')) {
-      return 'La requête a expiré. Réessayez ou vérifiez que l’API est démarrée.'
-    }
-    if (ex.message === 'Network Error') {
-      return 'Le serveur ne répond pas. Vérifiez que l’API tourne dans un autre terminal : npm run dev:server (port dans server/.env, défaut 5001), puis réessayez.'
-    }
-    return `Impossible de joindre l’API (${ex.message || 'erreur réseau'}). Lancez npm run dev:server ; le port doit correspondre au proxy Vite (défaut 5001).`
-  }
-  const status = res.status
-  const d = res.data
-  if (d && typeof d === 'object') {
-    if (typeof d.error === 'string' && d.error.trim()) return d.error
-    const first = Array.isArray(d.errors) ? d.errors[0] : null
-    if (first?.msg) return first.msg
-  }
-  if (typeof d === 'string' && d.trim()) {
-    return 'Réponse serveur inattendue (souvent une page HTML). Vérifiez l’URL de l’API et le proxy Vite vers le bon port.'
-  }
-  if (status === 401) return 'Identifiants incorrects.'
-  if (status === 403) return 'Accès refusé (jeton CSRF ou session). Rechargez la page et réessayez.'
-  if (status === 502 || status === 503) {
-    return [
-      'L’API ne répond pas ou le proxy Vite ne peut pas l’atteindre (erreur 502/503).',
-      '1) Démarrez MongoDB : npm run db:up (ou votre conteneur Docker).',
-      '2) Dans un autre terminal, à la racine du projet : npm run dev:server.',
-      '3) Vérifiez que PORT dans server/.env est le même que la cible du proxy Vite (défaut 5001 ; sinon client/.env → VITE_DEV_API_TARGET).',
-      'Redémarrez le client Vite après modification de client/.env.',
-    ].join(' ')
-  }
-  if (status === 500) return 'Erreur serveur. Réessayez plus tard.'
-  return `Connexion impossible (erreur HTTP ${status}).`
-}
+import { staffLoginErrorMessage } from '../utils/authErrors'
 
 /**
- * Modale de connexion — affichée lorsque l’URL est `/connexion` (Navbar, lien direct, redirection admin).
+ * Modale de connexion staff — affichée lorsque l’URL est `/connexion` (Navbar, lien direct, redirection admin).
  */
 export function LoginModal() {
   const { t } = useTranslation()
   const errRef = useRef(null)
-  const { user, login } = useAuth()
+  const { user, loginStaff } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [err, setErr] = useState(null)
@@ -93,10 +58,10 @@ export function LoginModal() {
     setErr(null)
     setLoading(true)
     try {
-      await login(email, password)
+      await loginStaff(email, password)
       navigate(from, { replace: true })
     } catch (ex) {
-      setErr(loginErrorMessage(ex))
+      setErr(staffLoginErrorMessage(ex))
     } finally {
       setLoading(false)
     }
@@ -148,8 +113,8 @@ export function LoginModal() {
             </div>
             <div className="modal-body pt-2">
               <p className="small text-muted mb-3">
-                Accès réservé aux comptes administrateur et modérateur. Les mots de passe sont stockés de façon
-                sécurisée (hachage).
+                Accès réservé aux comptes <strong>administrateur</strong> et <strong>modérateur</strong>. Les mots de
+                passe sont stockés de façon sécurisée (hachage bcrypt, session JWT en cookie httpOnly).
               </p>
               <form onSubmit={onSubmit} noValidate>
                 <div className="mb-3">

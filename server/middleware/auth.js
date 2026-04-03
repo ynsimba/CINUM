@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { User } = require('../models/User');
+const userService = require('../services/userService');
 
 function getTokenFromRequest(req) {
   if (req.cookies && req.cookies.token) return req.cookies.token;
@@ -27,7 +27,7 @@ function requireRole(...roles) {
   return async (req, res, next) => {
     if (!req.userId) return res.status(401).json({ error: 'Authentification requise.' });
     try {
-      const user = await User.findById(req.userId).lean();
+      const user = await userService.findById(req.userId);
       if (!user || !roles.includes(user.role)) {
         return res.status(403).json({ error: 'Droits insuffisants.' });
       }
@@ -47,7 +47,7 @@ async function attachUserOptional(req, res, next) {
     const payload = jwt.verify(token, secret);
     req.userId = payload.sub;
     req.userRole = payload.role;
-    const user = await User.findById(payload.sub).lean();
+    const user = await userService.findById(payload.sub);
     if (user) req.user = user;
   } catch {
     /* ignore */

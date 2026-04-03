@@ -24,6 +24,7 @@ export const PrivacyPolicy = lazy(() =>
   import('../pages/PrivacyPolicy').then((m) => ({ default: m.PrivacyPolicy }))
 )
 export const LegalNotice = lazy(() => import('../pages/LegalNotice').then((m) => ({ default: m.LegalNotice })))
+export const DigitalCode = lazy(() => import('../pages/DigitalCode').then((m) => ({ default: m.DigitalCode })))
 export const Faq = lazy(() => import('../pages/Faq').then((m) => ({ default: m.Faq })))
 export const Glossary = lazy(() => import('../pages/Glossary').then((m) => ({ default: m.Glossary })))
 export const Press = lazy(() => import('../pages/Press').then((m) => ({ default: m.Press })))
@@ -53,3 +54,6 @@ export const AdminResources = lazy(() =>
   import('../pages/admin/AdminResources').then((m) => ({ default: m.AdminResources }))
 )
 export const AdminLaws = lazy(() => import('../pages/admin/AdminLaws').then((m) => ({ default: m.AdminLaws })))
+export const AdminContactMessages = lazy(() =>
+  import('../pages/admin/AdminContactMessages').then((m) => ({ default: m.AdminContactMessages }))
+)

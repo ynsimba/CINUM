@@ -5,7 +5,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
-const { connectDb } = require('./config/db');
+const prisma = require('./lib/prisma');
 const { csrfProtection } = require('./middleware/csrf');
 
 const authRoutes = require('./routes/auth');
@@ -31,9 +31,9 @@ function isDevLocalOrigin(origin) {
 }
 
 async function main() {
-  const mongoUri = process.env.MONGODB_URI;
-  if (!mongoUri) {
-    console.error('MONGODB_URI manquant dans .env');
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) {
+    console.error('DATABASE_URL manquant dans .env');
     process.exit(1);
   }
   if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
@@ -41,7 +41,14 @@ async function main() {
     process.exit(1);
   }
 
-  await connectDb(mongoUri);
+  await prisma.$connect();
+
+  const { isAdminAuthDisabled } = require('./lib/adminAuthBypass');
+  if (isAdminAuthDisabled()) {
+    console.warn(
+      '[ATTENTION] DISABLE_ADMIN_AUTH est actif : /api/admin est ouvert sans JWT. Désactivez en production.'
+    );
+  }
 
   const app = express();
 
@@ -91,9 +98,10 @@ async function main() {
   });
   app.use('/api', apiLimiter);
 
+  /** En dev, plafond plus haut : signalement/contact/admin enchaînés dépassaient vite 40 req/h (429). */
   const strictLimiter = rateLimit({
     windowMs: 60 * 60 * 1000,
-    max: 40,
+    max: isProd ? 40 : 2000,
     standardHeaders: true,
     legacyHeaders: false,
   });
@@ -108,7 +116,7 @@ async function main() {
 
   app.use((err, _req, res, next) => {
     if (err && err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({ error: 'Fichier trop volumineux (max 5 Mo).' });
+      return res.status(400).json({ error: 'Fichier trop volumineux (limite dépassée pour ce type d’envoi).' });
     }
     if (err && err.message && err.message.includes('non autorisé')) {
       return res.status(400).json({ error: 'Type de fichier non autorisé.' });

@@ -2,7 +2,7 @@
  * Service worker minimal : hors-ligne limitée (coquille SPA + ressources mises en cache à la volée).
  * Mettre à jour CACHE pour forcer le renouvellement après déploiement.
  */
-const CACHE = 'cinum-pwa-v2'
+const CACHE = 'cinum-pwa-v3'
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/logo.png']
 
 self.addEventListener('install', (event) => {
@@ -26,6 +26,12 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return
   const url = new URL(request.url)
   if (url.origin !== self.location.origin) return
+
+  // API et fichiers uploadés : toujours réseau direct (pas de cache SW — évite 403 / réponses obsolètes)
+  if (url.pathname.startsWith('/api') || url.pathname.startsWith('/uploads')) {
+    event.respondWith(fetch(request))
+    return
+  }
 
   if (request.mode === 'navigate') {
     event.respondWith(
