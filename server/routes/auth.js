@@ -1,14 +1,22 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const { body, validationResult } = require('express-validator');
 const userService = require('../services/userService');
 const authService = require('../services/authService');
 const { requireAuth, attachUserOptional } = require('../middleware/auth');
 const { issueCsrf, csrfProtection } = require('../middleware/csrf');
 const { publicUser } = require('../lib/serialize');
+const { isStrongPassword, PASSWORD_POLICY_MESSAGE } = require('../lib/passwordPolicy');
 
 const router = express.Router();
-const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{10,}$/;
 
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 8,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Trop de tentatives de connexion. Réessayez dans 15 minutes.' },
+});
 router.get('/csrf', attachUserOptional, (req, res) => {
   const token = issueCsrf(req, res);
   res.json({ csrfToken: token });
@@ -26,18 +34,20 @@ router.get('/me', requireAuth, async (req, res) => {
 
 router.post(
   '/login',
+  loginLimiter,
   csrfProtection,
   [
-    body('email').isEmail().withMessage('Email invalide.'),
+    body('email').trim().notEmpty().withMessage('Identifiant requis.'),
     body('password').isString().isLength({ min: 8 }).withMessage('Mot de passe invalide.'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-    const email = String(req.body.email).trim().toLowerCase();
+    const rawIdentifier = String(req.body.email).trim().toLowerCase();
+    const email = rawIdentifier === 'admin' ? 'admin@cinum-rdc.local' : rawIdentifier;
     const { password } = req.body;
     try {
-      const { user } = await authService.loginStaff(email, password);
+      const { user } = await authService.loginStaff(email, password, { ip: req.ip });
       const accessToken = authService.attachStaffSessionCookie(res, user);
       return res.json({ user: publicUser(user), accessToken });
     } catch (err) {
@@ -49,8 +59,14 @@ router.post(
 );
 
 router.post('/logout', (_req, res) => {
-  res.clearCookie('token', { httpOnly: true, sameSite: 'strict' });
-  res.clearCookie('_csrfSecret', { httpOnly: true, sameSite: 'strict' });
+  const clearOpts = {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/api',
+  };
+  res.clearCookie('token', clearOpts);
+  res.clearCookie('_csrfSecret', clearOpts);
   res.json({ ok: true });
 });
 
@@ -62,10 +78,8 @@ router.post(
     body('currentPassword').isString().isLength({ min: 8 }).withMessage('Mot de passe actuel invalide.'),
     body('newPassword')
       .isString()
-      .matches(STRONG_PASSWORD_REGEX)
-      .withMessage(
-        'Le nouveau mot de passe doit contenir au moins 10 caractères, avec majuscule, minuscule, chiffre et caractère spécial.'
-      ),
+      .custom((value) => isStrongPassword(value))
+      .withMessage(PASSWORD_POLICY_MESSAGE),
     body('newPassword')
       .custom((value, { req }) => value !== req.body.currentPassword)
       .withMessage("Le nouveau mot de passe doit être différent de l'ancien."),

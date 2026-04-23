@@ -1,5 +1,6 @@
 /** Nom du site (titres, JSON-LD). */
 export const SITE_NAME_SHORT = 'CINUM'
+export const SITE_NAME_FULL = 'Civisme numérique — RDC'
 
 /** URL publique du site, sans slash final (ex. https://www.exemple.cd). Utilisée pour canonical et Open Graph. */
 export function getSiteUrl() {
@@ -9,4 +10,7 @@ export function getSiteUrl() {
 
 /** Description par défaut (accueil et fallback meta). */
 export const DEFAULT_DESCRIPTION =
-  'Portail institutionnel du civisme numérique en République démocratique du Congo : droits et devoirs en ligne, prévention des abus, signalement sécurisé et références au cadre légal (loi n° 20/017).'
+  'Portail institutionnel du civisme numérique en République démocratique du Congo : former pour prévenir, encadrer pour orienter et protéger pour sécuriser face aux menaces du cyberespace.'
+
+/** Image de partage par défaut (Open Graph / Twitter). */
+export const DEFAULT_SHARE_IMAGE = '/logo.png'

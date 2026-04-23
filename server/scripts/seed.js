@@ -66,42 +66,106 @@ async function run() {
     console.log('Modérateur déjà présent:', modEmail);
   }
 
-  const count = await prisma.article.count();
-  if (count === 0 && admin) {
-    await prisma.article.create({
-      data: {
-        title: 'Introduction au civisme numérique',
-        slug: 'introduction-civisme-numerique',
-        excerpt: 'Principes généraux pour un usage responsable des technologies en RDC.',
+  if (admin) {
+    const strategicArticles = [
+      {
+        title: 'Civisme numérique et souveraineté nationale en RDC',
+        slug: 'civisme-numerique-et-souverainete-nationale-rdc',
+        excerpt:
+          "Pourquoi l'éducation au civisme numérique est devenue un impératif de sécurité nationale, de cohésion sociale et de développement durable.",
+        category: 'institution',
         content:
-          "Ce portail s'inscrit dans le cadre de la loi n° 20/017 relative aux télécommunications et aux TIC. Il vise à informer les citoyens sur leurs droits et devoirs, et à prévenir les abus numériques. Les contenus sont à vocation pédagogique et ne remplacent pas une consultation juridique personnalisée.",
+          "La République Démocratique du Congo fait face à une transformation rapide de son environnement informationnel et technologique. Les menaces ne se limitent plus aux espaces physiques: elles se développent aussi dans le cyberespace, où circulent la désinformation, la fraude, les manipulations et les atteintes à la dignité humaine.\n\nCes dynamiques affectent directement la cohésion sociale, la confiance publique, l'économie numérique et, plus largement, la stabilité de la Nation. Dans ce contexte, le civisme numérique ne doit pas être perçu comme un simple module de sensibilisation: il constitue un levier stratégique de souveraineté.\n\nUn citoyen numériquement éduqué est mieux préparé à reconnaître les contenus trompeurs, à protéger ses données, à adopter des comportements responsables et à contribuer à un espace numérique plus sûr. À l'inverse, l'absence de culture numérique structurée ouvre des vulnérabilités exploitables par des acteurs malveillants.\n\nInvestir dans le civisme numérique aujourd'hui, c'est donc agir sur trois priorités nationales: la sécurité collective, la cohésion sociale et la capacité de développement durable dans un monde connecté. La protection de l'avenir passe par l'éducation de la jeunesse, l'encadrement des usages et la promotion de valeurs républicaines dans l'espace numérique.",
+      },
+      {
+        title: 'Former, encadrer, protéger: le triptyque stratégique du portail CINUM',
+        slug: 'former-encadrer-proteger-triptyque-cinum',
+        excerpt:
+          "Une approche complète pour prévenir les risques numériques, orienter les citoyens et sécuriser durablement l'espace informationnel.",
         category: 'education',
-        published: true,
-        authorId: admin.id,
-      },
-    });
-    await prisma.news.create({
-      data: {
-        title: 'Lancement du portail national de civisme numérique',
-        excerpt: 'Une initiative pour renforcer la culture du numérique responsable.',
         content:
-          "Cette plateforme expérimentale illustre une démarche institutionnelle de sensibilisation, en cohérence avec les missions de régulation et d'information du public.",
-        alert: false,
-        campaign: true,
-        published: true,
+          "Face à la complexité des menaces numériques, une réponse uniquement répressive ne suffit pas. Le portail CINUM s'appuie sur un triptyque d'action publique complémentaire: former pour prévenir, encadrer pour orienter, protéger pour sécuriser.\n\nFormer pour prévenir: il s'agit de développer l'esprit critique, la compréhension des enjeux informationnels et la capacité à vérifier les contenus avant partage. Cette dimension réduit l'impact de la désinformation et des manipulations.\n\nEncadrer pour orienter: les citoyens, les familles, les écoles et les organisations ont besoin de repères clairs. L'encadrement repose sur des règles de conduite, des références juridiques accessibles et des dispositifs d'accompagnement pour les usages responsables.\n\nProtéger pour sécuriser: la protection implique des mécanismes concrets: signalement structuré, suivi des situations, sécurité des comptes et sensibilisation aux réflexes de cybersécurité. L'objectif est de réduire la vulnérabilité des personnes et des institutions.\n\nCe triptyque permet de passer d'une logique de réaction à une logique de résilience. Il donne à chaque acteur - citoyen, éducateur, administration, institution - un rôle actif dans la construction d'un environnement numérique fiable, éthique et sécurisé.",
       },
-    });
-    await prisma.lawReference.create({
-      data: {
-        title: 'Loi relative aux télécommunications et aux TIC',
-        reference: 'Loi n° 20/017',
-        summary:
-          'Cadre légal des communications électroniques, des infrastructures et des services TIC en République démocratique du Congo. Ce texte structure notamment les obligations des opérateurs et les pouvoirs de régulation.',
-        fullTextUrl: '',
-        published: true,
+      {
+        title: 'Jeunesse, résilience et valeurs républicaines à l’ère numérique',
+        slug: 'jeunesse-resilience-et-valeurs-republicaines-numerique',
+        excerpt:
+          "Éduquer les jeunes au numérique responsable pour renforcer la résilience citoyenne et préserver les valeurs de la République.",
+        category: 'societe',
+        content:
+          "La jeunesse congolaise grandit dans un espace numérique où l'information circule à grande vitesse. Cette réalité offre des opportunités majeures d'apprentissage, d'innovation et de participation citoyenne, mais expose aussi à des risques: harcèlement en ligne, fraude, manipulation, radicalisation informationnelle.\n\nL'enjeu n'est pas seulement technique. Il est civique et social. Former la jeunesse au civisme numérique, c'est lui donner des outils pour distinguer l'information fiable de la rumeur, pour agir avec responsabilité et pour respecter autrui dans les interactions numériques.\n\nLa résilience numérique se construit par des pratiques simples et constantes: vérifier les sources, protéger les identifiants, signaler les contenus graves, refuser les discours de haine et préserver la dignité humaine en ligne. Ces pratiques renforcent la confiance entre citoyens et soutiennent la stabilité collective.\n\nUne politique publique ambitieuse doit placer le civisme numérique au même niveau que l'éducation civique traditionnelle. En préparant les jeunes à relever les défis du XXIe siècle, la RDC consolide un capital citoyen stratégique: une population plus éclairée, plus responsable, plus sûre et plus engagée pour l'intérêt général.",
       },
-    });
-    console.log('Données de démonstration insérées.');
+    ];
+
+    let insertedArticles = 0;
+    for (const article of strategicArticles) {
+      const exists = await prisma.article.findUnique({ where: { slug: article.slug } });
+      if (!exists) {
+        await prisma.article.create({
+          data: {
+            ...article,
+            published: true,
+            authorId: admin.id,
+          },
+        });
+        insertedArticles += 1;
+      }
+    }
+
+    const introSlug = 'introduction-civisme-numerique';
+    const introExists = await prisma.article.findUnique({ where: { slug: introSlug } });
+    if (!introExists) {
+      await prisma.article.create({
+        data: {
+          title: 'Introduction au civisme numérique',
+          slug: introSlug,
+          excerpt: 'Principes généraux pour un usage responsable des technologies en RDC.',
+          content:
+            "Ce portail s'inscrit dans le cadre de la loi n° 20/017 relative aux télécommunications et aux TIC. Il vise à informer les citoyens sur leurs droits et devoirs, et à prévenir les abus numériques. Les contenus sont à vocation pédagogique et ne remplacent pas une consultation juridique personnalisée.",
+          category: 'education',
+          published: true,
+          authorId: admin.id,
+        },
+      });
+      insertedArticles += 1;
+    }
+
+    const demoNewsTitle = 'Lancement du portail national de civisme numérique';
+    const demoNews = await prisma.news.findFirst({ where: { title: demoNewsTitle } });
+    if (!demoNews) {
+      await prisma.news.create({
+        data: {
+          title: demoNewsTitle,
+          excerpt: 'Une initiative pour renforcer la culture du numérique responsable.',
+          content:
+            "Cette plateforme expérimentale illustre une démarche institutionnelle de sensibilisation, en cohérence avec les missions de régulation et d'information du public.",
+          alert: false,
+          campaign: true,
+          published: true,
+        },
+      });
+    }
+
+    const lawRef = 'Loi n° 20/017';
+    const demoLaw = await prisma.lawReference.findFirst({ where: { reference: lawRef } });
+    if (!demoLaw) {
+      await prisma.lawReference.create({
+        data: {
+          title: 'Loi relative aux télécommunications et aux TIC',
+          reference: lawRef,
+          summary:
+            'Cadre légal des communications électroniques, des infrastructures et des services TIC en République démocratique du Congo. Ce texte structure notamment les obligations des opérateurs et les pouvoirs de régulation.',
+          fullTextUrl: '',
+          published: true,
+        },
+      });
+    }
+
+    if (insertedArticles > 0) {
+      console.log(`Articles insérés: ${insertedArticles}`);
+    } else {
+      console.log('Articles stratégiques déjà présents (aucune insertion).');
+    }
   }
 
   await prisma.$disconnect();

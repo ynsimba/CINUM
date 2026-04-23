@@ -17,22 +17,42 @@ class StaffLoginError extends Error {
  * Vérifie les identifiants et que le compte est bien éligible à l’espace admin/modération.
  * @returns {Promise<{ user: import('@prisma/client').User }>}
  */
-async function loginStaff(email, password) {
+async function loginStaff(email, password, context = {}) {
+  const now = new Date();
+  const ip = context.ip || '';
   const user = await userService.findByEmail(email);
   if (!user) {
+    await userService.registerLoginAttempt({ email, ip, success: false });
     throw new StaffLoginError('INVALID_CREDENTIALS', 'Identifiants incorrects.', 401);
   }
   if (!isStaffRole(user.role)) {
+    await userService.registerLoginAttempt({ email, ip, success: false });
     throw new StaffLoginError(
       'FORBIDDEN_ROLE',
       "Ce compte n'a pas accès à l'espace d'administration.",
       403
     );
   }
+  if (user.lockedUntil && new Date(user.lockedUntil).getTime() > now.getTime()) {
+    await userService.registerLoginAttempt({ email, ip, success: false });
+    throw new StaffLoginError(
+      'ACCOUNT_LOCKED',
+      'Compte temporairement verrouillé après plusieurs tentatives. Réessayez plus tard.',
+      429
+    );
+  }
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) {
+    await Promise.all([
+      userService.registerFailedStaffLogin(user.id, now),
+      userService.registerLoginAttempt({ email, ip, success: false }),
+    ]);
     throw new StaffLoginError('INVALID_CREDENTIALS', 'Identifiants incorrects.', 401);
   }
+  await Promise.all([
+    userService.clearLoginFailures(user.id),
+    userService.registerLoginAttempt({ email, ip, success: true }),
+  ]);
   return { user };
 }
 
@@ -82,6 +102,7 @@ function attachStaffSessionCookie(res, user) {
     httpOnly: true,
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
+    path: '/api',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
   return token;

@@ -51,6 +51,7 @@ export default function App() {
                       <Route path="lois" element={<Pages.AdminLaws />} />
                       <Route path="messages-contact" element={<Pages.AdminContactMessages />} />
                       <Route path="securite-compte" element={<Pages.AdminAccountSecurity />} />
+                      <Route path="audit-logs" element={<Pages.AdminAuditLogs />} />
                     </Route>
                   </Route>
                 </Route>

@@ -114,6 +114,11 @@ export function AdminLayout() {
                   Sécurité du compte
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className={sub} to="/admin/audit-logs">
+                  Audit logs
+                </NavLink>
+              </li>
             </ul>
           </nav>
         </div>

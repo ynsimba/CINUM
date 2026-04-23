@@ -7,12 +7,14 @@ const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const prisma = require('./lib/prisma');
 const { csrfProtection } = require('./middleware/csrf');
+const { requestLogger } = require('./middleware/requestLogger');
 
 const authRoutes = require('./routes/auth');
 const publicRoutes = require('./routes/public');
 const contactRoutes = require('./routes/contact');
 const reportsRoutes = require('./routes/reports');
 const adminRoutes = require('./routes/admin');
+const { adminAuditLogger } = require('./middleware/adminAuditLogger');
 
 /** 5001 par défaut : sur macOS, le port 5000 est souvent pris par AirPlay (réponses HTTP 403). */
 const PORT = process.env.PORT || 5001;
@@ -60,6 +62,17 @@ async function main() {
       contentSecurityPolicy: false,
       crossOriginEmbedderPolicy: false,
       crossOriginResourcePolicy: { policy: 'cross-origin' },
+      referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+      dnsPrefetchControl: { allow: false },
+      permittedCrossDomainPolicies: { permittedPolicies: 'none' },
+      permissionsPolicy: {
+        camera: [],
+        microphone: [],
+        geolocation: [],
+        payment: [],
+        usb: [],
+        interestCohort: [],
+      },
       ...(isProd
         ? {
             strictTransportSecurity: {
@@ -89,6 +102,9 @@ async function main() {
   app.use(express.json({ limit: '1mb' }));
   app.use(express.urlencoded({ extended: true, limit: '1mb' }));
   app.use(cookieParser());
+  app.use(requestLogger);
+
+  const startedAt = Date.now();
 
   const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -106,13 +122,44 @@ async function main() {
     legacyHeaders: false,
   });
 
-  app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+  app.use(
+    '/uploads',
+    express.static(path.join(__dirname, 'uploads'), {
+      setHeaders(res) {
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+      },
+    })
+  );
 
   app.use('/api/auth', authRoutes);
   app.use('/api/public', publicRoutes);
   app.use('/api/contact', strictLimiter, csrfProtection, contactRoutes);
   app.use('/api/reports', strictLimiter, csrfProtection, reportsRoutes);
-  app.use('/api/admin', strictLimiter, csrfProtection, adminRoutes);
+  app.use('/api/admin', strictLimiter, csrfProtection, adminAuditLogger, adminRoutes);
+
+  app.get('/healthz', (_req, res) => {
+    res.json({ ok: true, uptimeSec: Math.round(process.uptime()), startedAt: new Date(startedAt).toISOString() });
+  });
+
+  app.get('/readyz', async (_req, res) => {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      res.json({ ok: true, db: 'up' });
+    } catch {
+      res.status(503).json({ ok: false, db: 'down' });
+    }
+  });
+
+  app.get('/metrics', (_req, res) => {
+    res.type('text/plain');
+    res.send(
+      [
+        '# HELP process_uptime_seconds Node process uptime',
+        '# TYPE process_uptime_seconds gauge',
+        `process_uptime_seconds ${Math.round(process.uptime())}`,
+      ].join('\n')
+    );
+  });
 
   app.use((err, _req, res, next) => {
     if (err && err.code === 'LIMIT_FILE_SIZE') {

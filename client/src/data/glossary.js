@@ -41,4 +41,9 @@ export const GLOSSARY_TERMS = [
     definition:
       'Se faire passer pour une personne ou une organisation (compte, adresse, logo) afin de tromper des tiers, souvent à des fins frauduleuses.',
   },
+  {
+    term: 'Souveraineté numérique',
+    definition:
+      'Capacité d’un État et de ses institutions à protéger ses citoyens, ses données stratégiques et son espace informationnel, tout en orientant les usages numériques selon ses priorités nationales.',
+  },
 ]

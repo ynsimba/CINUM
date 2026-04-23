@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { api, fetchCsrf } from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
+import { confirmDangerAction, DEFAULT_PAGE_SIZE, downloadCsv, paginateRows } from '../../utils/adminTable'
 
 export function AdminResources() {
   const refreshTick = useAdminRefreshTick()
@@ -10,6 +11,8 @@ export function AdminResources() {
   const [file, setFile] = useState(null)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [page, setPage] = useState(1)
 
   const load = () => api.get('/api/admin/resources').then((r) => setItems(r.data.items || []))
 
@@ -20,6 +23,18 @@ export function AdminResources() {
   useEffect(() => {
     load().catch(() => {})
   }, [refreshTick])
+
+  useEffect(() => {
+    setPage(1)
+  }, [searchQuery])
+
+  const filtered = items.filter((r) => {
+    const q = searchQuery.trim().toLowerCase()
+    if (!q) return true
+    const blob = `${r.title || ''} ${r.description || ''} ${r.fileName || ''}`.toLowerCase()
+    return q.split(/\s+/).every((t) => blob.includes(t))
+  })
+  const pager = paginateRows(filtered, page, DEFAULT_PAGE_SIZE)
 
   async function upload(e) {
     e.preventDefault()
@@ -37,10 +52,24 @@ export function AdminResources() {
   }
 
   async function remove(id) {
-    if (!isAdmin || !window.confirm('Supprimer cette ressource ?')) return
+    if (!isAdmin || !confirmDangerAction('cette ressource')) return
     await fetchCsrf()
     await api.delete(`/api/admin/resources/${id}`)
     load()
+  }
+
+  function exportCsv() {
+    downloadCsv(
+      `ressources-${new Date().toISOString().slice(0, 10)}.csv`,
+      filtered.map((r) => ({
+        id: r._id,
+        title: r.title || '',
+        description: r.description || '',
+        fileName: r.fileName || '',
+        fileUrl: r.fileUrl || '',
+        createdAt: r.createdAt || '',
+      }))
+    )
   }
 
   return (
@@ -70,8 +99,28 @@ export function AdminResources() {
           </form>
         </div>
       </div>
+      <div className="row g-2 align-items-end mb-3">
+        <div className="col-12 col-lg-8">
+          <label className="form-label small mb-1">Recherche</label>
+          <input
+            type="search"
+            className="form-control form-control-sm"
+            placeholder="Titre, description, nom de fichier…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="col-12 col-lg-4 d-grid">
+          <button type="button" className="btn btn-outline-secondary btn-sm" onClick={exportCsv}>
+            Export CSV
+          </button>
+        </div>
+      </div>
+      <p className="small text-muted mb-2">
+        {pager.total} résultat{pager.total > 1 ? 's' : ''} · page {pager.page}/{pager.totalPages}
+      </p>
       <ul className="list-group">
-        {items.map((r) => (
+        {pager.items.map((r) => (
           <li key={r._id} className="list-group-item d-flex justify-content-between align-items-center">
             <a href={r.fileUrl} target="_blank" rel="noreferrer">
               {r.title}
@@ -84,6 +133,24 @@ export function AdminResources() {
           </li>
         ))}
       </ul>
+      {pager.totalPages > 1 && (
+        <div className="d-flex flex-wrap gap-2 align-items-center mt-3">
+          <button type="button" className="btn btn-sm btn-outline-secondary" disabled={pager.page <= 1} onClick={() => setPage((p) => p - 1)}>
+            Précédent
+          </button>
+          <span className="small text-muted">
+            Page {pager.page} / {pager.totalPages}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            disabled={pager.page >= pager.totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Suivant
+          </button>
+        </div>
+      )}
     </>
   )
 }

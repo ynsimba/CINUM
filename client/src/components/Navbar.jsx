@@ -135,7 +135,7 @@ export function Navbar() {
                 </a>
                 <ul
                   className="dropdown-menu dropdown-menu-lg-end shadow border-0 py-3"
-                  style={{ minWidth: '18rem', maxHeight: 'min(85vh, 32rem)', overflowY: 'auto' }}
+                  style={{ minWidth: 'min(18rem, calc(100vw - 1.5rem))', maxHeight: 'min(85vh, 32rem)', overflowY: 'auto' }}
                   aria-labelledby="navPortal"
                 >
                   <li>

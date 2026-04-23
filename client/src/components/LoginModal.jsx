@@ -12,7 +12,7 @@ export function LoginModal() {
   const { t } = useTranslation()
   const errRef = useRef(null)
   const { user, loginStaff } = useAuth()
-  const [email, setEmail] = useState('')
+  const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [err, setErr] = useState(null)
@@ -54,7 +54,7 @@ export function LoginModal() {
   useEffect(() => {
     if (!isOpen) return undefined
     const id = window.setTimeout(() => {
-      document.getElementById('login-modal-email')?.focus()
+      document.getElementById('login-modal-identifier')?.focus()
     }, 50)
     return () => window.clearTimeout(id)
   }, [isOpen])
@@ -64,7 +64,7 @@ export function LoginModal() {
     setErr(null)
     setLoading(true)
     try {
-      await loginStaff(email, password)
+      await loginStaff(identifier, password)
       navigate(from, { replace: true })
     } catch (ex) {
       setErr(staffLoginErrorMessage(ex))
@@ -124,17 +124,18 @@ export function LoginModal() {
               </p>
               <form onSubmit={onSubmit} noValidate>
                 <div className="mb-3">
-                  <label className="form-label" htmlFor="login-modal-email">
-                    Courriel
+                  <label className="form-label" htmlFor="login-modal-identifier">
+                    Identifiant
                   </label>
                   <input
-                    id="login-modal-email"
-                    type="email"
+                    id="login-modal-identifier"
+                    type="text"
                     autoComplete="username"
+                    placeholder="admin"
                     className="form-control"
-                    value={email}
+                    value={identifier}
                     onChange={(e) => {
-                      setEmail(e.target.value)
+                      setIdentifier(e.target.value)
                       if (err) setErr(null)
                     }}
                     required

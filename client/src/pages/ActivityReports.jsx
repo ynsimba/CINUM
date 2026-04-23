@@ -7,13 +7,17 @@ export function ActivityReports() {
     <>
       <Seo
         title="Rapports d’activité — Civisme numérique RDC"
-        description="Téléchargement des rapports d’activité annuels du portail (publications institutionnelles)."
+        description="Rapports d’activité institutionnels sur les actions de civisme numérique, de prévention et de protection dans le cyberespace."
       />
       <PageHeader
         title="Rapports d’activité"
-        lead="Documents de synthèse publiés annuellement par l’entité porteuse (à compléter)."
+        lead="Documents de synthèse sur les résultats, actions de prévention et mesures de protection menées par l’entité porteuse."
       />
       <div className="container px-3 px-sm-4 pb-4 pb-md-5">
+        <div className="alert alert-light border mb-4" role="note">
+          Les rapports d&apos;activité rendent compte des progrès réalisés pour renforcer une société congolaise plus
+          éclairée, plus responsable et plus sécurisée face aux menaces numériques.
+        </div>
         {ACTIVITY_REPORTS.length === 0 ? (
           <p className="text-muted">
             Aucun rapport n’est publié pour le moment. Ajoutez les fichiers PDF dans{' '}

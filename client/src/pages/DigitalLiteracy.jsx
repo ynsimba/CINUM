@@ -188,13 +188,17 @@ export function DigitalLiteracy() {
     <>
       <Seo
         title="Littératie aux médias numériques — Civisme numérique RDC"
-        description="Définitions, enjeux pédagogiques, citoyenneté numérique, cadre de compétences, programme scolaire, efficacité de l’éducation aux médias et pratiques exemplaires — portail CINUM."
+        description="L’éducation au civisme numérique comme enjeu de sécurité nationale, de cohésion sociale et de souveraineté : repères et pratiques pour comprendre et agir."
       />
       <PageHeader
         title="Littératie numérique"
-        lead="Littératie aux médias numériques, citoyenneté et éducation aux médias : repères pour comprendre et agir."
+        lead="Former pour prévenir, encadrer pour orienter, protéger pour sécuriser : repères pour renforcer la résilience citoyenne dans le cyberespace."
       />
       <div className="container px-3 px-sm-4 pb-4 pb-md-5">
+        <div className="alert alert-light border mb-4" role="note">
+          La littératie numérique soutient une stratégie publique durable : <strong>former pour prévenir</strong>,{' '}
+          <strong>encadrer pour orienter</strong> et <strong>protéger pour sécuriser</strong>.
+        </div>
         <div className="row g-4 g-lg-5">
           <aside className="col-lg-4">
             <nav

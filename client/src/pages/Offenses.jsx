@@ -13,6 +13,11 @@ export function Offenses() {
         lead="Vue d’ensemble pédagogique ; qualification juridique définitive relevant des juridictions compétentes."
       />
       <div className="container px-3 px-sm-4 pb-4 pb-md-5">
+        <div className="alert alert-light border mb-4" role="note">
+          Dans le contexte actuel, les infractions numériques ne concernent pas uniquement les victimes directes : elles
+          peuvent fragiliser la cohésion sociale, la confiance publique et la stabilité des institutions. La prévention
+          demeure un axe prioritaire de sécurité collective.
+        </div>
         <div className="accordion" id="accOffenses">
           <div className="accordion-item">
             <h2 className="accordion-header">
@@ -69,6 +74,11 @@ export function Offenses() {
             </div>
           </div>
         </div>
+        <p className="small text-muted mt-4 mb-0">
+          Approche recommandée : <strong>former pour prévenir</strong>, <strong>encadrer pour orienter</strong> et{' '}
+          <strong>protéger pour sécuriser</strong>, afin de réduire l&apos;exposition des citoyens et des organisations
+          aux menaces numériques.
+        </p>
       </div>
     </>
   )

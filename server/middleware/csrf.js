@@ -19,6 +19,7 @@ function issueCsrf(req, res) {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
+      path: '/api',
       maxAge: 24 * 60 * 60 * 1000,
     });
   }

@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Seo } from '../components/Seo'
+import { JsonLdArticle } from '../components/JsonLdArticle'
 import { api } from '../api/client'
 import { stripHtml, truncateMeta } from '../utils/seo'
 import { SafeHtml } from '../components/SafeHtml'
@@ -42,6 +43,16 @@ export function ArticleDetail() {
         title={`${article.title} — Civisme numérique RDC`}
         description={truncateMeta(stripHtml(article.excerpt || article.content))}
         ogType="article"
+        publishedTime={article.createdAt}
+        modifiedTime={article.updatedAt || article.createdAt}
+        imageAlt={article.title}
+      />
+      <JsonLdArticle
+        title={article.title}
+        description={truncateMeta(stripHtml(article.excerpt || article.content))}
+        urlPath={`/article/${article.slug}`}
+        publishedAt={article.createdAt}
+        updatedAt={article.updatedAt || article.createdAt}
       />
       <div className="bg-light border-bottom py-3">
         <div className="container px-3 px-sm-4">

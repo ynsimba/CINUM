@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { RichTextEditor } from '../../components/RichTextEditor'
 import { stripHtml } from '../../utils/seo'
 import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
+import { confirmDangerAction, DEFAULT_PAGE_SIZE, downloadCsv, paginateRows } from '../../utils/adminTable'
 
 const emptyForm = {
   title: '',
@@ -22,6 +23,9 @@ export function AdminArticles() {
   const [editingSlug, setEditingSlug] = useState(null)
   const [msg, setMsg] = useState(null)
   const [msgIsError, setMsgIsError] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [page, setPage] = useState(1)
 
   const load = () =>
     api.get('/api/admin/articles').then((r) => setItems(r.data.items || []))
@@ -34,6 +38,20 @@ export function AdminArticles() {
     if (editingId) return
     load().catch(() => {})
   }, [refreshTick, editingId])
+
+  useEffect(() => {
+    setPage(1)
+  }, [searchQuery, statusFilter])
+
+  const filtered = items.filter((a) => {
+    if (statusFilter === 'published' && !a.published) return false
+    if (statusFilter === 'draft' && a.published) return false
+    const q = searchQuery.trim().toLowerCase()
+    if (!q) return true
+    const blob = `${a.title || ''} ${a.excerpt || ''} ${a.category || ''}`.toLowerCase()
+    return q.split(/\s+/).every((t) => blob.includes(t))
+  })
+  const pager = paginateRows(filtered, page, DEFAULT_PAGE_SIZE)
 
   function startEdit(a) {
     setEditingId(a._id)
@@ -90,11 +108,25 @@ export function AdminArticles() {
   }
 
   async function remove(id) {
-    if (!isAdmin || !window.confirm('Supprimer cet article ?')) return
+    if (!isAdmin || !confirmDangerAction("l'article")) return
     await fetchCsrf()
     await api.delete(`/api/admin/articles/${id}`)
     if (editingId === id) cancelEdit()
     load()
+  }
+
+  function exportCsv() {
+    downloadCsv(
+      `articles-${new Date().toISOString().slice(0, 10)}.csv`,
+      filtered.map((a) => ({
+        id: a._id,
+        title: a.title || '',
+        category: a.category || '',
+        slug: a.slug || '',
+        published: a.published ? 'oui' : 'non',
+        updatedAt: a.updatedAt || '',
+      }))
+    )
   }
 
   return (
@@ -170,8 +202,36 @@ export function AdminArticles() {
           </form>
         </div>
       </div>
+      <div className="row g-2 align-items-end mb-3">
+        <div className="col-12 col-lg-6">
+          <label className="form-label small mb-1">Recherche</label>
+          <input
+            type="search"
+            className="form-control form-control-sm"
+            placeholder="Titre, chapô, catégorie…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="col-6 col-lg-3">
+          <label className="form-label small mb-1">Statut</label>
+          <select className="form-select form-select-sm" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <option value="all">Tous</option>
+            <option value="published">Publiés</option>
+            <option value="draft">Brouillons</option>
+          </select>
+        </div>
+        <div className="col-6 col-lg-3 d-grid">
+          <button type="button" className="btn btn-outline-secondary btn-sm" onClick={exportCsv}>
+            Export CSV
+          </button>
+        </div>
+      </div>
+      <p className="small text-muted mb-2">
+        {pager.total} résultat{pager.total > 1 ? 's' : ''} · page {pager.page}/{pager.totalPages}
+      </p>
       <ul className="list-group">
-        {items.map((a) => (
+        {pager.items.map((a) => (
           <li key={a._id} className="list-group-item d-flex justify-content-between align-items-start flex-wrap gap-2">
             <div>
               <strong>{a.title}</strong>
@@ -190,6 +250,24 @@ export function AdminArticles() {
           </li>
         ))}
       </ul>
+      {pager.totalPages > 1 && (
+        <div className="d-flex flex-wrap gap-2 align-items-center mt-3">
+          <button type="button" className="btn btn-sm btn-outline-secondary" disabled={pager.page <= 1} onClick={() => setPage((p) => p - 1)}>
+            Précédent
+          </button>
+          <span className="small text-muted">
+            Page {pager.page} / {pager.totalPages}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            disabled={pager.page >= pager.totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Suivant
+          </button>
+        </div>
+      )}
     </>
   )
 }

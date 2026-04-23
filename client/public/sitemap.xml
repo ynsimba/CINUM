@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://cinum.cd/</loc></url>
+  <url><loc>https://cinum.cd/a-propos</loc></url>
+  <url><loc>https://cinum.cd/contact</loc></url>
+  <url><loc>https://cinum.cd/actualites</loc></url>
+  <url><loc>https://cinum.cd/espace-educatif</loc></url>
+  <url><loc>https://cinum.cd/litteratie-numerique</loc></url>
+  <url><loc>https://cinum.cd/droits</loc></url>
+  <url><loc>https://cinum.cd/devoirs</loc></url>
+  <url><loc>https://cinum.cd/infractions</loc></url>
+  <url><loc>https://cinum.cd/sanctions</loc></url>
+  <url><loc>https://cinum.cd/bonnes-pratiques</loc></url>
+  <url><loc>https://cinum.cd/faq</loc></url>
+  <url><loc>https://cinum.cd/glossaire</loc></url>
+  <url><loc>https://cinum.cd/presse</loc></url>
+  <url><loc>https://cinum.cd/rapports-activite</loc></url>
+  <url><loc>https://cinum.cd/signalement</loc></url>
+  <url><loc>https://cinum.cd/signalement/suivi</loc></url>
+  <url><loc>https://cinum.cd/confidentialite</loc></url>
+  <url><loc>https://cinum.cd/mentions-legales</loc></url>
+  <url><loc>https://cinum.cd/code-du-numerique</loc></url>
+</urlset>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Remplacer https://www.exemple.cd par l’URL publique canonique du site avant soumission à la Search Console. -->
   <url><loc>https://www.exemple.cd/</loc><changefreq>weekly</changefreq><priority>1</priority></url>
   <url><loc>https://www.exemple.cd/a-propos</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>

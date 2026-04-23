@@ -9,13 +9,13 @@ import { NewsCard } from '../components/NewsCard'
 
 /** Logos servis depuis `client/public/partners` (ex: `/partners/mon-logo.png`). */
 const PARTNER_LOGOS = [
-  '/partners/logo1.png',
-  '/partners/logo3.png',
-  '/partners/logo4.png',
-  '/partners/logo5.png',
-  '/partners/logo6.png',
-  '/partners/logo7.png',
-  '/partners/logo8.png',
+  { src: '/partners/logo1.png', alt: 'Logo partenaire technique 1' },
+  { src: '/partners/logo3.png', alt: 'Logo partenaire technique 2' },
+  { src: '/partners/logo4.png', alt: 'Logo partenaire technique 3' },
+  { src: '/partners/logo5.png', alt: 'Logo partenaire technique 4' },
+  { src: '/partners/logo6.png', alt: 'Logo partenaire technique 5' },
+  { src: '/partners/logo7.png', alt: 'Logo partenaire technique 6' },
+  { src: '/partners/logo8.png', alt: 'Logo partenaire technique 7' },
 ]
 
 export function Home() {
@@ -125,26 +125,25 @@ export function Home() {
                 </div>
                 <div className="home-pillar home-citizen-text">
                   <p className="mb-3">
-                    Le Parcours Citoyen Numerique vous accompagne dans le developpement d'une conscience numerique
-                    responsable et eclairee. Dans un monde ou les technologies occupent une place centrale dans nos
-                    vies, il devient essentiel de comprendre comment utiliser Internet de maniere reflechie,
-                    securisee et respectueuse des autres.
+                    La République Démocratique du Congo fait face à une mutation profonde des menaces qui pèsent sur sa
+                    stabilité sociale, économique et sécuritaire. Une partie de ces menaces se déploie désormais dans le
+                    cyberespace, où la manipulation de l&apos;information, la criminalité numérique et les atteintes à la
+                    dignité humaine fragilisent le tissu social.
                   </p>
                   <p className="mb-3">
-                    A travers ce parcours, vous apprendrez a identifier les informations fiables, a developper votre
-                    esprit critique face aux contenus en ligne et a reconnaitre les risques lies a la desinformation.
-                    Vous decouvrirez egalement comment proteger vos donnees personnelles, securiser vos comptes et
-                    adopter de bonnes pratiques pour preserver votre identite numerique.
+                    Face à cette réalité, l&apos;action publique ne peut pas être seulement répressive. Le portail CINUM
+                    promeut une approche globale autour de trois priorités : <strong>former pour prévenir</strong>,{' '}
+                    <strong>encadrer pour orienter</strong> et <strong>protéger pour sécuriser</strong>.
                   </p>
                   <p className="mb-3">
-                    Le programme vous invite aussi a reflechir a la maniere dont nous interagissons sur les
-                    plateformes numeriques. Il encourage des comportements fondes sur le respect, l'ecoute et la
-                    responsabilite, afin de favoriser des echanges constructifs sur les reseaux sociaux et dans les
-                    espaces de discussion en ligne.
+                    L&apos;éducation au civisme numérique est un levier stratégique de souveraineté nationale : elle rend
+                    les citoyens plus conscients des enjeux technologiques, plus responsables dans leurs interactions en
+                    ligne et plus résilients face aux tentatives de fraude et de manipulation.
                   </p>
                   <p className="mb-0">
-                    Grace a ce programme, chaque utilisateur, qu'il soit adolescent ou adulte, decouvre ses droits et
-                    ses devoirs, et apprend a agir de maniere reflechie, ethique et positive dans le monde numerique.
+                    Investir dans le civisme numérique aujourd&apos;hui, c&apos;est protéger l&apos;avenir de la Nation et bâtir
+                    une société congolaise plus éclairée, plus responsable, plus sécurisée et adaptée aux défis du XXIe
+                    siècle.
                   </p>
                 </div>
               </div>
@@ -239,9 +238,19 @@ export function Home() {
               {PARTNER_LOGOS.length > 0 ? (
                 <div className="home-partners-viewport" aria-label="Defilement des logos partenaires">
                   <div className="home-partners-track">
-                    {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((src, i) => (
-                      <div key={`${src}-${i}`} className="home-partners-item">
-                        <img src={src} alt="" className="home-partners-logo" loading="lazy" decoding="async" />
+                    {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
+                      <div
+                        key={`${logo.src}-${i}`}
+                        className="home-partners-item"
+                        aria-hidden={i >= PARTNER_LOGOS.length ? 'true' : undefined}
+                      >
+                        <img
+                          src={logo.src}
+                          alt={i >= PARTNER_LOGOS.length ? '' : logo.alt}
+                          className="home-partners-logo"
+                          loading="lazy"
+                          decoding="async"
+                        />
                       </div>
                     ))}
                   </div>

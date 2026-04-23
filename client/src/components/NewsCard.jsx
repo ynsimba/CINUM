@@ -48,7 +48,7 @@ export function NewsCard({ item, className = '' }) {
         {showImg ? (
           <img
             src={cover}
-            alt=""
+            alt={`Illustration de l'actualité : ${item.title}`}
             className="news-card__img"
             loading="lazy"
             decoding="async"

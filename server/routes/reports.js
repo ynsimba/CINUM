@@ -5,10 +5,17 @@ const { parsePhoneNumberFromString } = require('libphonenumber-js');
 const { body, validationResult } = require('express-validator');
 const reportService = require('../services/reportService');
 const { ABUSE_TYPES, IDENTITY_DOC_TYPES } = require('../constants/reports');
-const { upload } = require('../middleware/upload');
+const path = require('path');
+const { upload, UPLOAD_DIR, ALLOWED_UPLOAD_MIMES } = require('../middleware/upload');
+const { validateUploadedFileOrRemove } = require('../lib/validateUploadedFile');
 const { sendReportEmails } = require('../services/mail');
 
 const router = express.Router();
+
+function isAnonymousReport(req) {
+  const v = String(req.body?.isAnonymous || '').trim().toLowerCase();
+  return v === 'true' || v === '1' || v === 'yes' || v === 'on';
+}
 
 const STATUS_PUBLIC_FR = {
   pending: 'En attente de traitement',
@@ -17,7 +24,8 @@ const STATUS_PUBLIC_FR = {
   closed: 'Dossier clos',
 };
 
-function requireIdentityFile(req, res, next) {
+function requireIdentityFileUnlessAnonymous(req, res, next) {
+  if (isAnonymousReport(req)) return next();
   if (!req.file) {
     return res.status(400).json({
       errors: [{ msg: 'Une copie de pièce d’identité est requise.', path: 'identityDocument' }],
@@ -96,37 +104,110 @@ router.post(
 router.post(
   '/',
   upload.single('identityDocument'),
-  requireIdentityFile,
+  requireIdentityFileUnlessAnonymous,
   [
-    body('lastName').trim().isLength({ min: 2, max: 120 }).withMessage('Nom requis (2 à 120 caractères).'),
-    body('postName').trim().isLength({ min: 1, max: 120 }).withMessage('Postnom requis (ou « N/A »).'),
-    body('firstName').trim().isLength({ min: 2, max: 120 }).withMessage('Prénom requis (2 à 120 caractères).'),
-    body('birthPlace').trim().isLength({ min: 2, max: 200 }).withMessage('Lieu de naissance requis.'),
-    body('birthDate')
+    body('isAnonymous')
+      .optional()
+      .custom((value) => ['true', 'false', '1', '0', 'yes', 'no', 'on', 'off'].includes(String(value).toLowerCase()))
+      .withMessage('Indicateur isAnonymous invalide.'),
+    body('lastName')
+      .optional({ values: 'falsy' })
       .trim()
-      .notEmpty()
-      .withMessage('Date de naissance requise.')
-      .custom((v) => {
+      .custom((value, { req }) => {
+        if (isAnonymousReport(req)) return true;
+        if (!value || value.length < 2 || value.length > 120) {
+          throw new Error('Nom requis (2 à 120 caractères).');
+        }
+        return true;
+      }),
+    body('postName')
+      .optional({ values: 'falsy' })
+      .trim()
+      .custom((value, { req }) => {
+        if (isAnonymousReport(req)) return true;
+        if (!value || value.length < 1 || value.length > 120) {
+          throw new Error('Postnom requis (ou « N/A »).');
+        }
+        return true;
+      }),
+    body('firstName')
+      .optional({ values: 'falsy' })
+      .trim()
+      .custom((value, { req }) => {
+        if (isAnonymousReport(req)) return true;
+        if (!value || value.length < 2 || value.length > 120) {
+          throw new Error('Prénom requis (2 à 120 caractères).');
+        }
+        return true;
+      }),
+    body('birthPlace')
+      .optional({ values: 'falsy' })
+      .trim()
+      .custom((value, { req }) => {
+        if (isAnonymousReport(req)) return true;
+        if (!value || value.length < 2 || value.length > 200) {
+          throw new Error('Lieu de naissance requis.');
+        }
+        return true;
+      }),
+    body('birthDate')
+      .optional({ values: 'falsy' })
+      .trim()
+      .custom((v, { req }) => {
+        if (isAnonymousReport(req)) return true;
+        if (!v) throw new Error('Date de naissance requise.');
         const d = new Date(v);
         if (Number.isNaN(d.getTime())) throw new Error('Date de naissance invalide.');
         return true;
       }),
-    body('maritalStatus').trim().isLength({ min: 2, max: 80 }).withMessage('État civil requis.'),
-    body('address').trim().isLength({ min: 5, max: 4000 }).withMessage('Adresse requise (5 à 4000 caractères).'),
+    body('maritalStatus')
+      .optional({ values: 'falsy' })
+      .trim()
+      .custom((value, { req }) => {
+        if (isAnonymousReport(req)) return true;
+        if (!value || value.length < 2 || value.length > 80) {
+          throw new Error('État civil requis.');
+        }
+        return true;
+      }),
+    body('address')
+      .optional({ values: 'falsy' })
+      .trim()
+      .custom((value, { req }) => {
+        if (isAnonymousReport(req)) return true;
+        if (!value || value.length < 5 || value.length > 4000) {
+          throw new Error('Adresse requise (5 à 4000 caractères).');
+        }
+        return true;
+      }),
     body('identityDocType')
-      .isIn(IDENTITY_DOC_TYPES)
-      .withMessage('Type de pièce d’identité invalide.'),
+      .optional({ values: 'falsy' })
+      .custom((value, { req }) => {
+        if (isAnonymousReport(req)) return true;
+        if (!IDENTITY_DOC_TYPES.includes(value)) throw new Error('Type de pièce d’identité invalide.');
+        return true;
+      }),
     body('abuseType').isIn(ABUSE_TYPES).withMessage("Type d'abus invalide."),
     body('description')
       .trim()
       .isLength({ min: 20, max: 600 })
       .withMessage('Description requise (20 à 600 caractères).'),
-    body('contactEmail').trim().notEmpty().withMessage('Email requis.').isEmail().normalizeEmail(),
-    body('contactPhone')
+    body('contactEmail')
+      .optional({ values: 'falsy' })
       .trim()
-      .notEmpty()
-      .withMessage('Téléphone requis.')
-      .custom((value) => {
+      .custom((value, { req }) => {
+        if (isAnonymousReport(req) && !value) return true;
+        if (!value) throw new Error('Email requis.');
+        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        if (!ok) throw new Error('Email invalide.');
+        return true;
+      }),
+    body('contactPhone')
+      .optional({ values: 'falsy' })
+      .trim()
+      .custom((value, { req }) => {
+        if (isAnonymousReport(req) && !value) return true;
+        if (!value) throw new Error('Téléphone requis.');
         const p = parsePhoneNumberFromString(value);
         if (!p || !p.isValid()) {
           throw new Error('Numéro de téléphone invalide.');
@@ -139,6 +220,17 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    const anonymous = isAnonymousReport(req);
+    if (!anonymous && req.file) {
+      const identityPath = path.join(UPLOAD_DIR, req.file.filename);
+      const fileCheck = await validateUploadedFileOrRemove(identityPath, ALLOWED_UPLOAD_MIMES);
+      if (!fileCheck.ok) {
+        return res.status(400).json({
+          error:
+            'Le fichier fourni ne correspond pas à un type autorisé (contenu invalide ou pièce d’identité illisible).',
+        });
+      }
+    }
     try {
       const reference = await reportService.generateUniqueReference();
       if (!reference) {
@@ -147,26 +239,28 @@ router.post(
       const accessSecret = generateAccessSecret();
       const lookupSecretHash = await bcrypt.hash(accessSecret, 10);
 
-      const phoneParsed = parsePhoneNumberFromString(String(req.body.contactPhone).trim());
-      const birthDate = new Date(req.body.birthDate);
-      if (Number.isNaN(birthDate.getTime())) {
+      const phoneRaw = String(req.body.contactPhone || '').trim();
+      const phoneParsed = phoneRaw ? parsePhoneNumberFromString(phoneRaw) : null;
+      const birthDateRaw = String(req.body.birthDate || '').trim();
+      const birthDate = birthDateRaw ? new Date(birthDateRaw) : null;
+      if (!anonymous && (!birthDate || Number.isNaN(birthDate.getTime()))) {
         return res.status(400).json({ errors: [{ msg: 'Date de naissance invalide.', path: 'birthDate' }] });
       }
 
       const report = await reportService.create({
-        lastName: req.body.lastName.trim(),
-        postName: req.body.postName.trim(),
-        firstName: req.body.firstName.trim(),
-        birthPlace: req.body.birthPlace.trim(),
+        lastName: anonymous ? '' : req.body.lastName.trim(),
+        postName: anonymous ? '' : req.body.postName.trim(),
+        firstName: anonymous ? '' : req.body.firstName.trim(),
+        birthPlace: anonymous ? '' : req.body.birthPlace.trim(),
         birthDate,
-        maritalStatus: req.body.maritalStatus.trim(),
-        address: req.body.address.trim(),
-        identityDocType: req.body.identityDocType,
-        identityDocPath: req.file.filename,
-        identityDocOriginalName: req.file.originalname || '',
+        maritalStatus: anonymous ? '' : req.body.maritalStatus.trim(),
+        address: anonymous ? '' : req.body.address.trim(),
+        identityDocType: anonymous ? '' : req.body.identityDocType,
+        identityDocPath: anonymous || !req.file ? '' : req.file.filename,
+        identityDocOriginalName: anonymous || !req.file ? '' : req.file.originalname || '',
         abuseType: req.body.abuseType,
         description: req.body.description,
-        contactEmail: req.body.contactEmail || '',
+        contactEmail: anonymous ? String(req.body.contactEmail || '').trim() : req.body.contactEmail || '',
         contactPhone: phoneParsed ? phoneParsed.format('E.164') : '',
         reference,
         lookupSecretHash,

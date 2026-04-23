@@ -34,6 +34,10 @@ export function DigitalCode() {
         <article aria-labelledby={pageTitleId}>
           <div className="row justify-content-center">
             <div className="col-12 col-lg-9 min-w-0">
+            <div className="alert alert-light border mb-4" role="note">
+              Le Code du numérique s&apos;inscrit dans une vision de souveraineté et de résilience : il encadre les usages,
+              protège les personnes et sécurise les activités numériques face aux risques émergents.
+            </div>
             <div className="card border-0 shadow-sm mb-4">
               <div className="card-body cinum-dc-pdf-card">
                 <div className="min-w-0">
@@ -197,6 +201,11 @@ export function DigitalCode() {
               <p className="small mb-2">{t(`${p}.outro_2`)}</p>
               <p className="small mb-0">{t(`${p}.outro_3`)}</p>
             </div>
+
+            <p className="small mt-4 mb-0">
+              Cette dynamique repose sur un triptyque d&apos;action publique : <strong>former pour prévenir</strong>,{' '}
+              <strong>encadrer pour orienter</strong> et <strong>protéger pour sécuriser</strong>.
+            </p>
 
             <p className="small text-muted mt-4 mb-0">{t(`${p}.disclaimer`)}</p>
             </div>

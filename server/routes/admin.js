@@ -8,8 +8,9 @@ const reportService = require('../services/reportService');
 const contactService = require('../services/contactService');
 const { STATUSES } = require('../constants/reports');
 const { requireAuth, requireRole } = require('../middleware/auth');
-const { upload, UPLOAD_DIR } = require('../middleware/upload');
-const { uploadEditor } = require('../middleware/uploadEditor');
+const { upload, UPLOAD_DIR, ALLOWED_UPLOAD_MIMES } = require('../middleware/upload');
+const { uploadEditor, ALLOWED_EDITOR_MIMES } = require('../middleware/uploadEditor');
+const { validateUploadedFileOrRemove } = require('../lib/validateUploadedFile');
 const { sanitizeEditorHtml, plainTextLength } = require('../lib/sanitizeContent');
 const { toClientDoc } = require('../lib/serialize');
 const prisma = require('../lib/prisma');
@@ -186,6 +187,25 @@ router.get('/dashboard', async (_req, res) => {
   }
 });
 
+router.get('/audit-logs', requireAdminRole, async (req, res) => {
+  try {
+    const takeRaw = Number(req.query.take || 100);
+    const take = Number.isFinite(takeRaw) ? Math.min(Math.max(takeRaw, 1), 500) : 100;
+    const rows = await prisma.adminAuditLog.findMany({
+      orderBy: { createdAt: 'desc' },
+      take,
+      include: {
+        actor: {
+          select: { id: true, name: true, email: true, role: true },
+        },
+      },
+    });
+    return res.json({ items: rows });
+  } catch {
+    return res.status(500).json({ error: 'Erreur serveur.' });
+  }
+});
+
 /** Messages du formulaire Contact (site public) */
 router.get('/contact-messages', async (_req, res) => {
   try {
@@ -231,6 +251,11 @@ router.post(
   },
   async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'Fichier requis.' });
+    const fp = path.join(UPLOAD_DIR, req.file.filename);
+    const v = await validateUploadedFileOrRemove(fp, ALLOWED_EDITOR_MIMES);
+    if (!v.ok) {
+      return res.status(400).json({ error: 'Le média ne correspond pas à un type autorisé (contenu invalide).' });
+    }
     return res.json({ url: `/uploads/${req.file.filename}` });
   }
 );
@@ -415,6 +440,11 @@ router.post(
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     if (!req.file) return res.status(400).json({ error: 'Fichier requis.' });
+    const fp = path.join(UPLOAD_DIR, req.file.filename);
+    const v = await validateUploadedFileOrRemove(fp, ALLOWED_UPLOAD_MIMES);
+    if (!v.ok) {
+      return res.status(400).json({ error: 'Le fichier ne correspond pas à un document autorisé (contenu invalide).' });
+    }
     try {
       const publicPath = `/uploads/${req.file.filename}`;
       const doc = await resourceService.create({

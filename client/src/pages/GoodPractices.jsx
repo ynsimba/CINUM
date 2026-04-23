@@ -3,30 +3,30 @@ import { PageHeader } from '../components/PageHeader'
 
 const PRACTICE_SECTIONS = [
   {
-    id: 'security',
-    title: 'Sécurité',
+    id: 'prevent',
+    title: 'Former pour prévenir',
     items: [
-      "Mots de passe longs et uniques ; activation de l'authentification à deux facteurs lorsque possible ;",
-      'Mises à jour régulières des systèmes et applications ;',
-      'Méfiance envers les pièces jointes et liens inattendus.',
+      'Développer l’esprit critique avant de partager une information ;',
+      'Sensibiliser les jeunes aux risques de manipulation, de fraude et de cyberharcèlement ;',
+      'Former à l’identification des sources fiables et des contenus trompeurs.',
     ],
   },
   {
-    id: 'personal-data',
-    title: 'Données personnelles',
+    id: 'guide',
+    title: 'Encadrer pour orienter',
     items: [
-      "Limiter la diffusion d'informations sensibles ;",
-      'Lire les politiques de confidentialité des services utilisés ;',
-      'Demander le retrait de contenus illicites par les voies prévues.',
+      'Encourager un usage responsable et respectueux des plateformes numériques ;',
+      'Promouvoir des règles claires de conduite pour les élèves, familles et communautés ;',
+      'Orienter rapidement vers les mécanismes de signalement et d’accompagnement.',
     ],
   },
   {
-    id: 'responsibility',
-    title: 'Responsabilité',
+    id: 'protect',
+    title: 'Protéger pour sécuriser',
     items: [
-      'Recouper les sources avant de relayer une information ;',
-      'Signaler les contenus graves aux plateformes et aux autorités ;',
-      'Préserver un débat respectueux, y compris en cas de désaccord.',
+      "Utiliser des mots de passe forts, uniques et l'authentification à deux facteurs ;",
+      'Mettre à jour régulièrement appareils et applications ;',
+      'Signaler sans délai les contenus graves aux plateformes et aux autorités compétentes.',
     ],
   },
 ]
@@ -36,13 +36,17 @@ export function GoodPractices() {
     <>
       <Seo
         title="Bonnes pratiques — Civisme numérique RDC"
-        description="Conseils pour un usage sûr d’Internet et des réseaux sociaux : mots de passe, confidentialité, vérification des sources — portail civisme numérique RDC."
+        description="Bonnes pratiques du civisme numérique en RDC : former pour prévenir, encadrer pour orienter et protéger pour sécuriser."
       />
       <PageHeader
         title="Bonnes pratiques"
-        lead="Sécurité numérique, protection des données et comportement responsable."
+        lead="Mesures prioritaires pour renforcer la résilience citoyenne et protéger la Nation dans le cyberespace."
       />
       <div className="container px-3 px-sm-4 pb-4 pb-md-5" aria-label="Conseils de bonnes pratiques numériques">
+        <p className="text-muted mb-4">
+          Investir dans le civisme numérique aujourd&apos;hui, c&apos;est garantir une société congolaise plus éclairée, plus
+          responsable et plus sécurisée demain.
+        </p>
         <div className="row g-4">
           {PRACTICE_SECTIONS.map((section) => (
             <section key={section.id} className="col-lg-4">

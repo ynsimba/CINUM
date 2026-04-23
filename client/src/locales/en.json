@@ -34,7 +34,7 @@
   },
   "banner": {
     "title": "Digital citizenship",
-    "subtitle": "Democratic Republic of the Congo — Information and awareness portal"
+    "subtitle": "Democratic Republic of the Congo — Educate to prevent, guide to orient, protect to secure"
   },
   "quick": {
     "rights": "Rights",
@@ -43,26 +43,26 @@
   },
   "home": {
     "seo_title": "Home — Digital citizenship DRC",
-    "seo_description": "Institutional portal on digital citizenship in the Democratic Republic of the Congo: online rights and duties, abuse prevention, secure reporting and references to the legal framework (Act 20/017).",
+    "seo_description": "Institutional digital citizenship portal in the Democratic Republic of the Congo: educate to prevent, guide to orient, and protect to secure against cyber threats.",
     "hero_quick_aria": "Quick access",
     "hero_img_alt": "Illustration: balance between digital citizenship and online safety",
     "hero_eyebrow": "Institutional portal",
-    "hero_official": "Official notice: this site explains rights and duties related to the use of information and communication technologies, in line with Congolese law, in particular Act No. 20/017 on telecommunications and ICTs, and directs users to the competent authorities for remedies.",
-    "parcours_eyebrow": "Citizen journey",
+    "hero_official": "Official notice: this portal addresses digital threats to social cohesion, the economy and national security through civic education, institutional guidance and protection mechanisms, in line with Congolese law.",
+    "parcours_eyebrow": "National vision",
     "more_eyebrow": "Resources",
     "more_title": "Go further",
-    "more_lead": "Training, help and transparency: direct access to complementary sections of the portal.",
+    "more_lead": "Resources to act with discernment: prevention, guidance, protection and institutional transparency.",
     "track_report": "Track a report",
     "link_privacy": "Privacy",
     "link_legal": "Legal notice",
     "pillars_lead": "Three areas: digital rights, duties and reporting abuse. Educational content (quizzes, educational space) and digital literacy are available from the banner above or from the links below.",
-    "pillars_heading": "Understand and act online",
+    "pillars_heading": "Educate, guide, protect",
     "pillar_rights_title": "Digital rights",
-    "pillar_rights_text": "Access, privacy, freedom of expression within the law: a clear overview.",
-    "pillar_duties_title": "Digital duties",
-    "pillar_duties_text": "Respect for others, checking information, responsibility when publishing content.",
+    "pillar_rights_text": "Strengthen civic awareness of information, technological and legal challenges.",
+    "pillar_duties_title": "Guide and orient",
+    "pillar_duties_text": "Promote responsible use, critical thinking and ethical conduct in digital spaces.",
     "pillar_report_title": "Report abuse",
-    "pillar_report_text": "Secure form to channel reports towards institutional handling and the ARPTC.",
+    "pillar_report_text": "Secure mechanism to protect citizens and route reports to institutional handling.",
     "pillar_read_more": "Learn more",
     "pillar_report_cta": "Open the form",
     "news_eyebrow": "Publications",
@@ -77,7 +77,7 @@
     "ministry_overlay": "MINISTRY OF NATIONAL EDUCATION AND NEW CITIZENSHIP"
   },
   "footer": {
-    "brand_intro": "National awareness portal on digital citizenship in the Democratic Republic of the Congo. Public information, references to the legal framework (Act 20/017, criminal law) and signposting to competent authorities.",
+    "brand_intro": "National digital citizenship portal in the Democratic Republic of the Congo: preventing information threats, guiding citizens and protecting digital space in line with the legal framework.",
     "brand_disclaimer": "Educational content — does not replace personal legal advice.",
     "col_portal": "The portal",
     "col_topics": "Topics",
@@ -117,9 +117,9 @@
   },
   "education": {
     "seo_title": "Educational space — Digital citizenship DRC",
-    "seo_description": "MCQ quizzes, articles, guides and legal references to understand digital citizenship in the DRC and track your progress.",
+    "seo_description": "Quizzes, articles, guides and legal references to build digitally responsible and resilient citizens in the DRC.",
     "title": "Educational space",
-    "lead": "Multiple-choice quizzes, articles, guides and legal references for learning.",
+    "lead": "Quizzes, guides and resources to build responsible digital citizenship that supports social cohesion.",
     "quiz_heading": "Quizzes (MCQ)",
     "quiz_intro_part1": "Answer the questions; your progress is saved on this device. At the end, a",
     "quiz_intro_strong": "score out of 20",
@@ -192,7 +192,7 @@
   "pages": {
     "rights": {
       "seo_title": "Digital rights — Digital citizenship DRC",
-      "seo_description": "Overview of digital rights in the DRC: privacy, freedom of expression, access — legal framework including Act 20/017 on telecommunications and ICTs.",
+      "seo_description": "Digital rights in the DRC: guidance to protect citizens, strengthen public trust and support national resilience.",
       "title": "Digital rights",
       "lead": "Educational overview based on applicable law, including Act 20/017 on telecommunications and ICTs.",
       "adults_title": "Rights of adults",
@@ -209,7 +209,7 @@
     },
     "duties": {
       "seo_title": "Digital duties — Digital citizenship DRC",
-      "seo_description": "Citizens’ duties online: respect for others, checking information and responsibility when publishing content, under Congolese law.",
+      "seo_description": "Online civic duties: responsibility, information verification and conduct that supports collective security.",
       "title": "Digital duties",
       "lead": "Citizen responsibilities and behaviour online, in line with Congolese law.",
       "h2_resp": "Citizen responsibilities",
@@ -223,9 +223,9 @@
     },
     "digitalCode": {
       "seo_title": "Digital Code (DRC) — Digital citizenship DRC",
-      "seo_description": "Plain-language overview of the DRC Digital Code: purpose, who it applies to, key definitions, rights and duties, e‑commerce, the role of the State, cybersecurity, and PDF download.",
+      "seo_description": "Plain-language overview of the DRC Digital Code: rights, duties and protection of national digital sovereignty.",
       "title": "Digital Code (DRC)",
-      "lead": "Educational summary: what this code is for, who it concerns, and the main rules in the Democratic Republic of the Congo.",
+      "lead": "Educational summary: understand the rules that frame digital use, protect citizens and secure the national ecosystem.",
       "pdf_cta": "Official text of the Digital Code",
       "pdf_hint": "Download the full document as a PDF.",
       "pdf_button": "Download PDF",
@@ -311,9 +311,9 @@
       "s11_i2": "applications;",
       "s11_i3": "digital platforms.",
       "s11_note": "Any use without authorisation is prohibited.",
-      "outro_1": "Digital technology in the Democratic Republic of the Congo is free, but governed by law.",
-      "outro_2": "Every user has rights, but also responsibilities.",
-      "outro_3": "Respecting the rules helps keep the digital environment safe and reliable for everyone.",
+      "outro_1": "Digital space in the Democratic Republic of the Congo is full of opportunities, but also responsibilities.",
+      "outro_2": "Every user, institution and organization contributes to safety and trust in the digital environment.",
+      "outro_3": "Respecting the rules supports social cohesion, national sovereignty and sustainable development.",
       "disclaimer": "This is educational plain-language content; it does not replace the official legal text or individual legal advice."
     }
   }

@@ -34,7 +34,7 @@
   },
   "banner": {
     "title": "Civisme numérique",
-    "subtitle": "République démocratique du Congo — Portail d'information et de sensibilisation"
+    "subtitle": "République démocratique du Congo — Former pour prévenir, encadrer pour orienter, protéger pour sécuriser"
   },
   "quick": {
     "rights": "Droits",
@@ -43,26 +43,26 @@
   },
   "home": {
     "seo_title": "Accueil — Civisme numérique RDC",
-    "seo_description": "Portail institutionnel du civisme numérique en République démocratique du Congo : droits et devoirs en ligne, prévention des abus, signalement sécurisé et références au cadre légal (loi n° 20/017).",
+    "seo_description": "Portail institutionnel du civisme numérique en République démocratique du Congo : former pour prévenir, encadrer pour orienter et protéger pour sécuriser face aux menaces du cyberespace.",
     "hero_quick_aria": "Accès rapide",
     "hero_img_alt": "Illustration : équilibre entre citoyenneté numérique et protection en ligne",
     "hero_eyebrow": "Portail institutionnel",
-    "hero_official": "Message officiel : ce site informe sur les droits et devoirs liés à l'usage des technologies de l'information et de la communication, conformément au cadre légal congolais, notamment la loi n° 20/017 relative aux télécommunications et aux TIC, et oriente vers les autorités compétentes pour les recours.",
-    "parcours_eyebrow": "Parcours citoyen",
+    "hero_official": "ce portail répond aux menaces numériques qui pèsent sur la cohésion sociale, l'économie et la sécurité nationale, en combinant éducation citoyenne, orientation institutionnelle et mécanismes de protection, conformément au cadre légal congolais.",
+    "parcours_eyebrow": "Vision nationale",
     "more_eyebrow": "Ressources",
     "more_title": "Pour aller plus loin",
-    "more_lead": "Formation, aide et transparence : accès directs aux rubriques complémentaires du portail.",
+    "more_lead": "Ressources pour agir avec discernement : prévention, orientation, protection et transparence institutionnelle.",
     "track_report": "Suivi d’un signalement",
     "link_privacy": "Confidentialité",
     "link_legal": "Mentions légales",
     "pillars_lead": "",
-    "pillars_heading": "Comprendre et agir en ligne",
+    "pillars_heading": "Former, encadrer, protéger",
     "pillar_rights_title": "Droits numériques",
-    "pillar_rights_text": "Accès, protection de la vie privée, liberté d'expression dans les limites légales : synthèse pédagogique.",
-    "pillar_duties_title": "Devoirs numériques",
-    "pillar_duties_text": "Respect d'autrui, vérification des informations, responsabilité lors de la publication de contenus.",
+    "pillar_rights_text": "Renforcer la conscience citoyenne face aux enjeux informationnels, technologiques et juridiques.",
+    "pillar_duties_title": "Encadrer et orienter",
+    "pillar_duties_text": "Promouvoir des usages responsables, l'esprit critique et la conduite éthique dans l'espace numérique.",
     "pillar_report_title": "Signaler un abus",
-    "pillar_report_text": "Formulaire sécurisé pour orienter les signalements vers le traitement institutionnel et l'ARPTC.",
+    "pillar_report_text": "Dispositif sécurisé pour protéger les citoyens et orienter les signalements vers le traitement institutionnel.",
     "pillar_read_more": "En savoir plus",
     "pillar_report_cta": "Accéder au formulaire",
     "news_eyebrow": "Publications",
@@ -77,7 +77,7 @@
     "ministry_overlay": "MINISTÈRE DE L'ÉDUCATION NATIONALE ET NOUVELLE CITOYENNETÉ"
   },
   "footer": {
-    "brand_intro": "Portail national de sensibilisation au civisme numérique en République démocratique du Congo. Information publique, références au cadre légal (loi n° 20/017, droit pénal) et orientation vers les autorités compétentes.",
+    "brand_intro": "Portail national du civisme numérique en République démocratique du Congo : prévention des menaces informationnelles, orientation des citoyens et protection de l'espace numérique dans le respect du cadre légal.",
     "brand_disclaimer": "Contenu à vocation pédagogique — ne remplace pas un avis juridique personnalisé.",
     "col_portal": "Le portail",
     "col_topics": "Rubriques",
@@ -117,9 +117,9 @@
   },
   "education": {
     "seo_title": "Espace éducatif — Civisme numérique RDC",
-    "seo_description": "Quiz QCM, articles, guides et références juridiques pour comprendre le civisme numérique en RDC et suivre votre progression.",
+    "seo_description": "Quiz, articles, guides et références juridiques pour former des citoyens numériquement responsables et résilients en RDC.",
     "title": "Espace éducatif",
-    "lead": "Quiz à choix multiples, articles, guides et références juridiques à vocation pédagogique.",
+    "lead": "Quiz, guides et ressources pour développer une citoyenneté numérique responsable au service de la cohésion sociale.",
     "quiz_heading": "Quiz (QCM)",
     "quiz_intro_part1": "Répondez aux questions ; votre progression est enregistrée sur cet appareil. À la fin, une",
     "quiz_intro_strong": "cote sur 20",
@@ -192,7 +192,7 @@
   "pages": {
     "rights": {
       "seo_title": "Droits numériques — Civisme numérique RDC",
-      "seo_description": "Synthèse des droits numériques en RDC : vie privée, liberté d’expression, accès — cadre légal dont la loi n° 20/017 sur les télécommunications et les TIC.",
+      "seo_description": "Droits numériques en RDC : repères pour protéger les citoyens, renforcer la confiance publique et soutenir la résilience nationale.",
       "title": "Droits numériques",
       "lead": "Synthèse pédagogique fondée sur le respect des lois en vigueur, dont la loi n° 20/017 relative aux télécommunications et aux TIC.",
       "adults_title": "Droits des majeurs",
@@ -209,7 +209,7 @@
     },
     "duties": {
       "seo_title": "Devoirs numériques — Civisme numérique RDC",
-      "seo_description": "Devoirs des citoyens en ligne : respect d’autrui, vérification des informations et responsabilité lors de la publication de contenus, selon le cadre légal congolais.",
+      "seo_description": "Devoirs des citoyens en ligne : responsabilité, vérification de l'information et comportements favorisant la sécurité collective.",
       "title": "Devoirs numériques",
       "lead": "Responsabilités citoyennes et comportement en ligne, dans le respect du cadre légal congolais.",
       "h2_resp": "Responsabilités citoyennes",
@@ -223,9 +223,9 @@
     },
     "digitalCode": {
       "seo_title": "Code du numérique (RDC) — Civisme numérique RDC",
-      "seo_description": "Vulgarisation du Code du numérique en RDC : objectifs, publics concernés, définitions, droits et obligations, commerce électronique, rôle de l'État, cybersécurité et téléchargement du texte en PDF.",
+      "seo_description": "Vulgarisation du Code du numérique en RDC : droits, obligations et protection de la souveraineté numérique nationale.",
       "title": "Code du numérique (RDC)",
-      "lead": "Synthèse pédagogique à vocation informative : à quoi sert ce code, qui est concerné, et quelles sont les règles essentielles en République démocratique du Congo.",
+      "lead": "Synthèse pédagogique : comprendre les règles qui encadrent les usages numériques, protègent les citoyens et sécurisent l'écosystème national.",
       "pdf_cta": "Texte officiel du Code du numérique",
       "pdf_hint": "Téléchargez le document complet au format PDF.",
       "pdf_button": "Télécharger le PDF",
@@ -311,9 +311,9 @@
       "s11_i2": "les applications ;",
       "s11_i3": "les plateformes numériques.",
       "s11_note": "Toute utilisation sans autorisation est interdite.",
-      "outro_1": "Le numérique en République démocratique du Congo est libre, mais encadré par la loi.",
-      "outro_2": "Chaque utilisateur dispose de droits, mais aussi de responsabilités.",
-      "outro_3": "Le respect des règles garantit un environnement numérique sûr et fiable pour tous.",
+      "outro_1": "Le numérique en République démocratique du Congo est un espace d'opportunités, mais aussi de responsabilités.",
+      "outro_2": "Chaque utilisateur, institution et organisation contribue à la sécurité et à la fiabilité de l'environnement numérique.",
+      "outro_3": "Le respect des règles soutient la cohésion sociale, la souveraineté nationale et le développement durable.",
       "disclaimer": "Ce texte est une vulgarisation à visée pédagogique ; il ne remplace pas le texte légal officiel ni un conseil juridique individualisé."
     }
   },

@@ -7,13 +7,17 @@ export function Faq() {
     <>
       <Seo
         title="FAQ — Civisme numérique RDC"
-        description="Questions fréquentes par thème : droits numériques, signalement et ARPTC."
+        description="Questions fréquentes sur les droits numériques, le signalement et la prévention, dans une approche de sécurité nationale et de cohésion sociale."
       />
       <PageHeader
         title="Foire aux questions"
-        lead="Réponses d’orientation ; elles ne remplacent pas un avis juridique personnalisé."
+        lead="Réponses d’orientation dans une logique de prévention, d’encadrement et de protection ; elles ne remplacent pas un avis juridique personnalisé."
       />
       <div className="container px-3 px-sm-4 pb-4 pb-md-5">
+        <div className="alert alert-light border mb-4" role="note">
+          Le civisme numérique est traité comme un enjeu stratégique : renforcer les capacités citoyennes pour prévenir
+          les risques, orienter les usages et protéger durablement la société.
+        </div>
         {FAQ_THEMES.map((theme) => (
           <section key={theme.id} className="mb-5" aria-labelledby={`faq-${theme.id}`}>
             <h2 id={`faq-${theme.id}`} className="h4 text-primary mb-3">

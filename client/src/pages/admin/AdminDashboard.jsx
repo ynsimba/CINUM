@@ -215,7 +215,7 @@ export function AdminDashboard() {
                           {item.meta ? ` · ${item.meta}` : ''}
                         </div>
                       </div>
-                      <div className="small text-muted text-nowrap">
+                      <div className="small text-muted cinum-admin-activity-date">
                         {new Date(item.at).toLocaleString('fr-FR')}
                       </div>
                     </div>

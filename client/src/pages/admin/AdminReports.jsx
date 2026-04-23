@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { api, fetchCsrf } from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
+import { confirmDangerAction, DEFAULT_PAGE_SIZE, downloadCsv, paginateRows } from '../../utils/adminTable'
 
 function attachmentHref(path) {
   if (!path) return '#'
@@ -45,6 +46,15 @@ function plaignantSummary(r) {
   const nom = [r.lastName, r.postName, r.firstName].filter(Boolean).join(' ').trim()
   if (nom) return nom
   return '—'
+}
+
+function isAnonymousReport(r) {
+  return (
+    !String(r.lastName || '').trim() &&
+    !String(r.postName || '').trim() &&
+    !String(r.firstName || '').trim() &&
+    !String(r.identityDocPath || '').trim()
+  )
 }
 
 function matchesSearch(r, query, abuseLabels) {
@@ -133,6 +143,7 @@ export function AdminReports() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortKey, setSortKey] = useState('created_desc')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [page, setPage] = useState(1)
 
   const load = () => api.get('/api/admin/reports').then((r) => setItems(r.data.items || []))
 
@@ -149,6 +160,7 @@ export function AdminReports() {
     if (statusFilter !== 'all') list = list.filter((r) => r.status === statusFilter)
     return sortReports(list, sortKey, STATUS_ORDER_MAP)
   }, [items, searchQuery, sortKey, statusFilter])
+  const pager = paginateRows(filteredItems, page, DEFAULT_PAGE_SIZE)
 
   const [apptDraft, setApptDraft] = useState({ date: '', note: '' })
 
@@ -167,12 +179,33 @@ export function AdminReports() {
     })
   }, [detail?._id, detail?.appointmentAt, detail?.appointmentNote])
 
+  useEffect(() => {
+    setPage(1)
+  }, [searchQuery, sortKey, statusFilter])
+
   async function remove(id) {
-    if (!isAdmin || !window.confirm('Supprimer définitivement ce signalement et ses pièces jointes ?')) return
+    if (!isAdmin || !confirmDangerAction('ce signalement et ses pièces jointes')) return
     await fetchCsrf()
     await api.delete(`/api/admin/reports/${id}`)
     if (detail?._id === id) setDetail(null)
     load()
+  }
+
+  function exportCsv() {
+    downloadCsv(
+      `signalements-${new Date().toISOString().slice(0, 10)}.csv`,
+      filteredItems.map((r) => ({
+        id: r._id,
+        reference: r.reference || '',
+        createdAt: r.createdAt || '',
+        updatedAt: r.updatedAt || '',
+        status: r.status || '',
+        abuseType: ABUSE_LABELS[r.abuseType] || r.abuseType || '',
+        complainant: plaignantSummary(r),
+        email: r.contactEmail || '',
+        phone: r.contactPhone || '',
+      }))
+    )
   }
 
   return (
@@ -232,11 +265,18 @@ export function AdminReports() {
             ))}
           </select>
         </div>
+        <div className="col-12 col-lg-12 d-flex justify-content-lg-end">
+          <button type="button" className="btn btn-outline-secondary btn-sm" onClick={exportCsv}>
+            Export CSV
+          </button>
+        </div>
       </div>
       <p className="small text-muted mb-2">
         {filteredItems.length === items.length
           ? `${items.length} dossier${items.length !== 1 ? 's' : ''}`
           : `${filteredItems.length} affiché${filteredItems.length !== 1 ? 's' : ''} sur ${items.length}`}
+        {' · '}
+        page {pager.page}/{pager.totalPages}
       </p>
       <div className="table-responsive">
         <table className="table table-sm align-middle">
@@ -263,7 +303,7 @@ export function AdminReports() {
                 </td>
               </tr>
             )}
-            {filteredItems.map((r) => (
+            {pager.items.map((r) => (
               <tr
                 key={r._id}
                 role="button"
@@ -280,7 +320,11 @@ export function AdminReports() {
                 <td className="small text-nowrap">{r.createdAt && new Date(r.createdAt).toLocaleString('fr-CD')}</td>
                 <td className="small font-monospace text-nowrap">{r.reference || '—'}</td>
                 <td className="small" style={{ maxWidth: 160 }}>
-                  <span className="text-break">{plaignantSummary(r)}</span>
+                  {isAnonymousReport(r) ? (
+                    <span className="badge text-bg-secondary">Signalement anonyme</span>
+                  ) : (
+                    <span className="text-break">{plaignantSummary(r)}</span>
+                  )}
                 </td>
                 <td className="small">{ABUSE_LABELS[r.abuseType] || r.abuseType}</td>
                 <td style={{ maxWidth: 200 }} onClick={(e) => e.stopPropagation()}>
@@ -343,6 +387,24 @@ export function AdminReports() {
           </tbody>
         </table>
       </div>
+      {pager.totalPages > 1 && (
+        <div className="d-flex flex-wrap gap-2 align-items-center mt-3">
+          <button type="button" className="btn btn-sm btn-outline-secondary" disabled={pager.page <= 1} onClick={() => setPage((p) => p - 1)}>
+            Précédent
+          </button>
+          <span className="small text-muted">
+            Page {pager.page} / {pager.totalPages}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            disabled={pager.page >= pager.totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Suivant
+          </button>
+        </div>
+      )}
 
       {detail && (
         <div
@@ -362,6 +424,9 @@ export function AdminReports() {
                 <h2 id="report-detail-title" className="modal-title h5 mb-0">
                   Dossier {detail.reference}
                 </h2>
+                {isAnonymousReport(detail) && (
+                  <span className="badge text-bg-secondary ms-2">Signalement anonyme</span>
+                )}
                 <button type="button" className="btn-close" aria-label="Fermer" onClick={() => setDetail(null)} />
               </div>
               <div className="modal-body">
@@ -375,7 +440,9 @@ export function AdminReports() {
                   <dt className="col-sm-3">Statut</dt>
                   <dd className="col-sm-9">{STATUSES.find((s) => s.value === detail.status)?.label || detail.status}</dd>
                 </dl>
-                <h3 className="h6 border-bottom pb-2 mb-2">Identité du plaignant</h3>
+                <h3 className="h6 border-bottom pb-2 mb-2">
+                  {isAnonymousReport(detail) ? 'Identité du plaignant (anonyme)' : 'Identité du plaignant'}
+                </h3>
                 <dl className="row small mb-3">
                   <dt className="col-sm-3">Nom</dt>
                   <dd className="col-sm-9 text-break">{detail.lastName || '—'}</dd>

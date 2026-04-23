@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { api, fetchCsrf } from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
+import { confirmDangerAction, DEFAULT_PAGE_SIZE, downloadCsv, paginateRows } from '../../utils/adminTable'
 
 export function AdminLaws() {
   const refreshTick = useAdminRefreshTick()
@@ -13,6 +14,8 @@ export function AdminLaws() {
     summary: '',
     fullTextUrl: '',
   })
+  const [searchQuery, setSearchQuery] = useState('')
+  const [page, setPage] = useState(1)
 
   const load = () => api.get('/api/admin/laws').then((r) => setItems(r.data.items || []))
 
@@ -24,6 +27,18 @@ export function AdminLaws() {
     load().catch(() => {})
   }, [refreshTick])
 
+  useEffect(() => {
+    setPage(1)
+  }, [searchQuery])
+
+  const filtered = items.filter((lw) => {
+    const q = searchQuery.trim().toLowerCase()
+    if (!q) return true
+    const blob = `${lw.title || ''} ${lw.reference || ''} ${lw.summary || ''}`.toLowerCase()
+    return q.split(/\s+/).every((t) => blob.includes(t))
+  })
+  const pager = paginateRows(filtered, page, DEFAULT_PAGE_SIZE)
+
   async function create(e) {
     e.preventDefault()
     if (!isAdmin) return
@@ -34,10 +49,23 @@ export function AdminLaws() {
   }
 
   async function remove(id) {
-    if (!isAdmin || !window.confirm('Supprimer cette référence ?')) return
+    if (!isAdmin || !confirmDangerAction('cette référence légale')) return
     await fetchCsrf()
     await api.delete(`/api/admin/laws/${id}`)
     load()
+  }
+
+  function exportCsv() {
+    downloadCsv(
+      `references-legales-${new Date().toISOString().slice(0, 10)}.csv`,
+      filtered.map((lw) => ({
+        id: lw._id,
+        title: lw.title || '',
+        reference: lw.reference || '',
+        summary: lw.summary || '',
+        fullTextUrl: lw.fullTextUrl || '',
+      }))
+    )
   }
 
   if (!isAdmin) {
@@ -74,8 +102,28 @@ export function AdminLaws() {
           </form>
         </div>
       </div>
+      <div className="row g-2 align-items-end mb-3">
+        <div className="col-12 col-lg-8">
+          <label className="form-label small mb-1">Recherche</label>
+          <input
+            type="search"
+            className="form-control form-control-sm"
+            placeholder="Titre, référence, résumé…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="col-12 col-lg-4 d-grid">
+          <button type="button" className="btn btn-outline-secondary btn-sm" onClick={exportCsv}>
+            Export CSV
+          </button>
+        </div>
+      </div>
+      <p className="small text-muted mb-2">
+        {pager.total} résultat{pager.total > 1 ? 's' : ''} · page {pager.page}/{pager.totalPages}
+      </p>
       <ul className="list-group">
-        {items.map((lw) => (
+        {pager.items.map((lw) => (
           <li key={lw._id} className="list-group-item d-flex justify-content-between">
             <span>
               <strong>{lw.reference}</strong> — {lw.title}
@@ -86,6 +134,24 @@ export function AdminLaws() {
           </li>
         ))}
       </ul>
+      {pager.totalPages > 1 && (
+        <div className="d-flex flex-wrap gap-2 align-items-center mt-3">
+          <button type="button" className="btn btn-sm btn-outline-secondary" disabled={pager.page <= 1} onClick={() => setPage((p) => p - 1)}>
+            Précédent
+          </button>
+          <span className="small text-muted">
+            Page {pager.page} / {pager.totalPages}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            disabled={pager.page >= pager.totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Suivant
+          </button>
+        </div>
+      )}
     </>
   )
 }

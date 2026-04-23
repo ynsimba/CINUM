@@ -13,6 +13,10 @@ export function Sanctions() {
         lead="Présentation pédagogique à partir du Code pénal congolais et du droit applicable ; les juges apprécient les faits au cas par cas."
       />
       <div className="container px-3 px-sm-4 pb-4 pb-md-5">
+        <div className="alert alert-light border-0 mb-3" role="note">
+          Les sanctions participent à la protection de l&apos;ordre public numérique, mais elles s&apos;inscrivent dans
+          une stratégie plus large de prévention, d&apos;orientation et de résilience citoyenne.
+        </div>
         <div className="alert alert-warning border-0" role="note">
           <strong>Important.</strong> Les peines varient selon la qualification des faits, la gravité et la récidive. Seules
           les décisions de justice ou les actes d&apos;autorité font foi. Les exemples ci-dessous sont simplifiés à des fins
@@ -66,6 +70,10 @@ export function Sanctions() {
             </div>
           </div>
         </div>
+        <p className="small text-muted mt-4 mb-0">
+          En pratique, la réponse institutionnelle combine la sanction des faits avérés avec des actions de civisme
+          numérique pour renforcer durablement la sécurité nationale et la cohésion sociale.
+        </p>
       </div>
     </>
   )

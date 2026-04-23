@@ -3,7 +3,7 @@ const fs = require('fs');
 const multer = require('multer');
 const { UPLOAD_DIR } = require('./upload');
 
-const allowed = new Set([
+const ALLOWED_EDITOR_MIMES = new Set([
   'image/jpeg',
   'image/png',
   'image/gif',
@@ -20,7 +20,7 @@ const allowed = new Set([
 ]);
 
 function fileFilter(_req, file, cb) {
-  if (allowed.has(file.mimetype)) cb(null, true);
+  if (ALLOWED_EDITOR_MIMES.has(file.mimetype)) cb(null, true);
   else cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE', 'Type de fichier non autorisé pour l’éditeur.'));
 }
 
@@ -39,4 +39,4 @@ const uploadEditor = multer({
   fileFilter,
 });
 
-module.exports = { uploadEditor };
+module.exports = { uploadEditor, ALLOWED_EDITOR_MIMES };

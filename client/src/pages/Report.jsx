@@ -52,6 +52,7 @@ export function Report() {
   const errRef = useRef(null)
   const identityFileRef = useRef(null)
   const [step, setStep] = useState(1)
+  const [isAnonymous, setIsAnonymous] = useState(false)
   const [identity, setIdentity] = useState(emptyIdentity)
   const [identityFile, setIdentityFile] = useState(null)
   const [complaint, setComplaint] = useState(emptyComplaint)
@@ -69,6 +70,7 @@ export function Report() {
   }, [err])
 
   function validateStep1() {
+    if (isAnonymous) return null
     if (!identity.lastName.trim()) return 'Indiquez votre nom.'
     if (!identity.postName.trim()) return 'Indiquez votre postnom (ou « N/A »).'
     if (!identity.firstName.trim()) return 'Indiquez votre prénom.'
@@ -115,8 +117,10 @@ export function Report() {
       setErr('La description ne doit pas dépasser 600 caractères.')
       return
     }
-    const parsed = parsePhoneNumberFromString(identity.phoneNational.trim(), identity.phoneCountryIso)
-    if (!parsed || !parsed.isValid()) {
+    const parsed = isAnonymous
+      ? parsePhoneNumberFromString(identity.phoneNational.trim(), identity.phoneCountryIso) || null
+      : parsePhoneNumberFromString(identity.phoneNational.trim(), identity.phoneCountryIso)
+    if (!isAnonymous && (!parsed || !parsed.isValid())) {
       setErr('Numéro de téléphone invalide pour le pays sélectionné.')
       return
     }
@@ -124,19 +128,22 @@ export function Report() {
     try {
       await fetchCsrf()
       const fd = new FormData()
-      fd.append('lastName', identity.lastName.trim())
-      fd.append('postName', identity.postName.trim())
-      fd.append('firstName', identity.firstName.trim())
-      fd.append('birthPlace', identity.birthPlace.trim())
-      fd.append('birthDate', identity.birthDate)
-      fd.append('maritalStatus', identity.maritalStatus)
-      fd.append('address', identity.address.trim())
-      fd.append('identityDocType', identity.identityDocType)
+      fd.append('isAnonymous', String(isAnonymous))
       fd.append('contactEmail', identity.contactEmail.trim())
-      fd.append('contactPhone', parsed.format('E.164'))
+      fd.append('contactPhone', parsed ? parsed.format('E.164') : '')
+      if (!isAnonymous) {
+        fd.append('lastName', identity.lastName.trim())
+        fd.append('postName', identity.postName.trim())
+        fd.append('firstName', identity.firstName.trim())
+        fd.append('birthPlace', identity.birthPlace.trim())
+        fd.append('birthDate', identity.birthDate)
+        fd.append('maritalStatus', identity.maritalStatus)
+        fd.append('address', identity.address.trim())
+        fd.append('identityDocType', identity.identityDocType)
+      }
       fd.append('abuseType', complaint.abuseType)
       fd.append('description', complaint.description.trim())
-      fd.append('identityDocument', identityFile)
+      if (!isAnonymous && identityFile) fd.append('identityDocument', identityFile)
       const { data } = await api.post('/api/reports', fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
@@ -189,9 +196,45 @@ export function Report() {
                 {step === 1 && (
                   <form onSubmit={goStep2} noValidate>
                     <p className="small text-muted mb-3">
-                      Renseignez votre identité telle qu’elle figure sur votre pièce officielle. Tous les champs sont
-                      obligatoires.
+                      Choisissez votre situation : si vous n’êtes pas directement concerné(e), vous pouvez effectuer un
+                      signalement anonyme sans pièce d’identité.
                     </p>
+                    <fieldset className="mb-3">
+                      <legend className="form-label">Type de signalement</legend>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="reportMode"
+                          id="reportModeNamed"
+                          checked={!isAnonymous}
+                          onChange={() => setIsAnonymous(false)}
+                        />
+                        <label className="form-check-label" htmlFor="reportModeNamed">
+                          Je suis directement victime / concerné(e)
+                        </label>
+                      </div>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="reportMode"
+                          id="reportModeAnonymous"
+                          checked={isAnonymous}
+                          onChange={() => setIsAnonymous(true)}
+                        />
+                        <label className="form-check-label" htmlFor="reportModeAnonymous">
+                          Je signale en tant que témoin et je souhaite rester anonyme
+                        </label>
+                      </div>
+                    </fieldset>
+                    {isAnonymous ? (
+                      <div className="alert alert-info small" role="note">
+                        Mode anonyme activé : les champs d’identité et la pièce d’identité ne sont pas requis. Vous pouvez
+                        laisser e-mail et téléphone vides si vous ne souhaitez pas être recontacté(e).
+                      </div>
+                    ) : (
+                      <>
                     <div className="row g-2 mb-3">
                       <div className="col-md-4">
                         <label className="form-label" htmlFor="lastName">
@@ -281,36 +324,42 @@ export function Report() {
                         ))}
                       </select>
                     </div>
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="address">
-                        Adresse complète
-                      </label>
-                      <textarea
-                        id="address"
-                        className="form-control"
-                        rows={3}
-                        required
-                        minLength={5}
-                        value={identity.address}
-                        onChange={(e) => setIdentity({ ...identity, address: e.target.value })}
-                      />
-                    </div>
+                      </>
+                    )}
+                    {!isAnonymous && (
+                      <>
+                        <div className="mb-3">
+                          <label className="form-label" htmlFor="address">
+                            Adresse complète
+                          </label>
+                          <textarea
+                            id="address"
+                            className="form-control"
+                            rows={3}
+                            required
+                            minLength={5}
+                            value={identity.address}
+                            onChange={(e) => setIdentity({ ...identity, address: e.target.value })}
+                          />
+                        </div>
+                      </>
+                    )}
                     <div className="mb-3">
                       <label className="form-label" htmlFor="contactEmail">
-                        E-mail
+                        E-mail {isAnonymous ? '(optionnel)' : ''}
                       </label>
                       <input
                         type="email"
                         id="contactEmail"
                         className="form-control"
                         autoComplete="email"
-                        required
+                        required={!isAnonymous}
                         value={identity.contactEmail}
                         onChange={(e) => setIdentity({ ...identity, contactEmail: e.target.value })}
                       />
                     </div>
                     <fieldset className="mb-3">
-                      <legend className="form-label mb-2">Téléphone</legend>
+                      <legend className="form-label mb-2">Téléphone {isAnonymous ? '(optionnel)' : ''}</legend>
                       <div className="row g-2">
                         <div className="col-md-5">
                           <label className="form-label small text-muted" htmlFor="phoneCountry">
@@ -319,7 +368,7 @@ export function Report() {
                           <select
                             id="phoneCountry"
                             className="form-select"
-                            required
+                            required={!isAnonymous}
                             value={identity.phoneCountryIso}
                             onChange={(e) => setIdentity({ ...identity, phoneCountryIso: e.target.value })}
                           >
@@ -341,45 +390,49 @@ export function Report() {
                             autoComplete="tel-national"
                             inputMode="tel"
                             placeholder="Ex. 81 234 5678"
-                            required
+                            required={!isAnonymous}
                             value={identity.phoneNational}
                             onChange={(e) => setIdentity({ ...identity, phoneNational: e.target.value })}
                           />
                         </div>
                       </div>
                     </fieldset>
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="identityDocType">
-                        Type de pièce d’identité
-                      </label>
-                      <select
-                        id="identityDocType"
-                        className="form-select"
-                        required
-                        value={identity.identityDocType}
-                        onChange={(e) => setIdentity({ ...identity, identityDocType: e.target.value })}
-                      >
-                        {IDENTITY_DOC_TYPES.map((t) => (
-                          <option key={t.value} value={t.value}>
-                            {t.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="identityDocument">
-                        Copie de la pièce d’identité (PDF, image, max 5 Mo)
-                      </label>
-                      <input
-                        ref={identityFileRef}
-                        id="identityDocument"
-                        type="file"
-                        className="form-control"
-                        required
-                        accept=".pdf,image/*,.doc,.docx"
-                        onChange={(e) => setIdentityFile(e.target.files?.[0] || null)}
-                      />
-                    </div>
+                    {!isAnonymous && (
+                      <>
+                        <div className="mb-3">
+                          <label className="form-label" htmlFor="identityDocType">
+                            Type de pièce d’identité
+                          </label>
+                          <select
+                            id="identityDocType"
+                            className="form-select"
+                            required
+                            value={identity.identityDocType}
+                            onChange={(e) => setIdentity({ ...identity, identityDocType: e.target.value })}
+                          >
+                            {IDENTITY_DOC_TYPES.map((t) => (
+                              <option key={t.value} value={t.value}>
+                                {t.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label" htmlFor="identityDocument">
+                            Copie de la pièce d’identité (PDF, image, max 5 Mo)
+                          </label>
+                          <input
+                            ref={identityFileRef}
+                            id="identityDocument"
+                            type="file"
+                            className="form-control"
+                            required
+                            accept=".pdf,image/*,.doc,.docx"
+                            onChange={(e) => setIdentityFile(e.target.files?.[0] || null)}
+                          />
+                        </div>
+                      </>
+                    )}
                     {err && step === 1 && (
                       <div
                         ref={errRef}

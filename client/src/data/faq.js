@@ -14,6 +14,10 @@ export const FAQ_THEMES = [
         a: 'Parmi d’autres : respect de la vie privée, liberté d’expression dans les limites légales, protection contre certaines atteintes (harcèlement, atteinte à l’image). Le cadre exact dépend du droit applicable et des faits.',
       },
       {
+        q: 'Pourquoi le civisme numérique est-il présenté comme un enjeu stratégique ?',
+        a: 'Parce qu’il contribue à la sécurité nationale, à la cohésion sociale et à la résilience des citoyens face à la désinformation, à la fraude et aux autres menaces numériques.',
+      },
+      {
         q: 'Mes données sur ce site sont-elles protégées ?',
         a: 'Le portail applique des mesures de sécurité (HTTPS en production, contrôle d’accès, etc.). Les traitements sont décrits dans la politique de confidentialité.',
       },

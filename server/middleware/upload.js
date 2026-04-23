@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const allowed = new Set([
+const ALLOWED_UPLOAD_MIMES = new Set([
   'application/pdf',
   'image/jpeg',
   'image/png',
@@ -23,7 +23,7 @@ const allowed = new Set([
 ]);
 
 function fileFilter(_req, file, cb) {
-  if (allowed.has(file.mimetype)) cb(null, true);
+  if (ALLOWED_UPLOAD_MIMES.has(file.mimetype)) cb(null, true);
   else cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE', 'Type de fichier non autorisé.'));
 }
 
@@ -33,4 +33,4 @@ const upload = multer({
   fileFilter,
 });
 
-module.exports = { upload, UPLOAD_DIR };
+module.exports = { upload, UPLOAD_DIR, ALLOWED_UPLOAD_MIMES };

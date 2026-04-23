@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { api, fetchCsrf } from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
+import { confirmDangerAction, DEFAULT_PAGE_SIZE, downloadCsv, paginateRows } from '../../utils/adminTable'
 
 const SORT_OPTIONS = [
   { value: 'created_desc', label: 'Date (récent d’abord)' },
@@ -62,6 +63,7 @@ export function AdminContactMessages() {
   const [detail, setDetail] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortKey, setSortKey] = useState('created_desc')
+  const [page, setPage] = useState(1)
 
   const load = () =>
     api
@@ -77,17 +79,36 @@ export function AdminContactMessages() {
     load()
   }, [refreshTick])
 
+  useEffect(() => {
+    setPage(1)
+  }, [searchQuery, sortKey])
+
   const filteredItems = useMemo(() => {
     const list = items.filter((row) => matchesSearch(row, searchQuery))
     return sortRows(list, sortKey)
   }, [items, searchQuery, sortKey])
+  const pager = paginateRows(filteredItems, page, DEFAULT_PAGE_SIZE)
 
   async function remove(id) {
-    if (!isAdmin || !window.confirm('Supprimer définitivement ce message ?')) return
+    if (!isAdmin || !confirmDangerAction('ce message')) return
     await fetchCsrf()
     await api.delete(`/api/admin/contact-messages/${id}`)
     if (detail?._id === id) setDetail(null)
     load()
+  }
+
+  function exportCsv() {
+    downloadCsv(
+      `messages-contact-${new Date().toISOString().slice(0, 10)}.csv`,
+      filteredItems.map((m) => ({
+        id: m._id,
+        createdAt: m.createdAt || '',
+        name: m.name || '',
+        email: m.email || '',
+        subject: m.subject || '',
+        message: m.message || '',
+      }))
+    )
   }
 
   if (err) return <p className="text-danger">{err}</p>
@@ -136,11 +157,18 @@ export function AdminContactMessages() {
                 ))}
               </select>
             </div>
+            <div className="col-12 col-lg-2 d-grid">
+              <button type="button" className="btn btn-outline-secondary btn-sm" onClick={exportCsv}>
+                Export CSV
+              </button>
+            </div>
           </div>
           <p className="small text-muted mb-2">
             {filteredItems.length === items.length
               ? `${items.length} message${items.length !== 1 ? 's' : ''}`
               : `${filteredItems.length} affiché${filteredItems.length !== 1 ? 's' : ''} sur ${items.length}`}
+            {' · '}
+            page {pager.page}/{pager.totalPages}
           </p>
           <div className="table-responsive">
             <table className="table table-sm align-middle">
@@ -161,7 +189,7 @@ export function AdminContactMessages() {
                     </td>
                   </tr>
                 )}
-                {filteredItems.map((row) => (
+                {pager.items.map((row) => (
                   <tr
                     key={row._id}
                     role="button"
@@ -193,6 +221,24 @@ export function AdminContactMessages() {
               </tbody>
             </table>
           </div>
+          {pager.totalPages > 1 && (
+            <div className="d-flex flex-wrap gap-2 align-items-center mt-3">
+              <button type="button" className="btn btn-sm btn-outline-secondary" disabled={pager.page <= 1} onClick={() => setPage((p) => p - 1)}>
+                Précédent
+              </button>
+              <span className="small text-muted">
+                Page {pager.page} / {pager.totalPages}
+              </span>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-secondary"
+                disabled={pager.page >= pager.totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Suivant
+              </button>
+            </div>
+          )}
         </>
       )}
 

@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { RichTextEditor } from '../../components/RichTextEditor'
 import { stripHtml } from '../../utils/seo'
 import { useAdminRefreshTick } from '../../context/AdminRefreshContext'
+import { confirmDangerAction, DEFAULT_PAGE_SIZE, downloadCsv, paginateRows } from '../../utils/adminTable'
 
 const emptyForm = {
   title: '',
@@ -23,6 +24,10 @@ export function AdminNews() {
   const [form, setForm] = useState(emptyForm)
   const [msg, setMsg] = useState(null)
   const [saveError, setSaveError] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [sortKey, setSortKey] = useState('created_desc')
+  const [page, setPage] = useState(1)
 
   const load = () => api.get('/api/admin/news').then((r) => setItems(r.data.items || []))
 
@@ -34,6 +39,31 @@ export function AdminNews() {
     if (editingId) return
     load().catch(() => {})
   }, [refreshTick, editingId])
+
+  useEffect(() => {
+    setPage(1)
+  }, [searchQuery, statusFilter, sortKey])
+
+  const filtered = [...items]
+    .filter((n) => {
+      if (statusFilter === 'published') return n.published
+      if (statusFilter === 'draft') return !n.published
+      return true
+    })
+    .filter((n) => {
+      const q = searchQuery.trim().toLowerCase()
+      if (!q) return true
+      const blob = `${n.title || ''} ${n.excerpt || ''} ${n.content || ''}`.toLowerCase()
+      return q.split(/\s+/).every((t) => blob.includes(t))
+    })
+    .sort((a, b) => {
+      if (sortKey === 'title_asc') return String(a.title || '').localeCompare(String(b.title || ''), 'fr')
+      if (sortKey === 'title_desc') return String(b.title || '').localeCompare(String(a.title || ''), 'fr')
+      if (sortKey === 'updated_desc') return new Date(b.updatedAt) - new Date(a.updatedAt)
+      return new Date(b.createdAt) - new Date(a.createdAt)
+    })
+
+  const pager = paginateRows(filtered, page, DEFAULT_PAGE_SIZE)
 
   function startEdit(n) {
     setMsg(null)
@@ -101,11 +131,26 @@ export function AdminNews() {
   }
 
   async function remove(id) {
-    if (!isAdmin || !window.confirm('Supprimer cette actualité ?')) return
+    if (!isAdmin || !confirmDangerAction("l'actualité")) return
     await fetchCsrf()
     await api.delete(`/api/admin/news/${id}`)
     if (editingId === id) cancelEdit()
     load()
+  }
+
+  function exportCsv() {
+    downloadCsv(
+      `actualites-${new Date().toISOString().slice(0, 10)}.csv`,
+      filtered.map((n) => ({
+        id: n._id,
+        title: n.title || '',
+        published: n.published ? 'oui' : 'non',
+        alert: n.alert ? 'oui' : 'non',
+        campaign: n.campaign ? 'oui' : 'non',
+        createdAt: n.createdAt || '',
+        updatedAt: n.updatedAt || '',
+      }))
+    )
   }
 
   return (
@@ -227,8 +272,45 @@ export function AdminNews() {
           </form>
         </div>
       </div>
+      <div className="row g-2 align-items-end mb-3">
+        <div className="col-12 col-lg-5">
+          <label className="form-label small mb-1">Recherche</label>
+          <input
+            type="search"
+            className="form-control form-control-sm"
+            placeholder="Titre, chapô, contenu…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="col-6 col-lg-3">
+          <label className="form-label small mb-1">Statut</label>
+          <select className="form-select form-select-sm" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <option value="all">Tous</option>
+            <option value="published">Publiées</option>
+            <option value="draft">Brouillons</option>
+          </select>
+        </div>
+        <div className="col-6 col-lg-2">
+          <label className="form-label small mb-1">Tri</label>
+          <select className="form-select form-select-sm" value={sortKey} onChange={(e) => setSortKey(e.target.value)}>
+            <option value="created_desc">Récentes</option>
+            <option value="updated_desc">Maj récentes</option>
+            <option value="title_asc">Titre A → Z</option>
+            <option value="title_desc">Titre Z → A</option>
+          </select>
+        </div>
+        <div className="col-12 col-lg-2 d-grid">
+          <button type="button" className="btn btn-outline-secondary btn-sm" onClick={exportCsv}>
+            Export CSV
+          </button>
+        </div>
+      </div>
+      <p className="small text-muted mb-2">
+        {pager.total} résultat{pager.total > 1 ? 's' : ''} · page {pager.page}/{pager.totalPages}
+      </p>
       <ul className="list-group">
-        {items.map((n) => (
+        {pager.items.map((n) => (
           <li key={n._id} className="list-group-item d-flex justify-content-between align-items-start flex-wrap gap-2">
             <div>
               <strong>{n.title}</strong>
@@ -247,6 +329,24 @@ export function AdminNews() {
           </li>
         ))}
       </ul>
+      {pager.totalPages > 1 && (
+        <div className="d-flex flex-wrap gap-2 align-items-center mt-3">
+          <button type="button" className="btn btn-sm btn-outline-secondary" disabled={pager.page <= 1} onClick={() => setPage((p) => p - 1)}>
+            Précédent
+          </button>
+          <span className="small text-muted">
+            Page {pager.page} / {pager.totalPages}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            disabled={pager.page >= pager.totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Suivant
+          </button>
+        </div>
+      )}
     </>
   )
 }

@@ -1,9 +1,11 @@
 import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Seo } from '../components/Seo'
+import { JsonLdArticle } from '../components/JsonLdArticle'
 import { api } from '../api/client'
 import { stripHtml, truncateMeta } from '../utils/seo'
 import { SafeHtml } from '../components/SafeHtml'
+import { getNewsCoverSrc } from '../utils/news'
 
 export function NewsDetail() {
   const { id } = useParams()
@@ -42,6 +44,18 @@ export function NewsDetail() {
         title={`${n.title} — Civisme numérique RDC`}
         description={truncateMeta(stripHtml(n.excerpt || n.content))}
         ogType="article"
+        image={getNewsCoverSrc(n)}
+        imageAlt={n.title}
+        publishedTime={n.createdAt}
+        modifiedTime={n.updatedAt || n.createdAt}
+      />
+      <JsonLdArticle
+        title={n.title}
+        description={truncateMeta(stripHtml(n.excerpt || n.content))}
+        urlPath={`/actualites/${n._id || n.id}`}
+        image={getNewsCoverSrc(n)}
+        publishedAt={n.createdAt}
+        updatedAt={n.updatedAt || n.createdAt}
       />
       <div className="bg-light border-bottom py-3">
         <div className="container px-3 px-sm-4">
