@@ -37,7 +37,45 @@ export const FAQ_THEMES = [
       },
       {
         q: 'Puis-je joindre des fichiers ?',
-        a: 'Oui, des pièces au format autorisé (PDF, images, documents bureautiques courants), dans la limite du nombre et de la taille indiqués sur le formulaire.',
+        a: 'Oui. Vous pouvez joindre des preuves (documents, photos, vidéos, audios) et ajouter des liens (URL) lorsque vous en disposez, dans la limite affichée sur le formulaire.',
+      },
+      {
+        q: 'Puis-je faire un signalement anonyme ?',
+        a: 'Oui. Si vous n’êtes pas directement victime ou concerné(e), vous pouvez choisir l’option de signalement anonyme et transmettre uniquement les éléments utiles au traitement.',
+      },
+      {
+        q: 'Combien de temps prend le traitement d’un signalement ?',
+        a: 'Les délais varient selon la complexité des faits et les vérifications nécessaires. Le portail affiche un statut de progression et peut, selon le dossier, proposer un rendez-vous de suivi.',
+      },
+      {
+        q: 'Que faire si j’ai perdu ma référence ou mon code secret ?',
+        a: 'Contactez le service via la page Contact en fournissant des éléments d’authentification du dossier. Pour des raisons de sécurité, le code secret n’est pas réaffiché publiquement.',
+      },
+      {
+        q: 'Puis-je modifier un signalement déjà envoyé ?',
+        a: 'Le formulaire ne permet pas l’édition directe après soumission. En cas d’information complémentaire, utilisez les canaux de contact en rappelant la référence du dossier.',
+      },
+    ],
+  },
+  {
+    id: 'securite',
+    title: 'Sécurité numérique',
+    items: [
+      {
+        q: 'Comment reconnaître un message de phishing ?',
+        a: 'Méfiez-vous des messages urgents, liens suspects, fautes inhabituelles et demandes de mot de passe/code OTP. Vérifiez toujours l’expéditeur et l’URL avant de cliquer.',
+      },
+      {
+        q: 'Quelles sont les 3 mesures minimales de protection pour un citoyen ?',
+        a: 'Utiliser des mots de passe forts et uniques, activer l’authentification multifactorielle, et maintenir téléphone/ordinateur/applications à jour.',
+      },
+      {
+        q: 'Que faire en cas de compte piraté ?',
+        a: 'Changez immédiatement le mot de passe, déconnectez toutes les sessions, activez la MFA, vérifiez l’e-mail de récupération, puis signalez l’incident à la plateforme concernée.',
+      },
+      {
+        q: 'Pourquoi vérifier une information avant partage ?',
+        a: 'Un partage non vérifié peut propager la désinformation, nuire à des personnes et fragiliser la cohésion sociale. Vérifiez la source, la date et le contexte.',
       },
     ],
   },

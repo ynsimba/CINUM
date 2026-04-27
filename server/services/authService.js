@@ -27,11 +27,7 @@ async function loginStaff(email, password, context = {}) {
   }
   if (!isStaffRole(user.role)) {
     await userService.registerLoginAttempt({ email, ip, success: false });
-    throw new StaffLoginError(
-      'FORBIDDEN_ROLE',
-      "Ce compte n'a pas accès à l'espace d'administration.",
-      403
-    );
+    throw new StaffLoginError('INVALID_CREDENTIALS', 'Identifiants incorrects.', 401);
   }
   if (user.lockedUntil && new Date(user.lockedUntil).getTime() > now.getTime()) {
     await userService.registerLoginAttempt({ email, ip, success: false });

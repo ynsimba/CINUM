@@ -52,6 +52,9 @@ export function NewsCard({ item, className = '' }) {
             className="news-card__img"
             loading="lazy"
             decoding="async"
+            width="640"
+            height="400"
+            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 33vw"
             onError={() => setImgFailed(true)}
           />
         ) : (

@@ -91,6 +91,8 @@ export function Home() {
                   className="hero-institutional__img img-fluid"
                   width={560}
                   height={420}
+                  loading="eager"
+                  fetchPriority="high"
                   decoding="async"
                 />
               </div>
@@ -119,6 +121,8 @@ export function Home() {
                     src="/citoyen.PNG"
                     alt="Parcours citoyen"
                     className="img-fluid home-citizen-image"
+                    width={1200}
+                    height={900}
                     loading="lazy"
                     decoding="async"
                   />
@@ -236,7 +240,7 @@ export function Home() {
 
             <ScrollReveal variant="fade-up">
               {PARTNER_LOGOS.length > 0 ? (
-                <div className="home-partners-viewport" aria-label="Defilement des logos partenaires">
+                <div className="home-partners-viewport" aria-label="Défilement des logos partenaires">
                   <div className="home-partners-track">
                     {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
                       <div
@@ -248,6 +252,8 @@ export function Home() {
                           src={logo.src}
                           alt={i >= PARTNER_LOGOS.length ? '' : logo.alt}
                           className="home-partners-logo"
+                          width={220}
+                          height={96}
                           loading="lazy"
                           decoding="async"
                         />
@@ -288,6 +294,9 @@ export function Home() {
                   type="email"
                   className="form-control home-newsletter-input"
                   placeholder="Votre adresse e-mail"
+                  autoComplete="email"
+                  inputMode="email"
+                  aria-describedby="newsletter-feedback"
                   value={newsletterEmail}
                   onChange={(e) => setNewsletterEmail(e.target.value)}
                   required
@@ -297,7 +306,7 @@ export function Home() {
                 </button>
               </form>
               {newsletterMsg ? (
-                <p className="small text-muted mt-2 mb-0" role="status">
+                <p id="newsletter-feedback" className="small text-muted mt-2 mb-0" role="status" aria-live="polite">
                   {newsletterMsg}
                 </p>
               ) : null}

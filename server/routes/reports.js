@@ -6,7 +6,8 @@ const { body, validationResult } = require('express-validator');
 const reportService = require('../services/reportService');
 const { ABUSE_TYPES, IDENTITY_DOC_TYPES } = require('../constants/reports');
 const path = require('path');
-const { upload, UPLOAD_DIR, ALLOWED_UPLOAD_MIMES } = require('../middleware/upload');
+const { UPLOAD_DIR, ALLOWED_UPLOAD_MIMES } = require('../middleware/upload');
+const { uploadReport, ALLOWED_REPORT_EVIDENCE_MIMES } = require('../middleware/uploadReport');
 const { validateUploadedFileOrRemove } = require('../lib/validateUploadedFile');
 const { sendReportEmails } = require('../services/mail');
 
@@ -26,12 +27,37 @@ const STATUS_PUBLIC_FR = {
 
 function requireIdentityFileUnlessAnonymous(req, res, next) {
   if (isAnonymousReport(req)) return next();
-  if (!req.file) {
+  const identityFile = req.files?.identityDocument?.[0];
+  if (!identityFile) {
     return res.status(400).json({
       errors: [{ msg: 'Une copie de pièce d’identité est requise.', path: 'identityDocument' }],
     });
   }
   next();
+}
+
+function collectEvidenceLinks(raw) {
+  const src = Array.isArray(raw) ? raw : [raw];
+  const links = [];
+  for (const item of src) {
+    const text = String(item || '').trim();
+    if (!text) continue;
+    const parts = text
+      .split(/\r?\n|,/)
+      .map((x) => x.trim())
+      .filter(Boolean);
+    for (const p of parts) {
+      if (links.length >= 10) break;
+      try {
+        const u = new URL(p);
+        if (u.protocol === 'http:' || u.protocol === 'https:') links.push(u.toString());
+      } catch {
+        // ignore invalid URL
+      }
+    }
+    if (links.length >= 10) break;
+  }
+  return [...new Set(links)];
 }
 
 function generateAccessSecret() {
@@ -74,10 +100,22 @@ router.post(
         return res.status(404).json({ error: 'Signalement introuvable ou code incorrect.' });
       }
       const raw = Array.isArray(report.attachments) ? report.attachments : [];
-      const attachments = raw.map((a) => ({
-        url: `/uploads/${encodeURIComponent(a.path)}`,
-        originalName: a.originalName || a.path,
-      }));
+      const attachments = raw
+        .map((a) => {
+          if (a?.url) {
+            return { type: 'link', url: a.url, originalName: a.originalName || a.url };
+          }
+          if (a?.path) {
+            return {
+              type: 'file',
+              path: a.path,
+              url: `/uploads/${encodeURIComponent(a.path)}`,
+              originalName: a.originalName || a.path,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
 
       return res.json({
         reference: report.reference,
@@ -103,7 +141,10 @@ router.post(
 
 router.post(
   '/',
-  upload.single('identityDocument'),
+  uploadReport.fields([
+    { name: 'identityDocument', maxCount: 1 },
+    { name: 'evidenceFiles', maxCount: 8 },
+  ]),
   requireIdentityFileUnlessAnonymous,
   [
     body('isAnonymous')
@@ -214,6 +255,13 @@ router.post(
         }
         return true;
       }),
+    body('evidenceLinks')
+      .optional({ values: 'falsy' })
+      .custom((value) => {
+        const links = collectEvidenceLinks(value);
+        if (links.length > 10) throw new Error('Maximum 10 liens de preuves.');
+        return true;
+      }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -221,13 +269,24 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const anonymous = isAnonymousReport(req);
-    if (!anonymous && req.file) {
-      const identityPath = path.join(UPLOAD_DIR, req.file.filename);
+    const identityFile = req.files?.identityDocument?.[0] || null;
+    const evidenceFiles = Array.isArray(req.files?.evidenceFiles) ? req.files.evidenceFiles : [];
+    if (!anonymous && identityFile) {
+      const identityPath = path.join(UPLOAD_DIR, identityFile.filename);
       const fileCheck = await validateUploadedFileOrRemove(identityPath, ALLOWED_UPLOAD_MIMES);
       if (!fileCheck.ok) {
         return res.status(400).json({
           error:
             'Le fichier fourni ne correspond pas à un type autorisé (contenu invalide ou pièce d’identité illisible).',
+        });
+      }
+    }
+    for (const ef of evidenceFiles) {
+      const evidencePath = path.join(UPLOAD_DIR, ef.filename);
+      const evCheck = await validateUploadedFileOrRemove(evidencePath, ALLOWED_REPORT_EVIDENCE_MIMES);
+      if (!evCheck.ok) {
+        return res.status(400).json({
+          error: 'Un fichier de preuve est invalide ou non autorisé.',
         });
       }
     }
@@ -247,6 +306,18 @@ router.post(
         return res.status(400).json({ errors: [{ msg: 'Date de naissance invalide.', path: 'birthDate' }] });
       }
 
+      const evidenceLinks = collectEvidenceLinks(req.body.evidenceLinks);
+      const fileAttachments = evidenceFiles.map((f) => ({
+        kind: 'file',
+        path: f.filename,
+        originalName: f.originalname || f.filename,
+      }));
+      const linkAttachments = evidenceLinks.map((url) => ({
+        kind: 'link',
+        url,
+        originalName: url,
+      }));
+
       const report = await reportService.create({
         lastName: anonymous ? '' : req.body.lastName.trim(),
         postName: anonymous ? '' : req.body.postName.trim(),
@@ -256,15 +327,15 @@ router.post(
         maritalStatus: anonymous ? '' : req.body.maritalStatus.trim(),
         address: anonymous ? '' : req.body.address.trim(),
         identityDocType: anonymous ? '' : req.body.identityDocType,
-        identityDocPath: anonymous || !req.file ? '' : req.file.filename,
-        identityDocOriginalName: anonymous || !req.file ? '' : req.file.originalname || '',
+        identityDocPath: anonymous || !identityFile ? '' : identityFile.filename,
+        identityDocOriginalName: anonymous || !identityFile ? '' : identityFile.originalname || '',
         abuseType: req.body.abuseType,
         description: req.body.description,
         contactEmail: anonymous ? String(req.body.contactEmail || '').trim() : req.body.contactEmail || '',
         contactPhone: phoneParsed ? phoneParsed.format('E.164') : '',
         reference,
         lookupSecretHash,
-        attachments: [],
+        attachments: [...fileAttachments, ...linkAttachments],
       });
 
       sendReportEmails({

@@ -9,6 +9,25 @@ function attachmentHref(path) {
   return `/uploads/${encodeURIComponent(path)}`
 }
 
+function normalizeAttachment(a, i) {
+  if (!a) return null
+  if (a.url) {
+    return {
+      href: a.url,
+      saveName: a.originalName || `preuve-lien-${i + 1}.txt`,
+      label: `Lien de preuve ${i + 1}`,
+    }
+  }
+  if (a.path) {
+    return {
+      href: attachmentHref(a.path),
+      saveName: a.originalName || a.path || `piece-jointe-${i + 1}`,
+      label: `Pièce jointe ${i + 1}`,
+    }
+  }
+  return null
+}
+
 const STATUSES = [
   { value: 'pending', label: 'En attente' },
   { value: 'reviewed', label: 'Examiné' },
@@ -345,14 +364,14 @@ export function AdminReports() {
                           />
                         )}
                         {att.map((a, i) => {
-                          const href = attachmentHref(a.path)
-                          const saveName = a.originalName || a.path || `piece-jointe-${i + 1}`
+                          const normalized = normalizeAttachment(a, i)
+                          if (!normalized) return null
                           return (
                             <FileLinks
                               key={i}
-                              href={href}
-                              saveName={saveName}
-                              label={`Pièce jointe ${i + 1}`}
+                              href={normalized.href}
+                              saveName={normalized.saveName}
+                              label={normalized.label}
                             />
                           )
                         })}
@@ -494,14 +513,14 @@ export function AdminReports() {
                     <h3 className="h6 border-bottom pb-2 mb-2 mt-4">Autres pièces jointes</h3>
                     <ul className="list-unstyled mb-0 small">
                       {detail.attachments.map((a, i) => {
-                        const href = attachmentHref(a.path)
-                        const saveName = a.originalName || a.path || `piece-jointe-${i + 1}`
+                        const normalized = normalizeAttachment(a, i)
+                        if (!normalized) return null
                         return (
                           <FileLinks
                             key={i}
-                            href={href}
-                            saveName={saveName}
-                            label={`Pièce jointe ${i + 1}`}
+                            href={normalized.href}
+                            saveName={normalized.saveName}
+                            label={normalized.label}
                           />
                         )
                       })}

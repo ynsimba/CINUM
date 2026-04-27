@@ -7,9 +7,6 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 import './i18n'
 import './index.css'
 import App from './App.jsx'
-import { hydrateAccessTokenFromStorage } from './api/authToken'
-
-hydrateAccessTokenFromStorage()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,8 +16,26 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>
 )
 
-if (import.meta.env.PROD && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {})
+if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    const host = window.location.hostname
+    const isLocal = host === 'localhost' || host === '127.0.0.1'
+    if (import.meta.env.DEV || isLocal) {
+      // En développement, on supprime tout SW résiduel pour éviter les erreurs HMR/WebSocket.
+      try {
+        const regs = await navigator.serviceWorker.getRegistrations()
+        await Promise.all(regs.map((r) => r.unregister()))
+        if (typeof caches !== 'undefined') {
+          const keys = await caches.keys()
+          await Promise.all(keys.map((k) => caches.delete(k)))
+        }
+      } catch {
+        // ignore
+      }
+      return
+    }
+    if (import.meta.env.PROD) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {})
+    }
   })
 }

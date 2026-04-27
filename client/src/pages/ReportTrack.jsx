@@ -204,9 +204,10 @@ export function ReportTrack() {
                             {result.attachments.map((a, i) => {
                               const href = a.url || '#'
                               const saveName = a.originalName || `piece-jointe-${i + 1}`
+                              const label = a.type === 'link' ? `Lien de preuve ${i + 1}` : `Pièce jointe ${i + 1}`
                               return (
                                 <li key={i} className="mb-2">
-                                  <span className="small text-muted d-block mb-1">Pièce jointe {i + 1}</span>
+                                  <span className="small text-muted d-block mb-1">{label}</span>
                                   <span className="d-inline-flex flex-wrap gap-1 small">
                                     <a href={href} target="_blank" rel="noopener noreferrer">
                                       Ouvrir

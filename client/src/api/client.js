@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { getAuthAccessToken } from './authToken'
 
 if (import.meta.env.DEV && import.meta.env.VITE_API_URL) {
   console.warn(
@@ -30,11 +29,6 @@ export async function fetchCsrf() {
 }
 
 api.interceptors.request.use(async (config) => {
-  const bearer = getAuthAccessToken()
-  if (bearer) {
-    config.headers = config.headers || {}
-    config.headers.Authorization = `Bearer ${bearer}`
-  }
   if (config.data instanceof FormData) {
     delete config.headers['Content-Type']
   }

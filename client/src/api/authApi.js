@@ -1,19 +1,16 @@
 import { api, fetchCsrf } from './client'
-import { clearAuthAccessToken, setAuthAccessToken } from './authToken'
 
 /**
  * Connexion réservée aux comptes staff (administrateur, modérateur).
- * Cookie httpOnly + `accessToken` pour en-tête Bearer si le cookie n’est pas envoyé.
+ * Session pilotée par cookie httpOnly (pas de JWT exposé au JavaScript).
  */
 export async function loginStaff(identifier, password) {
   await fetchCsrf()
   const { data } = await api.post('/api/auth/login', { email: identifier, password })
-  if (data.accessToken) setAuthAccessToken(data.accessToken)
   return data.user
 }
 
 export async function logoutStaff() {
-  clearAuthAccessToken()
   await fetchCsrf()
   await api.post('/api/auth/logout')
 }

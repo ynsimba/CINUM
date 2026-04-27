@@ -94,6 +94,8 @@ export function Navbar() {
               src="/logo.png"
               alt="CINUM — portail du civisme numérique, retour à l’accueil"
               className="cinum-navbar-logo me-2 flex-shrink-0"
+              width="260"
+              height="78"
               decoding="async"
             />
             <span className="cinum-navbar-wordmark">CINUM</span>
@@ -119,21 +121,21 @@ export function Navbar() {
                 </NavLink>
               </li>
               <li className="nav-item dropdown">
-                <a
-                  className={`nav-link dropdown-toggle px-lg-2 ${portalActive ? 'active fw-semibold' : ''}`}
-                  href="#"
+                <button
+                  className={`nav-link dropdown-toggle px-lg-2 bg-transparent border-0 ${portalActive ? 'active fw-semibold' : ''}`}
+                  type="button"
                   id="navPortal"
-                  role="button"
+                  aria-controls="navPortalMenu"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                   aria-haspopup="menu"
                   aria-label={t('nav.portal_aria')}
-                  aria-current={portalActive ? 'true' : undefined}
-                  onClick={(e) => e.preventDefault()}
+                  aria-current={portalActive ? 'page' : undefined}
                 >
                   {t('nav.portal')}
-                </a>
+                </button>
                 <ul
+                  id="navPortalMenu"
                   className="dropdown-menu dropdown-menu-lg-end shadow border-0 py-3"
                   style={{ minWidth: 'min(18rem, calc(100vw - 1.5rem))', maxHeight: 'min(85vh, 32rem)', overflowY: 'auto' }}
                   aria-labelledby="navPortal"

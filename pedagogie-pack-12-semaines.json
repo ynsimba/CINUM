@@ -1,0 +1,2739 @@
+{
+  "meta": {
+    "name": "Pack pédagogie 12 semaines CINUM",
+    "version": "1.0.0",
+    "locale": "fr-CD",
+    "generatedAt": "2026-04-23T21:15:40.883Z",
+    "notes": "Structure prête pour import manuel/API. Les contenus longs peuvent être enrichis avant publication."
+  },
+  "articles": [
+    {
+      "week": 1,
+      "title": "Pourquoi le civisme numérique est un enjeu national en RDC",
+      "slug": "civisme-numerique-enjeu-national-rdc",
+      "excerpt": "Le civisme numérique n’est plus une option. Il est devenu un levier stratégique pour la sécurité nationale, la cohésion sociale et la stabilité du développement en RDC.",
+      "category": "education",
+      "published": true,
+      "content": "## Semaine 1\n\nLe civisme numérique n’est plus une option. Il est devenu un levier stratégique pour la sécurité nationale, la cohésion sociale et la stabilité du développement en RDC.\n\nDévelopper ici le contenu long validé pour la semaine 1."
+    },
+    {
+      "week": 2,
+      "title": "Désinformation : comment vérifier une information avant de la partager",
+      "slug": "desinformation-verifier-avant-partager",
+      "excerpt": "Dans un contexte de circulation massive des contenus numériques, vérifier avant de partager est un acte de responsabilité citoyenne.",
+      "category": "education",
+      "published": true,
+      "content": "## Semaine 2\n\nDans un contexte de circulation massive des contenus numériques, vérifier avant de partager est un acte de responsabilité citoyenne.\n\nDévelopper ici le contenu long validé pour la semaine 2."
+    },
+    {
+      "week": 3,
+      "title": "Cyberharcèlement : prévenir, réagir, protéger",
+      "slug": "cyberharcelement-prevenir-reagir-proteger",
+      "excerpt": "Le cyberharcèlement est une menace croissante, surtout chez les jeunes. Le prévenir exige des réflexes individuels et une réponse collective.",
+      "category": "societe",
+      "published": true,
+      "content": "## Semaine 3\n\nLe cyberharcèlement est une menace croissante, surtout chez les jeunes. Le prévenir exige des réflexes individuels et une réponse collective.\n\nDévelopper ici le contenu long validé pour la semaine 3."
+    },
+    {
+      "week": 4,
+      "title": "Identité numérique et réputation en ligne : protéger son avenir",
+      "slug": "identite-numerique-et-reputation",
+      "excerpt": "Chaque action en ligne laisse des traces. Mieux gérer son identité numérique, c’est protéger sa réputation, ses opportunités et sa sécurité.",
+      "category": "education",
+      "published": true,
+      "content": "## Semaine 4\n\nChaque action en ligne laisse des traces. Mieux gérer son identité numérique, c’est protéger sa réputation, ses opportunités et sa sécurité.\n\nDévelopper ici le contenu long validé pour la semaine 4."
+    },
+    {
+      "week": 5,
+      "title": "Mots de passe et double authentification : la première ligne de défense",
+      "slug": "mots-de-passe-2fa-securite-comptes",
+      "excerpt": "La majorité des compromissions de comptes commence par un mot de passe faible ou réutilisé.",
+      "category": "securite",
+      "published": true,
+      "content": "## Semaine 5\n\nLa majorité des compromissions de comptes commence par un mot de passe faible ou réutilisé.\n\nDévelopper ici le contenu long validé pour la semaine 5."
+    },
+    {
+      "week": 6,
+      "title": "Arnaques numériques courantes en RDC : reconnaître, éviter, signaler",
+      "slug": "arnaques-numeriques-courantes-rdc",
+      "excerpt": "Faux concours, fraude Mobile Money, faux emplois : connaître les schémas d’arnaque est la première protection.",
+      "category": "securite",
+      "published": true,
+      "content": "## Semaine 6\n\nFaux concours, fraude Mobile Money, faux emplois : connaître les schémas d’arnaque est la première protection.\n\nDévelopper ici le contenu long validé pour la semaine 6."
+    },
+    {
+      "week": 7,
+      "title": "Protection des données personnelles : réflexes essentiels pour les citoyens",
+      "slug": "protection-donnees-personnelles",
+      "excerpt": "Nom, numéro, localisation, photos : nos données circulent vite. Les protéger est une responsabilité individuelle et collective.",
+      "category": "securite",
+      "published": true,
+      "content": "## Semaine 7\n\nNom, numéro, localisation, photos : nos données circulent vite. Les protéger est une responsabilité individuelle et collective.\n\nDévelopper ici le contenu long validé pour la semaine 7."
+    },
+    {
+      "week": 8,
+      "title": "Signaler efficacement un abus numérique : méthode, preuves, suivi",
+      "slug": "signaler-efficacement-abus-numerique",
+      "excerpt": "Un signalement utile n’est pas seulement un message d’alerte : c’est un dossier clair et documenté.",
+      "category": "institution",
+      "published": true,
+      "content": "## Semaine 8\n\nUn signalement utile n’est pas seulement un message d’alerte : c’est un dossier clair et documenté.\n\nDévelopper ici le contenu long validé pour la semaine 8."
+    },
+    {
+      "week": 9,
+      "title": "Débat numérique responsable : s’exprimer sans diviser",
+      "slug": "debat-numerique-responsable",
+      "excerpt": "Le débat en ligne est utile à la démocratie, mais il devient dangereux lorsqu’il glisse vers l’insulte et la polarisation.",
+      "category": "societe",
+      "published": true,
+      "content": "## Semaine 9\n\nLe débat en ligne est utile à la démocratie, mais il devient dangereux lorsqu’il glisse vers l’insulte et la polarisation.\n\nDévelopper ici le contenu long validé pour la semaine 9."
+    },
+    {
+      "week": 10,
+      "title": "Citoyenneté active en ligne : agir positivement pour l’intérêt général",
+      "slug": "citoyennete-active-en-ligne",
+      "excerpt": "Être citoyen numérique, c’est aussi contribuer activement à un espace en ligne plus utile et plus éthique.",
+      "category": "societe",
+      "published": true,
+      "content": "## Semaine 10\n\nÊtre citoyen numérique, c’est aussi contribuer activement à un espace en ligne plus utile et plus éthique.\n\nDévelopper ici le contenu long validé pour la semaine 10."
+    },
+    {
+      "week": 11,
+      "title": "Jeunesse, école et famille : construire un pacte numérique responsable",
+      "slug": "pacte-numerique-famille-ecole",
+      "excerpt": "La protection des jeunes en ligne exige une alliance concrète entre famille, école et institutions.",
+      "category": "education",
+      "published": true,
+      "content": "## Semaine 11\n\nLa protection des jeunes en ligne exige une alliance concrète entre famille, école et institutions.\n\nDévelopper ici le contenu long validé pour la semaine 11."
+    },
+    {
+      "week": 12,
+      "title": "Évaluation finale : vers la certification Citoyen numérique responsable",
+      "slug": "evaluation-finale-certification-citoyenne",
+      "excerpt": "La formation au civisme numérique devient pleinement efficace lorsqu’elle est évaluée et valorisée.",
+      "category": "institution",
+      "published": true,
+      "content": "## Semaine 12\n\nLa formation au civisme numérique devient pleinement efficace lorsqu’elle est évaluée et valorisée.\n\nDévelopper ici le contenu long validé pour la semaine 12."
+    }
+  ],
+  "resources": [
+    {
+      "week": 1,
+      "title": "10 réflexes essentiels de civisme numérique (RDC)",
+      "description": "Fiche pratique de la semaine 1.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Un citoyen responsable vérifie avant de partager."
+    },
+    {
+      "week": 2,
+      "title": "Vérifier une info en 60 secondes (méthode V.R.A.I.)",
+      "description": "Fiche pratique de la semaine 2.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Si tu doutes, ne diffuse pas."
+    },
+    {
+      "week": 3,
+      "title": "Cyberharcèlement : réflexe 4C",
+      "description": "Fiche pratique de la semaine 3.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Ne reste jamais isolé face au cyberharcèlement."
+    },
+    {
+      "week": 4,
+      "title": "Audit express de réputation en ligne (10 points)",
+      "description": "Fiche pratique de la semaine 4.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Ce que tu publies aujourd’hui peut te suivre demain."
+    },
+    {
+      "week": 5,
+      "title": "Sécuriser un compte en 7 étapes",
+      "description": "Fiche pratique de la semaine 5.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Ne partage jamais ton code OTP."
+    },
+    {
+      "week": 6,
+      "title": "Anti-arnaque numérique : check-list en 8 points",
+      "description": "Fiche pratique de la semaine 6.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Pas de décision financière dans l’urgence numérique."
+    },
+    {
+      "week": 7,
+      "title": "Mes données en sécurité : check-list citoyenne",
+      "description": "Fiche pratique de la semaine 7.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Partager le minimum nécessaire."
+    },
+    {
+      "week": 8,
+      "title": "Signalement efficace en 5 étapes (S.I.G.N.A.)",
+      "description": "Fiche pratique de la semaine 8.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Signaler, c’est agir. Signaler correctement, c’est protéger."
+    },
+    {
+      "week": 9,
+      "title": "Charte personnelle du débat en ligne (7 règles)",
+      "description": "Fiche pratique de la semaine 9.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Le désaccord est normal, le respect est obligatoire."
+    },
+    {
+      "week": 10,
+      "title": "Plan d’action personnel : 7 jours de citoyenneté numérique active",
+      "description": "Fiche pratique de la semaine 10.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "Un geste responsable en ligne peut protéger d’autres personnes."
+    },
+    {
+      "week": 11,
+      "title": "Pacte numérique famille-école (version courte)",
+      "description": "Fiche pratique de la semaine 11.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "La confiance est la première protection."
+    },
+    {
+      "week": 12,
+      "title": "Certification Citoyen numérique responsable — mode d’emploi",
+      "description": "Fiche pratique de la semaine 12.",
+      "category": "guide",
+      "published": true,
+      "ruleOfThumb": "La compétence numérique se maintient par la pratique régulière."
+    }
+  ],
+  "quizzes": [
+    {
+      "week": 1,
+      "id": "pedagogie-semaine-1",
+      "title": "Fondamentaux du civisme numérique",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w1-q1",
+          "question": "Question 1 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w1-q2",
+          "question": "Question 2 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w1-q3",
+          "question": "Question 3 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w1-q4",
+          "question": "Question 4 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w1-q5",
+          "question": "Question 5 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w1-q6",
+          "question": "Question 6 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w1-q7",
+          "question": "Question 7 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w1-q8",
+          "question": "Question 8 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w1-q9",
+          "question": "Question 9 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w1-q10",
+          "question": "Question 10 — Fondamentaux du civisme numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "id": "pedagogie-semaine-2",
+      "title": "Vérification de l’information",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w2-q1",
+          "question": "Question 1 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w2-q2",
+          "question": "Question 2 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w2-q3",
+          "question": "Question 3 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w2-q4",
+          "question": "Question 4 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w2-q5",
+          "question": "Question 5 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w2-q6",
+          "question": "Question 6 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w2-q7",
+          "question": "Question 7 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w2-q8",
+          "question": "Question 8 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w2-q9",
+          "question": "Question 9 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w2-q10",
+          "question": "Question 10 — Vérification de l’information",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "id": "pedagogie-semaine-3",
+      "title": "Cyberharcèlement et prévention",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w3-q1",
+          "question": "Question 1 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w3-q2",
+          "question": "Question 2 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w3-q3",
+          "question": "Question 3 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w3-q4",
+          "question": "Question 4 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w3-q5",
+          "question": "Question 5 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w3-q6",
+          "question": "Question 6 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w3-q7",
+          "question": "Question 7 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w3-q8",
+          "question": "Question 8 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w3-q9",
+          "question": "Question 9 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w3-q10",
+          "question": "Question 10 — Cyberharcèlement et prévention",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "id": "pedagogie-semaine-4",
+      "title": "Identité et réputation numérique",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w4-q1",
+          "question": "Question 1 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w4-q2",
+          "question": "Question 2 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w4-q3",
+          "question": "Question 3 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w4-q4",
+          "question": "Question 4 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w4-q5",
+          "question": "Question 5 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w4-q6",
+          "question": "Question 6 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w4-q7",
+          "question": "Question 7 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w4-q8",
+          "question": "Question 8 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w4-q9",
+          "question": "Question 9 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w4-q10",
+          "question": "Question 10 — Identité et réputation numérique",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "id": "pedagogie-semaine-5",
+      "title": "Sécurité des comptes",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w5-q1",
+          "question": "Question 1 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w5-q2",
+          "question": "Question 2 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w5-q3",
+          "question": "Question 3 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w5-q4",
+          "question": "Question 4 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w5-q5",
+          "question": "Question 5 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w5-q6",
+          "question": "Question 6 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w5-q7",
+          "question": "Question 7 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w5-q8",
+          "question": "Question 8 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w5-q9",
+          "question": "Question 9 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w5-q10",
+          "question": "Question 10 — Sécurité des comptes",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "id": "pedagogie-semaine-6",
+      "title": "Arnaques numériques en RDC",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w6-q1",
+          "question": "Question 1 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w6-q2",
+          "question": "Question 2 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w6-q3",
+          "question": "Question 3 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w6-q4",
+          "question": "Question 4 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w6-q5",
+          "question": "Question 5 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w6-q6",
+          "question": "Question 6 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w6-q7",
+          "question": "Question 7 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w6-q8",
+          "question": "Question 8 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w6-q9",
+          "question": "Question 9 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w6-q10",
+          "question": "Question 10 — Arnaques numériques en RDC",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "id": "pedagogie-semaine-7",
+      "title": "Données personnelles",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w7-q1",
+          "question": "Question 1 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w7-q2",
+          "question": "Question 2 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w7-q3",
+          "question": "Question 3 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w7-q4",
+          "question": "Question 4 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w7-q5",
+          "question": "Question 5 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w7-q6",
+          "question": "Question 6 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w7-q7",
+          "question": "Question 7 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w7-q8",
+          "question": "Question 8 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w7-q9",
+          "question": "Question 9 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w7-q10",
+          "question": "Question 10 — Données personnelles",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "id": "pedagogie-semaine-8",
+      "title": "Signalement structuré",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w8-q1",
+          "question": "Question 1 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w8-q2",
+          "question": "Question 2 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w8-q3",
+          "question": "Question 3 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w8-q4",
+          "question": "Question 4 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w8-q5",
+          "question": "Question 5 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w8-q6",
+          "question": "Question 6 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w8-q7",
+          "question": "Question 7 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w8-q8",
+          "question": "Question 8 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w8-q9",
+          "question": "Question 9 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w8-q10",
+          "question": "Question 10 — Signalement structuré",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "id": "pedagogie-semaine-9",
+      "title": "Débat responsable",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w9-q1",
+          "question": "Question 1 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w9-q2",
+          "question": "Question 2 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w9-q3",
+          "question": "Question 3 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w9-q4",
+          "question": "Question 4 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w9-q5",
+          "question": "Question 5 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w9-q6",
+          "question": "Question 6 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w9-q7",
+          "question": "Question 7 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w9-q8",
+          "question": "Question 8 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w9-q9",
+          "question": "Question 9 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w9-q10",
+          "question": "Question 10 — Débat responsable",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "id": "pedagogie-semaine-10",
+      "title": "Citoyenneté active",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w10-q1",
+          "question": "Question 1 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w10-q2",
+          "question": "Question 2 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w10-q3",
+          "question": "Question 3 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w10-q4",
+          "question": "Question 4 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w10-q5",
+          "question": "Question 5 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w10-q6",
+          "question": "Question 6 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w10-q7",
+          "question": "Question 7 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w10-q8",
+          "question": "Question 8 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w10-q9",
+          "question": "Question 9 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w10-q10",
+          "question": "Question 10 — Citoyenneté active",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 11,
+      "id": "pedagogie-semaine-11",
+      "title": "Jeunesse et encadrement",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w11-q1",
+          "question": "Question 1 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w11-q2",
+          "question": "Question 2 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w11-q3",
+          "question": "Question 3 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w11-q4",
+          "question": "Question 4 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w11-q5",
+          "question": "Question 5 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w11-q6",
+          "question": "Question 6 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w11-q7",
+          "question": "Question 7 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w11-q8",
+          "question": "Question 8 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w11-q9",
+          "question": "Question 9 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w11-q10",
+          "question": "Question 10 — Jeunesse et encadrement",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "id": "pedagogie-semaine-12",
+      "title": "Évaluation finale",
+      "timeLimitSec": 600,
+      "pickCount": 10,
+      "passingScoreOver20": 14,
+      "questions": [
+        {
+          "id": "w12-q1",
+          "question": "Question 1 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 1."
+        },
+        {
+          "id": "w12-q2",
+          "question": "Question 2 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 2."
+        },
+        {
+          "id": "w12-q3",
+          "question": "Question 3 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 3."
+        },
+        {
+          "id": "w12-q4",
+          "question": "Question 4 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 4."
+        },
+        {
+          "id": "w12-q5",
+          "question": "Question 5 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 5."
+        },
+        {
+          "id": "w12-q6",
+          "question": "Question 6 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 6."
+        },
+        {
+          "id": "w12-q7",
+          "question": "Question 7 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 7."
+        },
+        {
+          "id": "w12-q8",
+          "question": "Question 8 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "a",
+          "explanation": "Explication pédagogique pour la question 8."
+        },
+        {
+          "id": "w12-q9",
+          "question": "Question 9 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "b",
+          "explanation": "Explication pédagogique pour la question 9."
+        },
+        {
+          "id": "w12-q10",
+          "question": "Question 10 — Évaluation finale",
+          "choices": [
+            {
+              "id": "a",
+              "label": "Proposition A"
+            },
+            {
+              "id": "b",
+              "label": "Proposition B"
+            },
+            {
+              "id": "c",
+              "label": "Proposition C"
+            }
+          ],
+          "correctChoiceId": "c",
+          "explanation": "Explication pédagogique pour la question 10."
+        }
+      ]
+    }
+  ]
+}

@@ -48,8 +48,8 @@ router.post(
     const { password } = req.body;
     try {
       const { user } = await authService.loginStaff(email, password, { ip: req.ip });
-      const accessToken = authService.attachStaffSessionCookie(res, user);
-      return res.json({ user: publicUser(user), accessToken });
+      authService.attachStaffSessionCookie(res, user);
+      return res.json({ user: publicUser(user) });
     } catch (err) {
       const handled = authService.handleStaffLoginError(res, err);
       if (handled) return handled;

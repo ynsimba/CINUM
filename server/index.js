@@ -5,9 +5,11 @@ const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
+const jwt = require('jsonwebtoken');
 const prisma = require('./lib/prisma');
 const { csrfProtection } = require('./middleware/csrf');
 const { requestLogger } = require('./middleware/requestLogger');
+const { getTokenFromRequest } = require('./middleware/auth');
 
 const authRoutes = require('./routes/auth');
 const publicRoutes = require('./routes/public');
@@ -124,6 +126,22 @@ async function main() {
 
   app.use(
     '/uploads',
+    (req, res, next) => {
+      const fileName = path.basename(decodeURIComponent(req.path || '')).toLowerCase();
+      // Les pièces sensibles des signalements (préfixe report-) ne sont pas publiques.
+      if (!fileName.startsWith('report-')) return next();
+      const secret = process.env.JWT_SECRET;
+      const token = getTokenFromRequest(req);
+      if (!secret || !token) {
+        return res.status(403).json({ error: 'Accès refusé à ce document.' });
+      }
+      try {
+        jwt.verify(token, secret);
+        return next();
+      } catch {
+        return res.status(403).json({ error: 'Accès refusé à ce document.' });
+      }
+    },
     express.static(path.join(__dirname, 'uploads'), {
       setHeaders(res) {
         res.setHeader('X-Content-Type-Options', 'nosniff');

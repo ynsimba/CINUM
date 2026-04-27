@@ -28,6 +28,7 @@ const MARITAL_OPTIONS = [
   'Union libre',
   'Autre',
 ]
+const MAX_EVIDENCE_FILES = 8
 
 const emptyIdentity = () => ({
   lastName: '',
@@ -51,11 +52,14 @@ const emptyComplaint = () => ({
 export function Report() {
   const errRef = useRef(null)
   const identityFileRef = useRef(null)
+  const evidenceFilesRef = useRef(null)
   const [step, setStep] = useState(1)
   const [isAnonymous, setIsAnonymous] = useState(false)
   const [identity, setIdentity] = useState(emptyIdentity)
   const [identityFile, setIdentityFile] = useState(null)
   const [complaint, setComplaint] = useState(emptyComplaint)
+  const [evidenceLinks, setEvidenceLinks] = useState('')
+  const [evidenceFiles, setEvidenceFiles] = useState([])
   const [msg, setMsg] = useState(null)
   const [credentials, setCredentials] = useState(null)
   const [err, setErr] = useState(null)
@@ -117,6 +121,10 @@ export function Report() {
       setErr('La description ne doit pas dépasser 600 caractères.')
       return
     }
+    if (evidenceFiles.length > MAX_EVIDENCE_FILES) {
+      setErr(`Vous pouvez joindre au maximum ${MAX_EVIDENCE_FILES} fichiers de preuves.`)
+      return
+    }
     const parsed = isAnonymous
       ? parsePhoneNumberFromString(identity.phoneNational.trim(), identity.phoneCountryIso) || null
       : parsePhoneNumberFromString(identity.phoneNational.trim(), identity.phoneCountryIso)
@@ -144,6 +152,8 @@ export function Report() {
       fd.append('abuseType', complaint.abuseType)
       fd.append('description', complaint.description.trim())
       if (!isAnonymous && identityFile) fd.append('identityDocument', identityFile)
+      if (evidenceLinks.trim()) fd.append('evidenceLinks', evidenceLinks.trim())
+      for (const file of evidenceFiles) fd.append('evidenceFiles', file)
       const { data } = await api.post('/api/reports', fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
@@ -154,7 +164,10 @@ export function Report() {
       setIdentity(emptyIdentity())
       setComplaint(emptyComplaint())
       setIdentityFile(null)
+      setEvidenceLinks('')
+      setEvidenceFiles([])
       if (identityFileRef.current) identityFileRef.current.value = ''
+      if (evidenceFilesRef.current) evidenceFilesRef.current.value = ''
     } catch (ex) {
       const raw = ex.response?.data?.errors
       if (Array.isArray(raw) && raw.length > 0) {
@@ -494,6 +507,48 @@ export function Report() {
                         {complaint.description.length} / 600 caractères
                       </p>
                     </div>
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="evidenceLinks">
+                        Liens de preuves (optionnel)
+                      </label>
+                      <textarea
+                        id="evidenceLinks"
+                        className="form-control"
+                        rows={3}
+                        value={evidenceLinks}
+                        onChange={(e) => setEvidenceLinks(e.target.value)}
+                        placeholder="Un ou plusieurs liens (http/https), séparés par virgule ou retour à la ligne."
+                      />
+                      <p className="form-text small text-muted mb-0">
+                        Exemples : lien vers une publication, une capture hébergée, une vidéo, un audio, etc.
+                      </p>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="evidenceFiles">
+                        Fichiers de preuves (optionnel)
+                      </label>
+                      <input
+                        ref={evidenceFilesRef}
+                        id="evidenceFiles"
+                        type="file"
+                        className="form-control"
+                        multiple
+                        accept=".pdf,.doc,.docx,image/*,video/*,audio/*"
+                        onChange={(e) => {
+                          const files = Array.from(e.target.files || [])
+                          if (files.length > MAX_EVIDENCE_FILES) {
+                            setErr(`Vous pouvez joindre au maximum ${MAX_EVIDENCE_FILES} fichiers de preuves.`)
+                            setEvidenceFiles(files.slice(0, MAX_EVIDENCE_FILES))
+                            return
+                          }
+                          setErr(null)
+                          setEvidenceFiles(files)
+                        }}
+                      />
+                      <p className="form-text small text-muted mb-0">
+                        Documents, photos, vidéos, audios (jusqu’à {MAX_EVIDENCE_FILES} fichiers).
+                      </p>
+                    </div>
                     {err && step === 2 && (
                       <div
                         ref={errRef}
@@ -558,7 +613,10 @@ export function Report() {
                         setErr(null)
                         setIdentity(emptyIdentity())
                         setIdentityFile(null)
+                        setEvidenceLinks('')
+                        setEvidenceFiles([])
                         if (identityFileRef.current) identityFileRef.current.value = ''
+                        if (evidenceFilesRef.current) evidenceFilesRef.current.value = ''
                         setComplaint(emptyComplaint())
                         setStep(1)
                       }}
